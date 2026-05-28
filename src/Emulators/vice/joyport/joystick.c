@@ -220,18 +220,26 @@ void joystick_register_delay(unsigned int delay)
 static void joystick_process_latch(void)
 {
 //	LOGD("joystick_process_latch");
+#ifdef RETRODEBUGGER
 	CLOCK delay = 0; //lib_unsigned_rand(1, (unsigned int)machine_get_cycles_per_frame());
+#else
+    CLOCK delay = lib_unsigned_rand(1, (unsigned int)machine_get_cycles_per_frame());
+#endif
 
     if (network_connected()) {
         network_event_record(EVENT_JOYSTICK_DELAY, (void *)&delay, sizeof(delay));
         network_event_record(EVENT_JOYSTICK_VALUE, (void *)latch_joystick_value, sizeof(latch_joystick_value));
     } else {
+#ifdef RETRODEBUGGER
 //		LOGD("delay=%d", delay);
 //		LOGD("joystick_alarm at clk %d alarm=%x", maincpu_clk + delay, joystick_alarm);
 //        alarm_set(joystick_alarm, maincpu_clk + delay);
-		
+
 		joystick_latch_matrix(0);
 		joystick_event_record();
+#else
+        alarm_set(joystick_alarm, maincpu_clk + delay);
+#endif
     }
 }
 
@@ -785,6 +793,7 @@ static int joystick_snapshot_read_module(snapshot_t *s, int port)
     return snapshot_module_close(m);
 }
 
+#ifdef RETRODEBUGGER
 ///
 void c64d_lock_mutex();
 void c64d_unlock_mutex();
@@ -903,8 +912,9 @@ void c64d_joystick_key_down(int key, unsigned int joyport)
 //	{
 //		joypad_hmask[keysetnum] = ~JOYPAD_W;
 //	}
-	
+
 	joystick_set_value_absolute(joyport, (BYTE)value);
 	c64d_unlock_mutex();
 }
+#endif /* RETRODEBUGGER */
 
