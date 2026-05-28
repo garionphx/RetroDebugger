@@ -37,6 +37,7 @@
 #include "rotation.h"
 #include "vicetypes.h"
 #include "p64.h"
+#include "vice_debugger_hook.h"
 
 #include <stdlib.h>
 
@@ -257,7 +258,7 @@ inline static void write_next_bit(drive_t *dptr, int value)
 	// note, the below does not include sides: int tmp = (dptr->image && dptr->image->type == DISK_IMAGE_TYPE_G71) ? DRIVE_HALFTRACKS_1571 : 70;
 	int current_track = (dptr->current_half_track-2)/2;
 	LOGD("write_next_bit: dptr->current_half_track=%d current_track=%d", dptr->current_half_track, current_track);
-	c64d_mark_drive1541_contents_track_dirty(current_track);
+	VICE_HOOK_DRIVE_TRACK_DIRTY(current_track);
 }
 
 inline static int read_next_bit(drive_t *dptr)

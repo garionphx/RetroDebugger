@@ -48,6 +48,7 @@
 #include "viad.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 
 static drive_read_func_t *read_tab_watch[0x101];
@@ -58,15 +59,15 @@ static drive_store_func_t *store_tab_watch[0x101];
 
 static BYTE drive_read_free(drive_context_t *drv, WORD address)
 {
-	c64d_mark_drive1541_cell_read(address);
+	VICE_HOOK_DRIVE_CELL_READ(address);
 
     return address >> 8;
 }
 
 static void drive_store_free(drive_context_t *drv, WORD address, BYTE value)
 {
-	c64d_mark_drive1541_cell_write(address, value);
-	
+	VICE_HOOK_DRIVE_CELL_WRITE(address, value);
+
     return;
 }
 

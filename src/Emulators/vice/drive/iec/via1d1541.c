@@ -47,6 +47,7 @@
 #include "viad.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #define iecbus (via1p->v_iecbus)
 
@@ -61,15 +62,15 @@ typedef struct drivevia1_context_s {
 
 void via1d1541_store(drive_context_t *ctxptr, WORD addr, BYTE data)
 {
-	c64d_mark_drive1541_cell_write(addr, data);
+	VICE_HOOK_DRIVE_CELL_WRITE(addr, data);
 
     viacore_store(ctxptr->via1d1541, addr, data);
 }
 
 BYTE via1d1541_read(drive_context_t *ctxptr, WORD addr)
 {
-	c64d_mark_drive1541_cell_read(addr);
-	
+	VICE_HOOK_DRIVE_CELL_READ(addr);
+
     return viacore_read(ctxptr->via1d1541, addr);
 }
 
@@ -99,9 +100,9 @@ static void set_int(via_context_t *via_context, unsigned int int_num,
 
     drive_context = (drive_context_t *)(via_context->context);
 
-	if (c64d_is_debug_on_drive1541())
+	if (VICE_HOOK_DRIVE_IS_DEBUG())
 	{
-		via_context->c64d_irq_flagged = 1;
+		VICE_HOOK_VIA_IRQ_FLAG_SET(via_context);
 	}
 	
     interrupt_set_irq(drive_context->cpu->int_status, int_num, value, rclk);
