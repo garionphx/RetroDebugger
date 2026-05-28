@@ -32,6 +32,7 @@
 #include "interrupt.h"
 #include "log.h"
 #include "vicetypes.h"
+#include "vice_debugger_hook.h"
 
 
 /* Asynchronously steal `num' cycles from the CPU, starting from cycle
@@ -97,7 +98,7 @@ void dma_maincpu_steal_cycles(CLOCK start_clk, int num, CLOCK sub)
     }
 
     maincpu_clk += num;
-	c64d_maincpu_clk += num;
+	VICE_HOOK_CPU_CLK_ADD(num);
 
     cs->last_stolen_cycles_clk = dma_start + num;
 #ifdef DEBUGIRQDMA

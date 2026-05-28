@@ -72,6 +72,7 @@
 #include "zfile.h"
 
 #include "DebuggerDefs.h"
+#include "vice_debugger_hook.h"
 
 #ifdef HAS_JOYSTICK
 #include "joy.h"
@@ -92,8 +93,8 @@ void c64d_set_debug_mode(int newMode);
 
 unsigned int machine_jam(const char *format, ...)
 {
-	c64d_set_debug_mode(DEBUGGER_MODE_PAUSED);
-	
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_PAUSED);
+
     char *str;
     va_list ap;
     ui_jam_action_t ret;
