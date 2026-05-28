@@ -48,6 +48,7 @@
 #include "translate.h"
 #include "vicetypes.h"
 #include "util.h"
+#include "vice_debugger_hook.h"
 
 #undef DEBUG
 
@@ -324,11 +325,11 @@ void midi_store(WORD a, BYTE b)
 #endif
     if (maincpu_rmw_flag) {
         maincpu_clk--;
-		c64d_maincpu_clk--;
+		VICE_HOOK_CPU_CLK_DEC();
         maincpu_rmw_flag = 0;
         midi_store(a, midi_last_read);
         maincpu_clk++;
-		c64d_maincpu_clk++;
+		VICE_HOOK_CPU_CLK_INC();
     }
 
     a &= midi_interface[midi_mode].mask;
