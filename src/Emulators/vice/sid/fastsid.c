@@ -50,6 +50,7 @@
 
 #include "log.h"
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 
 #ifndef TRUE
@@ -787,12 +788,12 @@ static SWORD fastsid_calculate_single_sample(sound_t *psid, int i)
 	
 	returnValue = (SWORD)(((SDWORD)((o0 + o1 + o2) >> 20) - 0x600) * psid->vol);
 
-	if (c64d_is_receive_channels_data[psid->chipNo])
+	if (VICE_HOOK_SID_IS_RECEIVING_CHANNELS(psid->chipNo))
 	{
 #define OSHIFT 19
 #define OSUB	0x300
-		
-		c64d_sid_channels_data(psid->chipNo,
+
+		VICE_HOOK_SID_CHANNELS_DATA(psid->chipNo,
 							   ((o0 >> OSHIFT) - OSUB) * psid->vol,
 							   ((o1 >> OSHIFT) - OSUB) * psid->vol,
 							   ((o2 >> OSHIFT) - OSUB) * psid->vol, returnValue);
