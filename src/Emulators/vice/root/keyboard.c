@@ -299,6 +299,7 @@ static int shiftl = KEY_NONE;
 
 /*-----------------------------------------------------------------------*/
 
+#ifdef RETRODEBUGGER
 void c64d_keyboard_init()
 {
 	
@@ -312,7 +313,7 @@ void c64d_keyboard_init()
 	 3     V   U   H   B   8   G   Y   7
 	 4     N   O   K   M   0   J   I   9
 	 5     ,   @   :   .   -   L   P   +
-	 6     /   ^   =  SHR HOM  ;   *   £
+	 6     /   ^   =  SHR HOM  ;   *   ï¿½
 	 7    R/S  Q   C= SPC  2  CTL  <-  1
 	 */
 	kbd_lshiftrow = 1;
@@ -320,6 +321,7 @@ void c64d_keyboard_init()
 	kbd_rshiftrow = 6;
 	kbd_rshiftcol = 4;
 }
+#endif /* RETRODEBUGGER */
 
 
 static int left_shift_down, right_shift_down, virtual_shift_down;
@@ -522,10 +524,14 @@ int keyboard_key_pressed(signed long key)
             alarm_set(keyboard_alarm, maincpu_clk + KEYBOARD_RAND());
         }
     }
-	
+#ifdef RETRODEBUGGER
 	return latch;
+#else
+    return 0;
+#endif
 }
 
+#ifdef RETRODEBUGGER
 void c64d_keyboard_key_down_latch()
 {
 	{
@@ -540,6 +546,7 @@ void c64d_keyboard_key_down_latch()
 		}
 	}
 }
+#endif /* RETRODEBUGGER */
 
 int keyboard_key_released_matrix(int row, int column, int shift)
 {
@@ -668,10 +675,14 @@ int keyboard_key_released(signed long key)
             alarm_set(keyboard_alarm, maincpu_clk + KEYBOARD_RAND());
         }
     }
-	
+#ifdef RETRODEBUGGER
 	return latch;
+#else
+    return 0;
+#endif
 }
 
+#ifdef RETRODEBUGGER
 void c64d_keyboard_key_up_latch()
 {
 		if (network_connected()) {
@@ -693,7 +704,7 @@ void c64d_keyboard_force_key_up_latch(signed long key)
 			if ((keyconvmap[i].shift & ALT_MAP) && !key_alternative) {
 				continue;
 			}
-			
+
 				keyboard_set_latch_keyarr(keyconvmap[i].row,
 										  keyconvmap[i].column, 0);
 				if (!(keyconvmap[i].shift & ALLOW_OTHER)
@@ -702,7 +713,7 @@ void c64d_keyboard_force_key_up_latch(signed long key)
 			}
 		}
 	}
-	
+
 	if (network_connected()) {
 		CLOCK keyboard_delay = KEYBOARD_RAND();
 		network_event_record(EVENT_KEYBOARD_DELAY, (void *)&keyboard_delay, sizeof(keyboard_delay));
@@ -711,6 +722,7 @@ void c64d_keyboard_force_key_up_latch(signed long key)
 		alarm_set(keyboard_alarm, maincpu_clk + KEYBOARD_RAND());
 	}
 }
+#endif /* RETRODEBUGGER */
 
 static void keyboard_key_clear_internal(void)
 {
@@ -1095,14 +1107,16 @@ static int keyboard_parse_keymap(const char *filename, int child)
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 void c64d_keyboard_keymap_clear()
 {
 	if (keyconvmap != NULL) {
 		keyboard_keyconvmap_free();
 	}
-	
+
 	keyboard_keyconvmap_alloc();
 }
+#endif /* RETRODEBUGGER */
 
 static int keyboard_keymap_load(const char *filename)
 {
@@ -1862,8 +1876,9 @@ void keyboard_init(void)
         keyboard_set_keymap_index(machine_keymap_index, NULL);
     }
 #endif
-	
+#ifdef RETRODEBUGGER
 	c64d_keyboard_init();
+#endif
 }
 
 void keyboard_shutdown(void)

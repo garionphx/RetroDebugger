@@ -188,7 +188,9 @@ void joystick_event_playback(CLOCK offset, void *data)
 
 static void joystick_latch_handler(CLOCK offset, void *data)
 {
+#ifdef RETRODEBUGGER
 	LOGD("joystick_latch_handler");
+#endif
     alarm_unset(joystick_alarm);
     alarm_context_update_next_pending(joystick_alarm->context);
 
