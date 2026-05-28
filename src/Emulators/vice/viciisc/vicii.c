@@ -64,6 +64,7 @@
 #include "raster.h"
 
 #include "DebuggerDefs.h"
+#include "vice_debugger_hook.h"
 
 void vicii_set_phi1_addr_options(WORD mask, WORD offset)
 {
@@ -291,7 +292,7 @@ raster_t *vicii_init(unsigned int flag)
 
     vicii_irq_init();
 	
-	vicii.c64d_irq_flag = 0;
+	VICE_HOOK_VIC_IRQ_FLAG_CLEAR();
 
     if (init_raster() < 0) {
         return NULL;

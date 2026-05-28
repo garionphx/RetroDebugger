@@ -46,6 +46,7 @@
 #include "vicii.h"
 #include "viciitypes.h"
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #ifdef VICE_DEBUG
 #include "log.h"
@@ -348,8 +349,8 @@ int vicii_cycle(void)
 		{
             vicii_cycle_start_of_frame();
 
-			c64d_c64_vicii_start_frame();
-			c64d_c64_vicii_start_raster_line(vicii.raster_line);
+			VICE_HOOK_VIC_START_FRAME();
+			VICE_HOOK_VIC_START_RASTER(vicii.raster_line);
         }
     }
 	else
@@ -358,10 +359,10 @@ int vicii_cycle(void)
 		{
             vicii.raster_line++;
 			
-			c64d_c64_vicii_start_raster_line(vicii.raster_line);
+			VICE_HOOK_VIC_START_RASTER(vicii.raster_line);
         }
     }
-	
+
 	
     /*
      * Trigger a raster IRQ if the raster comparison goes from
@@ -535,7 +536,7 @@ int vicii_cycle(void)
 	
 	
 	//
-	c64d_c64_vicii_cycle();
+	VICE_HOOK_VIC_CYCLE();
 
 
     return ba_low;
@@ -557,7 +558,7 @@ void vicii_steal_cycles(void)
 
     do {
         maincpu_clk++;
-		c64d_maincpu_clk++;
+		VICE_HOOK_CPU_CLK_INC();
         ba_low = vicii_cycle();
     } while (ba_low);
 }
