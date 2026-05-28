@@ -87,6 +87,7 @@
 #include "vsync.h"
 
 #include "DebuggerDefs.h"
+#include "vice_debugger_hook.h"
 
 #ifndef HAVE_STPCPY
 char *stpcpy(char *dest, const char *src)
@@ -1789,7 +1790,7 @@ void mon_instructions_step(int count)
     monitor_mask[default_memspace] |= MI_STEP;
     interrupt_monitor_trap_on(mon_interfaces[default_memspace]->int_status);
 	
-	c64d_set_debug_mode(DEBUGGER_MODE_RUNNING);
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_RUNNING);
 }
 
 void mon_instructions_next(int count)
@@ -1812,7 +1813,7 @@ void mon_instructions_next(int count)
     monitor_mask[default_memspace] |= MI_STEP;
     interrupt_monitor_trap_on(mon_interfaces[default_memspace]->int_status);
 
-	c64d_set_debug_mode(DEBUGGER_MODE_RUNNING);
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_RUNNING);
 }
 
 void mon_instruction_return(void)
@@ -1828,7 +1829,7 @@ void mon_instruction_return(void)
     monitor_mask[default_memspace] |= MI_STEP;
     interrupt_monitor_trap_on(mon_interfaces[default_memspace]->int_status);
 
-	c64d_set_debug_mode(DEBUGGER_MODE_RUNNING);
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_RUNNING);
 }
 
 void mon_stack_up(int count)
@@ -2382,7 +2383,7 @@ void monitor_startup(MEMSPACE mem)
         default_memspace = mem;
     }
 
-	c64d_set_debug_mode(DEBUGGER_MODE_PAUSED);
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_PAUSED);
 	
 	/*
     monitor_open();
