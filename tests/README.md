@@ -41,6 +41,54 @@ pip install -r requirements.txt
 
 The `.venv/` directory is gitignored.
 
+## Building RetroDebugger from source (macOS)
+
+To verify source changes (e.g. the VICE upgrade work), you must run a build of
+*this repo*, not the pre-installed release app. Verified working procedure on
+macOS (Xcode 26.5, Apple Silicon):
+
+**Prerequisites (already satisfied on this machine — no downloads needed):**
+- Xcode installed (`xcodebuild -version`).
+- The sibling library **MTEngineSDL** must resolve at `../MTEngineSDL` relative
+  to this repo, i.e. `~/Projects/MTEngineSDL`. It actually lives at
+  `~/develop/MTEngineSDL`, so create a symlink once:
+  ```sh
+  ln -s ~/develop/MTEngineSDL ~/Projects/MTEngineSDL
+  ```
+- SDL2 is bundled as a prebuilt static lib inside MTEngineSDL
+  (`~/develop/MTEngineSDL/platform/MacOS/libs/libSDL2.a`) — nothing to install.
+- MTEngineSDL builds via its own `platform/MacOS/build.sh`; the RD Xcode project
+  links it automatically.
+
+**Build (use Release — see warning below):**
+```sh
+cd platform/MacOS
+xcodebuild -project c64d.xcodeproj -scheme "Retro Debugger" \
+  -configuration Release -arch arm64 \
+  CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO build
+```
+- `CODE_SIGNING_*=NO` is required: the project is configured for the original
+  author's Apple Developer team, which you don't have. Unsigned is fine for a
+  locally-run build.
+- The built app lands at:
+  `~/Library/Developer/Xcode/DerivedData/c64d-*/Build/Products/Release/Retro Debugger.app`
+
+**⚠️ Use the Release configuration, not Debug.** The Debug config enables the
+ImGui test engine (`-DENABLE_IMGUI_TEST_ENGINE`), which crashes under the
+scripted WebSocket workload (`ImGuiTestEngine_CrashHandler() Crashed`). Release
+is stable and matches the conditions the suite baseline was captured against.
+
+**Run the from-source build and point the suite at it:**
+```sh
+pkill -f "Retro Debugger"; sleep 2
+APP=~/Library/Developer/Xcode/DerivedData/c64d-*/Build/Products/Release/"Retro Debugger.app/Contents/MacOS/Retro Debugger"
+"$APP" -c64 -unpause &
+until nc -z 127.0.0.1 3563; do sleep 1; done   # wait for the WebSocket port
+./tests/run-ws-tests.sh
+```
+The from-source Release build reproduces the baseline (`28 passed, 1 skipped,
+1 xfailed`), so it is the build to verify all source changes against.
+
 ## Running the tests
 
 From the repository root, use the runner script (it activates the venv for you):
