@@ -39,6 +39,7 @@
 #include "snapshot.h"
 #include "vicetypes.h"
 #include "via.h"
+#include "vice_debugger_hook.h"
 
 #undef byte
 
@@ -1224,7 +1225,7 @@ void viacore_init(via_context_t *via_context, alarm_context_t *alarm_context,
 
 	
 	// c64d: C64 debugger
-	via_context->c64d_irq_flagged = 0;
+	VICE_HOOK_VIA_IRQ_FLAG_CLEAR(via_context);
 	
 	
     buffer = lib_msprintf("%sT1", via_context->myname);
