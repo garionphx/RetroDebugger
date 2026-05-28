@@ -24,6 +24,7 @@
 extern "C" {
 	#include "log.h"
 	#include "ViceWrapper.h"
+	#include "vice_debugger_hook.h"
 }
 
 namespace reSID
@@ -1290,7 +1291,7 @@ for my $mix (0..2**@i-1) {
 	  returnValue = (short)(f.gain[vol][f.mixer[offset + Vi]] - (1 << 15));
 	  
 	  // TODO: send SID waveforms data via callback
-	  if (c64d_waveform_callback != NULL && c64d_is_receive_channels_data[chipNo])
+	  if (c64d_waveform_callback != NULL && VICE_HOOK_SID_IS_RECEIVING_CHANNELS(chipNo))
 	  {
 		  // 6581 correction factors for waveform display
 		  // ohh thats purely empirical
@@ -1300,7 +1301,7 @@ for my $mix (0..2**@i-1) {
 		  int vn2 = (v2 - d) << s;
 		  int vn3 = (v3 - d) << s;
 
-		  c64d_sid_channels_data(chipNo, vn1, vn2, vn3, returnValue);
+		  VICE_HOOK_SID_CHANNELS_DATA(chipNo, vn1, vn2, vn3, returnValue);
 	  }
 
   }
@@ -1314,14 +1315,14 @@ for my $mix (0..2**@i-1) {
 	  returnValue = (((Vi>>1)*vol) >> 4);
 	  
 	  // TODO: send SID waveforms data via callback
-	  if (c64d_waveform_callback != NULL && c64d_is_receive_channels_data[chipNo])
+	  if (c64d_waveform_callback != NULL && VICE_HOOK_SID_IS_RECEIVING_CHANNELS(chipNo))
 	  {
 		  const int s = 2;
 		  int vn1 = v1 << s;
 		  int vn2 = v2 << s;
 		  int vn3 = v3 << s;
 
-		  c64d_sid_channels_data(chipNo, vn1, vn2, vn3, returnValue);
+		  VICE_HOOK_SID_CHANNELS_DATA(chipNo, vn1, vn2, vn3, returnValue);
 	  }
   }
 	 
