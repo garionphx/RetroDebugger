@@ -188,3 +188,71 @@ re-established during Phase 4 (3.10 integration). Any divergence is either:
 2. **An expected change** — 3.10 behaves differently for a documented reason
 
 The suite must run green before each merge gate during the upgrade.
+
+## Phase 0 + 0.5 + 1 closeout
+
+**Date completed:** 2026-05-27
+
+### Artifacts produced
+
+- Branch `vice-3.10-upgrade` on origin (all commits pushed)
+- `~/vice-ref/3.1/src/` — vanilla VICE 3.1 reference (outside repo)
+- `~/vice-ref/3.10/src/` — vanilla VICE 3.10 reference (outside repo)
+- `tests/websocket/` — pytest regression suite, 30 tests (28 pass / 2 skip), runtime ~21.5 s
+- `tests/fixtures/known_state.{asm,prg,sym}` + `build.sh` — fixture infrastructure (park label = $0837)
+- `tests/retrodebugger.py` — vendored WebSocket client
+- `tests/run-ws-tests.sh` — suite runner
+- `docs/vice-hook-surface.md` — Phase 1 catalog (1234 lines): 64 modified files, 633 call sites, 282 distinct `c64d_*` symbols, 15 hook categories, ~14 files with genuine non-additive changes
+
+### Catalog headline findings (drive the Phase 2-5 plan)
+
+- **"Essentially all additive" upheld with nuance.** ~50 of 64 files are pure additive. The large
+  apparent "deletion" counts in `c64cpusc.c` (166) and `drivecpu.c` (409) are **inline expansion**
+  of `mainc64cpu.c` / `6510core.c` into the host file (slajerek inlined the CPU core to inject
+  hooks), NOT removed logic. Verified directly: `c64cpusc.c` contains a "mainc64cpu.c starts here"
+  block and is 4357 lines.
+- **Genuine non-additive patches** (confirmed against corrected ground-truth diff): `resid-filter.cpp`
+  (261 lines — 8580 SID filter section deleted, only 6581 kept), `soundsdl.c` (155 — audio callback
+  rewrite), `resid-sid.cpp` (89 — TTL/read-path behavior + waveform-callback ctor param), plus
+  smaller logic changes in `sid.c`, `joystick.c`, `keyboard.c`, `vsync.c`, `c64-snapshot.c`,
+  `ciacore.c`, and several `viciisc/` files.
+
+### Hardest 3.10 migration risks (from catalog)
+
+1. **CRITICAL — CPU inline expansion.** `c64cpusc.c` / `drivecpu.c` must be re-inlined from 3.10's
+   `mainc64cpu.c` / `6510core.c`, and 3.10 **removes `clkguard.c/.h`** which slajerek's tree uses
+   (`root/clkguard.c`).
+2. **HIGH — soundsdl.c.** Moved to `arch/shared/sounddrv/soundsdl.c` in 3.10; callback structure differs.
+3. **HIGH — monitor.** 3.10's `monitor.c` grew ~1000 lines; injection points must be re-identified.
+4. **HIGH — c64memsc.c `mem_ram`.** slajerek converted it to a pointer; 3.10 reverts to a static array.
+
+### Phase 4 vanilla-path mapping cheat sheet
+
+When replaying patches, map a repo file to its vanilla equivalent as follows (verified 2026-05-27):
+
+| Repo path pattern | Vanilla 3.1 path |
+|---|---|
+| `src/Emulators/vice/<sub>/<f>` | `~/vice-ref/3.1/src/<sub>/<f>` (note the `src/` component) |
+| `src/Emulators/vice/root/<f>` | `~/vice-ref/3.1/src/<f>` (slajerek's `root/` = vanilla top-level `src/`) |
+| `src/Emulators/vice/resid/resid-<x>.cpp` | `~/vice-ref/3.1/src/resid/<x>.cc` (renamed: `resid-` prefix dropped, `.cpp`→`.cc`) |
+| `src/Emulators/vice/resid-fp/residfp-<x>.cpp` | check `~/vice-ref/3.1/src/resid-fp/` for the analogous `.cc` |
+
+A naive `diff` that drops the `src/` prefix or ignores the resid rename will silently skip files
+(the `[ -f ]` guard treats a missing vanilla file as "all additive"). Use the mapping above.
+
+### Open issues for Phase 2 planning
+
+- **MTEngineSDL path mismatch** (pre-build blocker for Phase 4): CMakeLists expects `../MTEngineSDL`
+  → `~/Projects/MTEngineSDL`, but it lives at `~/develop/MTEngineSDL`. Symlink or CMakeLists edit needed.
+- **2 skipped tests** are 3.1 bugs (load-crash, keyboard mutex race) — Phase 4 fix targets, listed above.
+- **Async event-frame pollution** in the WebSocket stream — the client's `call()` can return an event
+  frame instead of the response. Currently worked around per-test (`_drain_events`); Phase 2/4 may
+  want to fix this in the shared `retrodebugger.py` client.
+
+### Phase 2 plan input
+
+The followup plan (Phases 2-5) should:
+1. Begin with `VICE_HOOK_*` macro-family design driven by the catalog's 15 categories
+2. Refactor on 3.1 in `src/Emulators/vice/`, keeping the regression suite green between every commit
+3. Treat the CPU inline-expansion files and the ~14 non-additive patches as the high-risk set
+   requiring careful per-file handling, distinct from the mechanical additive-hook sweep
