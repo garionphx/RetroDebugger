@@ -1,17 +1,15 @@
 """Top-level load endpoint tests: PRG, D64."""
 
 import time
-from pathlib import Path
 
 import pytest
 
-FIXTURE_DIR = Path(__file__).parent.parent / "fixtures"
 
-
-def test_load_prg_places_bytes_at_load_address(fresh_cpu):
+def test_load_prg_places_bytes_at_load_address(fresh_cpu, fixture_dir):
     """`load` of known_state.prg should put the BASIC SYS line at $0801."""
     rd = fresh_cpu
-    rd.call("load", {"path": str(FIXTURE_DIR / "known_state.prg")})
+    resp, _ = rd.call("load", {"path": str(fixture_dir / "known_state.prg")})
+    assert resp.get("status") == 200, f"load failed: {resp}"
     time.sleep(0.2)
     # $0801 is BASIC pointer; first bytes are SYS-line tokens, not zero.
     head = rd.read_memory(0x0801, 16)
@@ -19,10 +17,11 @@ def test_load_prg_places_bytes_at_load_address(fresh_cpu):
         f"After load, memory at $0801 is empty: {head.hex()}"
 
 
-def test_load_prg_then_makejmp_and_run(fresh_cpu):
+def test_load_prg_then_makejmp_and_run(fresh_cpu, fixture_dir):
     """End-to-end: load + makejmp + cont reaches park with sentinels in place."""
     rd = fresh_cpu
-    rd.call("load", {"path": str(FIXTURE_DIR / "known_state.prg")})
+    resp, _ = rd.call("load", {"path": str(fixture_dir / "known_state.prg")})
+    assert resp.get("status") == 200, f"load failed: {resp}"
     time.sleep(0.2)
     rd.call(f"{rd.platform}/cpu/makejmp", {"address": 0x0810})
     rd.cont()
