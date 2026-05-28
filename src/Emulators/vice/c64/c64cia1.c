@@ -59,6 +59,8 @@
 #include "mouse.h"
 #endif
 
+#include "vice_debugger_hook.h"
+
 /* #define DEBUG_KBD */
 
 #ifdef DEBUG_KBD
@@ -78,8 +80,8 @@ extern unsigned char c64d_cia1_read_value;
 
 void cia1_store(WORD addr, BYTE data)
 {
-    c64d_cia1_register_written = addr & 0xf;
-    c64d_cia1_write_value = data;
+    VICE_HOOK_CIA1_REG_WRITTEN(addr);
+    VICE_HOOK_CIA1_WRITE_VALUE(data);
 
     if ((addr & 0xf) == CIA_CRA) {
         cia1_cra = data;
@@ -91,8 +93,8 @@ void cia1_store(WORD addr, BYTE data)
 BYTE cia1_read(WORD addr)
 {
     BYTE val = ciacore_read(machine_context.cia1, addr);
-    c64d_cia1_register_read = addr & 0xf;
-    c64d_cia1_read_value = val;
+    VICE_HOOK_CIA1_REG_READ(addr);
+    VICE_HOOK_CIA1_READ_VALUE(val);
     return val;
 }
 
