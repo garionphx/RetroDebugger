@@ -3312,6 +3312,7 @@
 		41D4ACD723AA0F1100A54EB2 /* vice-crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "vice-crc32.h"; sourceTree = "<group>"; };
 		41D4ACD823AA0F1100A54EB2 /* vice-event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "vice-event.h"; sourceTree = "<group>"; };
 		41D4ACD923AA0F1100A54EB2 /* vice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vice.h; sourceTree = "<group>"; };
+		A1B2C3D4E5F600001A2B3C4D /* vice_debugger_hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vice_debugger_hook.h; sourceTree = "<group>"; };
 		41D4ACDA23AA0F1100A54EB2 /* vice_sdl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vice_sdl.h; sourceTree = "<group>"; };
 		41D4ACDB23AA0F1100A54EB2 /* vicefeatures.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vicefeatures.c; sourceTree = "<group>"; };
 		41D4ACDC23AA0F1100A54EB2 /* vicefeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vicefeatures.h; sourceTree = "<group>"; };
@@ -6660,6 +6661,7 @@
 				41D4ACD723AA0F1100A54EB2 /* vice-crc32.h */,
 				41D4ACD823AA0F1100A54EB2 /* vice-event.h */,
 				41D4ACD923AA0F1100A54EB2 /* vice.h */,
+				A1B2C3D4E5F600001A2B3C4D /* vice_debugger_hook.h */,
 				41D4ACDA23AA0F1100A54EB2 /* vice_sdl.h */,
 				41D4ACDB23AA0F1100A54EB2 /* vicefeatures.c */,
 				41D4ACDC23AA0F1100A54EB2 /* vicefeatures.h */,
@@ -8844,6 +8846,7 @@
 					/usr/local/include/freetype2,
 					"$(PROJECT_DIR)/../../src/Tests",
 					"$(PROJECT_DIR)/../../../MTEngineSDL/src/Engine/Tests",
+					"$(PROJECT_DIR)/../../src/Emulators/vice",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src.MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Retro Debugger";
@@ -8896,6 +8899,7 @@
 					/usr/local/include/freetype2,
 					"$(PROJECT_DIR)/../../src/Tests",
 					"$(PROJECT_DIR)/../../../MTEngineSDL/src/Engine/Tests",
+					"$(PROJECT_DIR)/../../src/Emulators/vice",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src.MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Retro Debugger";
