@@ -65,6 +65,9 @@
   /* Input / display */
   #define VICE_HOOK_INPUT_DRIVE_LED(n, p1, p2)    c64d_display_drive_led((n), (p1), (p2))
 
+  /* VIC draw: ON = only draw sprites when the debugger skip-flag is clear */
+  #define VICE_HOOK_VIC_DRAW_SPRITES()            (c64d_skip_drawing_sprites == 0)
+
 #else /* !RETRODEBUGGER — all side-effect hooks become no-ops */
 
   /* CPU clock accounting */
@@ -120,6 +123,9 @@
 
   /* Input / display */
   #define VICE_HOOK_INPUT_DRIVE_LED(n, p1, p2)    ((void)0)
+
+  /* VIC draw: OFF = always draw sprites (vanilla behavior) */
+  #define VICE_HOOK_VIC_DRAW_SPRITES()            1
 
 #endif /* RETRODEBUGGER */
 

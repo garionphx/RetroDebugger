@@ -46,7 +46,9 @@
 #include "patchrom.h"
 #include "vicetypes.h"
 
+#ifdef RETRODEBUGGER
 #include "ViceWrapper.h"
+#endif /* RETRODEBUGGER */
 
 /*
  * By an option on the x64 command line you can patch between the
@@ -460,8 +462,10 @@ static const unsigned short patch_bytes[] = {
     0, 00
 };
 
+#ifdef RETRODEBUGGER
 void c64d_patch_kernal_fast_boot();
 void c64d_un_patch_kernal_fast_boot();
+#endif /* RETRODEBUGGER */
 
 int patch_rom_idx(int rev)
 {
@@ -470,7 +474,9 @@ int patch_rom_idx(int rev)
     short bytes, n, i = 0;
     WORD a;
 
+#ifdef RETRODEBUGGER
 	c64d_un_patch_kernal_fast_boot();
+#endif /* RETRODEBUGGER */
 
     if (c64rom_get_kernal_chksum_id(&sum, &curr) < 0) {
         log_error(LOG_DEFAULT, "ROM not patched: Unknown Kernal image.  ID: %d ($%02X) Sum: %d ($%04X).", curr, curr, sum, sum);
@@ -478,13 +484,14 @@ int patch_rom_idx(int rev)
     }
     log_verbose("Trying Kernal ROM patch: id:%d/sum:%d to id:%d.", curr, sum, rev);
 
-    if (rev == curr)
-	{
+    if (rev == curr) {
         log_verbose("ROM not patched: Already revision #%d.", curr);
-		if (c64d_patch_kernal_fast_boot_flag)
-		{
-			c64d_patch_kernal_fast_boot();
-		}
+#ifdef RETRODEBUGGER
+        if (c64d_patch_kernal_fast_boot_flag)
+        {
+            c64d_patch_kernal_fast_boot();
+        }
+#endif /* RETRODEBUGGER */
         return 0;
     }
     if (rev < 0) {
@@ -532,11 +539,13 @@ int patch_rom_idx(int rev)
 
         i += (bytes * (PATCH_VERSIONS - rev));  /* skip patch */
     }
-	
-	if (c64d_patch_kernal_fast_boot_flag)
-	{
-		c64d_patch_kernal_fast_boot();
-	}
-	
+
+#ifdef RETRODEBUGGER
+    if (c64d_patch_kernal_fast_boot_flag)
+    {
+        c64d_patch_kernal_fast_boot();
+    }
+#endif /* RETRODEBUGGER */
+
     return 0;
 }

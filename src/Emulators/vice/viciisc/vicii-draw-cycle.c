@@ -33,10 +33,12 @@
 #include "vicii-chip-model.h"
 #include "vicii-draw-cycle.h"
 #include "viciitypes.h"
+#include "vice_debugger_hook.h"
+#ifdef RETRODEBUGGER
 #include "log.h"
-
 #include "SYS_Types.h"
 #include "ViceWrapper.h"
+#endif /* RETRODEBUGGER */
 
 /* disable for debugging */
 #define DRAW_INLINE inline
@@ -406,21 +408,21 @@ static DRAW_INLINE void draw_sprites(int i)
         int s = active_sprite;
         BYTE spri = sprite_pri_bits & (1 << s);
         if (!(pixel_pri && spri)) {
-			// isildur: skip drawing sprites
-			if (c64d_skip_drawing_sprites == 0) {
-				switch (sbuf_pixel_reg[s]) {
-					case 1:
-						render_buffer[i] = COL_D025;
-						break;
-					case 2:
-						render_buffer[i] = COL_D027 + s;
-						break;
-					case 3:
-						render_buffer[i] = COL_D026;
-						break;
-					default:
-						break;
-				}
+            // isildur: skip drawing sprites
+            if (VICE_HOOK_VIC_DRAW_SPRITES()) {
+                switch (sbuf_pixel_reg[s]) {
+                    case 1:
+                        render_buffer[i] = COL_D025;
+                        break;
+                    case 2:
+                        render_buffer[i] = COL_D027 + s;
+                        break;
+                    case 3:
+                        render_buffer[i] = COL_D026;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         /* if there was a foreground pixel, trigger collision */
@@ -628,10 +630,12 @@ static DRAW_INLINE void draw_colors_8565(int offs, int i)
     pixel_buffer[i] = render_buffer[i];
 }
 
+#ifdef RETRODEBUGGER
 void c64d_set_color_register(uint8 colorRegisterNum, uint8 value)
 {
 	cregs[colorRegisterNum] = value;
 }
+#endif /* RETRODEBUGGER */
 
 static DRAW_INLINE void draw_colors8(void)
 {
@@ -698,16 +702,18 @@ void vicii_draw_cycle(void)
     draw_colors8();
 
     cycle_flags_pipe = vicii.cycle_flags;
-	
+
+#ifdef RETRODEBUGGER
 	////
 
 	if (c64d_debug_mode != DEBUGGER_MODE_RUNNING)
 	{
 		//LOGD("debug_mode=%2.2x", c64d_debug_mode);
 		//LOGD("vicii_draw_cycle: cycle=%d dbuf_offset=%d", vicii.raster_cycle, vicii.dbuf_offset);
-		
+
 		c64d_refresh_dbuf();
 	}
+#endif /* RETRODEBUGGER */
 }
 
 
@@ -715,8 +721,9 @@ void vicii_draw_cycle_init(void)
 {
     int i;
 
+#ifdef RETRODEBUGGER
 	LOGD("vicii_draw_cycle_init");
-	
+#endif
     /* initialize the draw buffer */
     memset(vicii.dbuf, 0, VICII_DRAW_BUFFER_SIZE);
     vicii.dbuf_offset = 0;

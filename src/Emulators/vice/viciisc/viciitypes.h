@@ -121,9 +121,11 @@ struct vicii_s {
 
     /* Flag for raster compare edge detect.  */
     int raster_irq_triggered;
-	
-	/* C64 debugger IRQ flag */
-	int c64d_irq_flag;
+
+#ifdef RETRODEBUGGER
+    /* C64 debugger IRQ flag */
+    int c64d_irq_flag;
+#endif /* RETRODEBUGGER */
 
     /* Pointer to the base of RAM seen by the VIC-II.  */
     /* address is base of 64k bank. vbank adds 0/16k/32k/48k to get actual
@@ -257,16 +259,18 @@ struct vicii_s {
     struct video_chip_cap_s *video_chip_cap;
 
     unsigned int int_num;
-	
-	// which register was written in this cycle
-	int register_written;
-	// saved copy from previous cycle (for state capture after next_vicii_cycle clears it)
-	int prev_register_written;
 
-	// which register was read in this cycle
-	int register_read;
-	// saved copy from previous cycle
-	int prev_register_read;
+#ifdef RETRODEBUGGER
+    // which register was written in this cycle
+    int register_written;
+    // saved copy from previous cycle (for state capture after next_vicii_cycle clears it)
+    int prev_register_written;
+
+    // which register was read in this cycle
+    int register_read;
+    // saved copy from previous cycle
+    int prev_register_read;
+#endif /* RETRODEBUGGER */
 };
 typedef struct vicii_s vicii_t;
 
@@ -277,10 +281,17 @@ extern void vicii_raster_draw_handler(void);
 
 /* Debugging options.  */
 
+#ifdef RETRODEBUGGER
 #define VICII_VMODE_DEBUG
 #define VICII_RASTER_DEBUG
 //#define VICII_REGISTERS_DEBUG
 //#define VICII_CYCLE_DEBUG
+#else
+/* #define VICII_VMODE_DEBUG */
+/* #define VICII_RASTER_DEBUG */
+/* #define VICII_REGISTERS_DEBUG */
+/* #define VICII_CYCLE_DEBUG */
+#endif
 
 #ifdef VICII_VMODE_DEBUG
 #define VICII_DEBUG_VMODE(x) log_debug x

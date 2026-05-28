@@ -518,7 +518,11 @@ static int set_speed_adjustment_setting(int val, void *param)
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 int set_volume(int val, void *param)
+#else
+static int set_volume(int val, void *param)
+#endif
 {
     volume = val;
 
@@ -537,10 +541,12 @@ int set_volume(int val, void *param)
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 void c64d_set_volume(float volume)
 {
 	set_volume((int)(volume*100.0), NULL);
 }
+#endif /* RETRODEBUGGER */
 
 
 static const resource_string_t resources_string[] = {
@@ -852,11 +858,17 @@ static int sound_error(const char *msg)
     if (console_mode || video_disabled_mode) {
         log_message(sound_log, "%s", msg);
     } else {
+#ifdef RETRODEBUGGER
         //char *txt = lib_msprintf("Sound: %s", msg);
         //ui_error(txt);
         //lib_free(txt);
-		
-		LOGError("sound_error: %s", msg);
+
+        LOGError("sound_error: %s", msg);
+#else
+        char *txt = lib_msprintf("Sound: %s", msg);
+        ui_error(txt);
+        lib_free(txt);
+#endif
     }
 
     playback_enabled = 0;
@@ -993,10 +1005,12 @@ static void sid_close(void)
     }
 }
 
+#ifdef RETRODEBUGGER
 void sid_set_voice_mask(int sidNum, unsigned char voiceMask)
 {
 	sid_sound_machine_set_voice_mask(snddata.psid[sidNum], voiceMask);
 }
+#endif /* RETRODEBUGGER */
 
 sound_t *sound_get_psid(unsigned int channel)
 {
@@ -1250,21 +1264,24 @@ void sound_close(void)
 
 /* run sid */
 
+#ifdef RETRODEBUGGER
 int c64d_get_warp_mode();
 extern int c64d_setting_run_sid_when_in_warp;
 extern int c64d_setting_run_sid_emulation;
 void c64d_lock_sound_mutex(char *whoLocked);
 void c64d_unlock_sound_mutex(char *whoLocked);
+#endif /* RETRODEBUGGER */
 
 static int sound_run_sound(void)
 {
 	//LOGD("sound_run_sound: run sid: cycle_based=%d", cycle_based);
-	
+
     int nr = 0, i;
     int delta_t = 0;
     SWORD *bufferptr;
+#ifdef RETRODEBUGGER
 	int isWarp;
-	
+#endif
     static int overflow_warning_count = 0;
 
     /* XXX: implement the exact ... */
@@ -1272,23 +1289,26 @@ static int sound_run_sound(void)
         return 1;
     }
 
-    if (!snddata.playdev)
-	{
-		c64d_lock_sound_mutex("vice::sound_run_sound");
+    if (!snddata.playdev) {
+#ifdef RETRODEBUGGER
+        c64d_lock_sound_mutex("vice::sound_run_sound");
+#endif
         i = sound_open();
-		c64d_unlock_sound_mutex("vice::sound_run_sound");
-        if (i)
-		{
+#ifdef RETRODEBUGGER
+        c64d_unlock_sound_mutex("vice::sound_run_sound");
+#endif
+        if (i) {
             return i;
         }
     }
 
+#ifdef RETRODEBUGGER
 	isWarp = c64d_get_warp_mode();
 	if (c64d_setting_run_sid_emulation == 0
 		|| (isWarp == 1 && c64d_setting_run_sid_when_in_warp == 0))
 	{
 		//LOGD("sound_run_sound: skip SID");
-		
+
 		if (cycle_based)
 		{
 			int soc;
@@ -1296,9 +1316,9 @@ static int sound_run_sound(void)
 			nr = SOUND_BUFSIZE - snddata.bufptr;
 			soc = snddata.sound_output_channels;
 			memset(bufferptr, 0, nr * sizeof(SWORD) * soc);
-			
+
 			snddata.bufptr += nr;
-			
+
 			snddata.fclk = maincpu_clk;
 		}
 		else
@@ -1307,7 +1327,7 @@ static int sound_run_sound(void)
 					   / snddata.clkstep);
 
 			snddata.fclk += nr * snddata.clkstep;
-			
+
 			if (isWarp == 1)
 			{
 				// note we do not need to fill the buffer as we are in silent warp mode anyway
@@ -1324,7 +1344,8 @@ static int sound_run_sound(void)
 		snddata.lastclk = maincpu_clk;
 		return 0;
 	}
-	
+#endif /* RETRODEBUGGER */
+
     /* Handling of cycle based sound engines. */
     if (cycle_based)
 	{
@@ -1336,11 +1357,13 @@ static int sound_run_sound(void)
                                              snddata.sound_output_channels,
                                              snddata.sound_chip_channels,
                                              &delta_t);
+#ifdef RETRODEBUGGER
         if (volume < 100) {
             for (i = 0; i < (nr * snddata.sound_output_channels); i++) {
                 bufferptr[i] = (volume!=0) ? (bufferptr[i]/(100 / volume)) : 0;
             }
         }
+#endif /* RETRODEBUGGER */
 
         if (delta_t) {
             if (overflow_warning_count < 25) {
@@ -1360,10 +1383,19 @@ static int sound_run_sound(void)
         if (!nr) {
             return 0;
         }
-        if (snddata.bufptr + nr > SOUND_BUFSIZE)
-		{
-			return sound_error(translate_text(IDGS_SOUND_BUFFER_OVERFLOW));
+#ifdef RETRODEBUGGER
+        if (snddata.bufptr + nr > SOUND_BUFSIZE) {
+            return sound_error(translate_text(IDGS_SOUND_BUFFER_OVERFLOW));
         }
+#else
+        if (snddata.bufptr + nr > SOUND_BUFSIZE) {
+#ifndef ANDROID_COMPILE
+            return sound_error(translate_text(IDGS_SOUND_BUFFER_OVERFLOW));
+#else
+            return 0;
+#endif
+        }
+#endif /* RETRODEBUGGER */
         bufferptr = snddata.buffer + snddata.bufptr * snddata.sound_output_channels;
         sound_machine_calculate_samples(snddata.psid,
                                         bufferptr,
@@ -1371,11 +1403,13 @@ static int sound_run_sound(void)
                                         snddata.sound_output_channels,
                                         snddata.sound_chip_channels,
                                         &delta_t);
+#ifdef RETRODEBUGGER
         if (volume < 100) {
             for (i = 0; i < (nr * snddata.sound_output_channels); i++) {
                     bufferptr[i] = (volume != 0) ? (bufferptr[i] / (100 / volume)) : 0;
             }
         }
+#endif /* RETRODEBUGGER */
         snddata.fclk += nr * snddata.clkstep;
     }
 
@@ -1397,6 +1431,7 @@ static int sound_run_sound(void)
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 void c64d_reset_sound_clk()
 {
 	snddata.fclk = SOUNDCLK_CONSTANT(maincpu_clk);
@@ -1498,9 +1533,10 @@ int c64d_sound_run_sound_when_paused(void)
 	snddata.lastclk = maincpu_clk;
 	
 	//LOGD("sound_run_sound: finished");
-	
+
 	return 0;
 }
+#endif /* RETRODEBUGGER */
 
 /* reset sid */
 void sound_reset(void)
@@ -1564,7 +1600,7 @@ double sound_flush(int isPaused)
     if (suspend_time > 0) {
         enablesound();
     }
-	
+#ifdef RETRODEBUGGER
 	if (isPaused == 0)
 	{
 		if (sound_run_sound())
@@ -1582,7 +1618,12 @@ double sound_flush(int isPaused)
 		}
 //		c64d_unlock_mutex();
 	}
-	
+#else
+    if (sound_run_sound()) {
+        return 0;
+    }
+#endif /* RETRODEBUGGER */
+
     if (sid_state_changed) {
         if (sid_init() != 0) {
             return 0;
@@ -1595,13 +1636,14 @@ double sound_flush(int isPaused)
         return 0;
     }
     sound_resume();
-	
-	if (!snddata.playdev) {
-		return 0;
-	}
-	
-    if (snddata.playdev->flush)
-	{
+
+#ifdef RETRODEBUGGER
+    if (!snddata.playdev) {
+        return 0;
+    }
+#endif /* RETRODEBUGGER */
+
+    if (snddata.playdev->flush) {
         state = sound_machine_dump_state(snddata.psid[0]);
         i = snddata.playdev->flush(state);
         lib_free(state);
@@ -1662,23 +1704,34 @@ double sound_flush(int isPaused)
             snddata.prevfill = j;
 
             /* Fresh start for vsync. */
+#ifdef RETRODEBUGGER
            //if (drained_warning_count < 25)
-		   {
-			   if (c64d_setting_run_sid_emulation)
-			   {
-				   log_warning(sound_log, "Audio Buffer drained: used=%d < fragsize=%d", used, snddata.fragsize);
-				   drained_warning_count++;
-			   }
-		   }
-//		   else
-//		   {
+           {
+               if (c64d_setting_run_sid_emulation)
+               {
+                   log_warning(sound_log, "Audio Buffer drained: used=%d < fragsize=%d", used, snddata.fragsize);
+                   drained_warning_count++;
+               }
+           }
+//           else
+//           {
 //                if (drained_warning_count == 25)
-//				{
+//                {
 //                    log_warning(sound_log, "Audio Buffer drained warning repeated 25 times, will now be ignored");
 //                    drained_warning_count++;
 //                }
 //            }
-			
+#else
+            if (drained_warning_count < 25) {
+                log_warning(sound_log, "Buffer drained");
+                drained_warning_count++;
+            } else {
+                if (drained_warning_count == 25) {
+                    log_warning(sound_log, "Buffer drained warning repeated 25 times, will now be ignored");
+                    drained_warning_count++;
+                }
+            }
+#endif /* RETRODEBUGGER */
             vsync_sync_reset();
         }
 		if (cycle_based || speed_adjustment_setting != SOUND_ADJUST_ADJUSTING)
@@ -1730,14 +1783,16 @@ double sound_flush(int isPaused)
         }
     }
 
-	if (nr > space) {
-		nr = space; /* warning: "space" may have become 0 due to fragment size
-					 alignment */
-	}
-	
-	if (nr < 0)
-		nr = 0;
-	
+#ifdef RETRODEBUGGER
+    if (nr > space) {
+        nr = space; /* warning: "space" may have become 0 due to fragment size
+                     alignment */
+    }
+
+    if (nr < 0)
+        nr = 0;
+#endif /* RETRODEBUGGER */
+
     if (nr) {
         /* Flush buffer, all channels are already mixed into it. */
         if (snddata.playdev->write(snddata.buffer, nr * snddata.sound_output_channels)) {
@@ -1924,18 +1979,26 @@ int sound_read(WORD addr, int chipno)
     return sound_machine_read(snddata.psid[chipno], addr);
 }
 
+#ifdef RETRODEBUGGER
 int c64d_skip_sound_run_sound_in_sound_store = FALSE;
+#endif /* RETRODEBUGGER */
 
 void sound_store(WORD addr, BYTE val, int chipno)
 {
     int i;
 
-	if (c64d_skip_sound_run_sound_in_sound_store == FALSE)
-	{
-		if (sound_run_sound()) {
-			return;
-		}
-	}
+#ifdef RETRODEBUGGER
+    if (c64d_skip_sound_run_sound_in_sound_store == FALSE)
+    {
+        if (sound_run_sound()) {
+            return;
+        }
+    }
+#else
+    if (sound_run_sound()) {
+        return;
+    }
+#endif /* RETRODEBUGGER */
 
     if (chipno >= snddata.sound_chip_channels) {
         return;
@@ -1943,11 +2006,13 @@ void sound_store(WORD addr, BYTE val, int chipno)
 
     sound_machine_store(snddata.psid[chipno], addr, val);
 
-	if (!snddata.playdev)
-	{
-		return;
-	}
-	
+#ifdef RETRODEBUGGER
+    if (!snddata.playdev)
+    {
+        return;
+    }
+#endif /* RETRODEBUGGER */
+
     if (!snddata.playdev->dump) {
         return;
     }
