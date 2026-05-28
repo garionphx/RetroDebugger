@@ -84,7 +84,9 @@ static CLOCK pot_cycle = 0;  /* pot sampling cycle */
 static BYTE val_pot_x = 0xff, val_pot_y = 0xff; /* last sampling value */
 #endif
 
+#ifdef RETRODEBUGGER
 static BYTE c64d_sid_voiceMask = 0xFF;
+#endif
 
 BYTE *sid_get_siddata(unsigned int channel)
 {
@@ -145,10 +147,14 @@ static BYTE sid_read_chip(WORD addr, int chipno)
             /* Account for that read functions in VICE are called _before_
                incrementing the clock. */
             maincpu_clk++;
+#ifdef RETRODEBUGGER
 			c64d_maincpu_clk++;
+#endif
             val = sid_read_func(addr, chipno);
             maincpu_clk--;
+#ifdef RETRODEBUGGER
 			c64d_maincpu_clk--;
+#endif
         }
 #ifdef HAVE_MOUSE
     }
@@ -191,10 +197,14 @@ void sid_store_chip(WORD addr, BYTE value, int chipno)
 
     if (maincpu_rmw_flag) {
         maincpu_clk--;
+#ifdef RETRODEBUGGER
 		c64d_maincpu_clk--;
+#endif
         sid_store_func(addr, lastsidread, chipno);
         maincpu_clk++;
+#ifdef RETRODEBUGGER
 		c64d_maincpu_clk++;
+#endif
     }
 
     sid_store_func(addr, value, chipno);
@@ -209,21 +219,26 @@ static int sid_dump_chip(int chipno)
     return -1;
 }
 
+#ifdef RETRODEBUGGER
 #define C64_NUM_SID_REGISTERS 32
 void c64d_store_sid_data(BYTE *sidDataStore, int sidNum)
 {
 	memcpy(sidDataStore, siddata[sidNum], C64_NUM_SID_REGISTERS);
 }
+#endif /* RETRODEBUGGER */
 
 /* ------------------------------------------------------------------------- */
 
+#ifdef RETRODEBUGGER
 extern int c64d_sid_register_written;
 extern int c64d_sid_register_read;
 extern unsigned char c64d_sid_write_value;
 extern unsigned char c64d_sid_read_value;
+#endif
 
 BYTE sid_read(WORD addr)
 {
+#ifdef RETRODEBUGGER
     BYTE val;
     if (sid_stereo >= 1
         && addr >= sid_stereo_address_start
@@ -242,6 +257,21 @@ BYTE sid_read(WORD addr)
     c64d_sid_register_read = addr & 0x1f;
     c64d_sid_read_value = val;
     return val;
+#else
+    if (sid_stereo >= 1
+        && addr >= sid_stereo_address_start
+        && addr < sid_stereo_address_end) {
+        return sid_read_chip(addr, 1);
+    }
+
+    if (sid_stereo >= 2
+        && addr >= sid_triple_address_start
+        && addr < sid_triple_address_end) {
+        return sid_read_chip(addr, 2);
+    }
+
+    return sid_read_chip(addr, 0);
+#endif
 }
 
 BYTE sid_peek(WORD addr)
@@ -273,8 +303,10 @@ BYTE sid3_read(WORD addr)
 
 void sid_store(WORD addr, BYTE byte)
 {
+#ifdef RETRODEBUGGER
     c64d_sid_register_written = addr & 0x1f;
     c64d_sid_write_value = byte;
+#endif
 
     if (sid_stereo >= 1
         && addr >= sid_stereo_address_start
@@ -351,7 +383,11 @@ sound_t *sid_sound_machine_open(int chipno)
     }
 #endif
 
+#ifdef RETRODEBUGGER
     return sid_engine.open(siddata[chipno], chipno);
+#else
+    return sid_engine.open(siddata[chipno]);
+#endif
 }
 
 /* manage temporary buffers. if the requested size is smaller or equal to the
@@ -392,11 +428,15 @@ int sid_sound_machine_init_vbr(sound_t *psid, int speed, int cycles_per_sec, int
 
 int sid_sound_machine_init(sound_t *psid, int speed, int cycles_per_sec)
 {
+#ifdef RETRODEBUGGER
     int ret = sid_engine.init(psid, speed, cycles_per_sec, 1000);
-	
+
 	sid_engine.set_voice_mask(psid, c64d_sid_voiceMask);
 
 	return ret;
+#else
+    return sid_engine.init(psid, speed, cycles_per_sec, 1000);
+#endif
 }
 
 void sid_sound_machine_close(sound_t *psid)
@@ -487,11 +527,13 @@ int sid_sound_machine_calculate_samples(sound_t **psid, SWORD *pbuf, int nr, int
     return tmp_nr;
 }
 
+#ifdef RETRODEBUGGER
 void sid_sound_machine_set_voice_mask(sound_t *psid, BYTE voiceMask)
 {
 	c64d_sid_voiceMask = voiceMask;
 	sid_engine.set_voice_mask(psid, voiceMask);
 }
+#endif /* RETRODEBUGGER */
 
 void sid_sound_machine_prevent_clk_overflow(sound_t *psid, CLOCK sub)
 {
@@ -694,7 +736,9 @@ void sid_set_machine_parameter(long clock_rate)
 #endif
 }
 
+#ifdef RETRODEBUGGER
 int c64d_get_sid_enable()
 {
 	return sid_enable;
 }
+#endif /* RETRODEBUGGER */

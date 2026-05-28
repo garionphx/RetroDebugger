@@ -53,8 +53,10 @@
 #include "vice-event.h"
 #include "vicii.h"
 
+#ifdef RETRODEBUGGER
 int c64d_snapshot_write_module(snapshot_t *s, int save_screen);
 int c64d_snapshot_read_module(snapshot_t *s);
+#endif
 
 #define SNAP_MAJOR 1
 #define SNAP_MINOR 1
@@ -90,8 +92,10 @@ int c64_snapshot_write(const char *name, int save_roms, int save_disks, int even
         || joyport_snapshot_write_module(s, JOYPORT_1) < 0
         || joyport_snapshot_write_module(s, JOYPORT_2) < 0
         || userport_snapshot_write_module(s) < 0
-		|| c64d_snapshot_write_module(s, save_screen) < 0)
-	{
+#ifdef RETRODEBUGGER
+		|| c64d_snapshot_write_module(s, save_screen) < 0
+#endif
+        ) {
         snapshot_close(s);
         ioutil_remove(name);
         return -1;
@@ -101,6 +105,7 @@ int c64_snapshot_write(const char *name, int save_roms, int save_disks, int even
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 int c64_snapshot_write_in_memory(int save_chips, int save_roms, int save_disks, int event_mode, int save_reu_data, int save_cart_roms, int save_screen,
 								 int *snapshot_size, unsigned char **snapshot_data)
 {
@@ -181,6 +186,7 @@ int c64_snapshot_write_in_memory(int save_chips, int save_roms, int save_disks, 
 
 	return 0;
 }
+#endif /* RETRODEBUGGER */
 
 
 int c64_snapshot_read(const char *name, int event_mode, int read_roms, int read_disks, int read_reu_data, int read_cart_roms)
@@ -218,7 +224,10 @@ int c64_snapshot_read(const char *name, int event_mode, int read_roms, int read_
         || joyport_snapshot_read_module(s, JOYPORT_1) < 0
         || joyport_snapshot_read_module(s, JOYPORT_2) < 0
         || userport_snapshot_read_module(s) < 0
-		|| c64d_snapshot_read_module(s) < 0) {
+#ifdef RETRODEBUGGER
+		|| c64d_snapshot_read_module(s) < 0
+#endif
+        ) {
         goto fail;
     }
 
@@ -238,6 +247,7 @@ fail:
     return -1;
 }
 
+#ifdef RETRODEBUGGER
 int c64_snapshot_read_from_memory(int read_chips, int read_roms, int read_disks, int event_mode, int read_reu_data, int read_cart_roms,
 								  unsigned char *snapshot_data, int snapshot_size)
 {
@@ -290,6 +300,7 @@ fail:
 	}
 	
 	machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
-	
+
 	return -1;
 }
+#endif /* RETRODEBUGGER */

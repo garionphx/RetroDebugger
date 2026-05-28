@@ -106,10 +106,12 @@ static int set_refresh_rate(int val, void *param)
     return 0;
 }
 
+#ifdef RETRODEBUGGER
 int c64d_get_warp_mode()
 {
 	return warp_mode_enabled;
 }
+#endif /* RETRODEBUGGER */
 
 int set_warp_mode(int val, void *param)
 {
@@ -338,8 +340,10 @@ void vsync_sync_reset(void)
     sync_reset = 1;
 }
 
+#ifdef RETRODEBUGGER
 void c64d_lock_sound_mutex(char *whoLocked);
 void c64d_unlock_sound_mutex(char *whoLocked);
+#endif
 
 /* This is called at the end of each screen frame. It flushes the
    audio buffer and keeps control of the emulation speed. */
@@ -398,10 +402,14 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped, int isPaused)
         network_hook_time = vsyncarch_gettime();
     }
 
+#ifdef RETRODEBUGGER
 	if (isPaused == 0)
 	{
 		vsync_hook();
 	}
+#else
+    vsync_hook();
+#endif
 
     if (network_connected()) {
         network_hook_time = vsyncarch_gettime() - network_hook_time;
@@ -446,10 +454,13 @@ int vsync_do_vsync(struct video_canvas_s *c, int been_skipped, int isPaused)
     }
 
     /* Flush sound buffer, get delay in seconds. */
+#ifdef RETRODEBUGGER
 	c64d_lock_sound_mutex("vsync_do_vsync: sound_flush");
     sound_delay = sound_flush(isPaused);
 	c64d_unlock_sound_mutex("vsync_do_vsync: sound_flush");
-
+#else
+    sound_delay = sound_flush();
+#endif
 
     /* Get current time, directly after getting the sound delay. */
     now = vsyncarch_gettime();
