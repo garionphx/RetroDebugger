@@ -56,6 +56,7 @@
 #include "vsync.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #ifdef SDL_DEBUG
 #define DBG(x)  log_debug x
@@ -729,7 +730,7 @@ void video_canvas_refresh(struct video_canvas_s *canvas, unsigned int xs, unsign
 	// draw directly from c64 screen
 	
 	// from: canvas->draw_buffer->draw_buffer
-	c64d_refresh_screen();
+	VICE_HOOK_VIC_REFRESH_SCREEN();
 	
 	
 //    if ((canvas == NULL) || (canvas->screen == NULL)) {

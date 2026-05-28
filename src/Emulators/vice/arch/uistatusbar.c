@@ -41,6 +41,7 @@
 #include "log.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 /* ----------------------------------------------------------------- */
 /* static functions/variables */
@@ -220,7 +221,7 @@ void ui_display_drive_track(unsigned int drive_number, unsigned int drive_base, 
 /* The pwm value will vary between 0 and 1000.  */
 void ui_display_drive_led(int drive_number, unsigned int pwm1, unsigned int led_pwm2)
 {
-	c64d_display_drive_led(drive_number, pwm1, led_pwm2);
+	VICE_HOOK_INPUT_DRIVE_LED(drive_number, pwm1, led_pwm2);
 	
 	/*
     char c;
