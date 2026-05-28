@@ -141,3 +141,50 @@ Pattern: mixed diff; deletions are `static`-removal and header renames, not logi
 - Phase 1 should note the `types.h`→`vicetypes.h` rename in each file, since this is a
   mechanical change that will need automation when replaying patches onto 3.10.
 - Before Phase 4 begins: resolve the MTEngineSDL path discrepancy (symlink or CMakeLists edit).
+
+## WebSocket regression suite baseline (3.1)
+
+Date captured: 2026-05-27
+RetroDebugger: 3.1 (slajerek's current fork)
+
+### Summary
+
+- Total tests: 30
+- Passed: 28
+- Skipped: 2
+- Failed: 0 (suite must be green to merge this plan)
+- Suite wall time: 21.5 seconds
+
+### Skipped tests (3.1 baseline findings — Phase 4 fix targets)
+
+- **`test_load.py::test_load_nonexistent_file_does_not_crash`** — "Phase 4 bug: RD 3.1 closes the WebSocket with no close frame when load is given a nonexistent path — the bridge crashes instead of returning an error response. Baseline finding; fix needed before Phase 4."
+  - Phase 4 expected behavior: 3.10 should return a 4xx error response and keep the WebSocket connection alive.
+
+- **`test_input.py::test_key_down_accepted_by_api`** — dynamically skipped at runtime when KERNAL keyboard buffer is empty after key/down+up: "KERNAL keyboard buffer empty after key/down+up — known threading limitation: keyboard alarm_set() is called without LockMutex from the WebSocket handler thread (see module docstring). Flag for Phase 4: wrap key/down and key/up in LockMutex in CDebuggerServerApiVice.cpp."
+  - Phase 4 expected behavior: wrapping key/down and key/up in LockMutex in CDebuggerServerApiVice.cpp should make the KERNAL keyboard buffer reliably populated, and the buffer-level assertion should pass.
+
+### Behavioral notes captured in test code (preserved 3.1 contracts)
+
+These are NOT bugs — they are behaviors the suite EXPECTS, so we know if 3.10 changes them.
+
+- `makejmp` is queued, takes effect on next step_instruction
+- `step/cycle` counter updates asynchronously, needs settle window
+- `reset(hard=True)` from paused state keeps CPU paused
+- `c64/cpu/memory/breakpoint/add` requires `comparison` + `value` params even for "any write" (e.g. `comparison=">="`, `value=0`)
+- Async breakpoint-fired event frames pollute response stream (test_breakpoints uses local `_drain_events` helper)
+- Chip endpoints: response wraps results in a `registers` key (not bare dict at `result`)
+- CIA endpoint param is `num`, not `cia`
+- Joystick endpoint uses `axis` (compass names like `"n"`, `"sw"`), not `direction`
+- Keyboard endpoint uses `keyCode` (int, ASCII for letters)
+- `cpu/counters/read` `cycle` counter resets to 0 asynchronously ~10-20ms after `cont()` is called — it is NOT monotonic across pause/cont boundaries; `reset(hard=True)` does NOT reset it
+- VIC register map is serialized as a JSON array of `[reg_num, value]` pairs (not a plain dict) — due to nlohmann/json serialization of C++ unordered_map
+
+### Suite is the gate
+
+This is the behavior contract preserved through Phase 2 (refactor on 3.1) and
+re-established during Phase 4 (3.10 integration). Any divergence is either:
+
+1. **A fix** — the test was wrong, update it
+2. **An expected change** — 3.10 behaves differently for a documented reason
+
+The suite must run green before each merge gate during the upgrade.
