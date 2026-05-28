@@ -37,6 +37,7 @@
 #include "uimenu.h"
 #include "log.h"
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 static console_t mon_console = {
     40,
@@ -95,7 +96,7 @@ int uimon_out(const char *buffer)
             p[i] = 0;
             //sdl_ui_print(p, x_pos, y);
             //sdl_ui_scroll_screen_up();
-			c64d_uimon_print_line(p);
+			VICE_HOOK_LIFECYCLE_UIMON_LINE(p);
 
             //x_pos = 0;
             p += i + 1;
@@ -107,7 +108,7 @@ int uimon_out(const char *buffer)
 
     if (p[0] != 0) {
         //x_pos += sdl_ui_print(p, x_pos, y);
-		c64d_uimon_print(p);
+		VICE_HOOK_LIFECYCLE_UIMON_PRINT(p);
     }
     return 0;
 }

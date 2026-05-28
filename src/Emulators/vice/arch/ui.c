@@ -59,6 +59,7 @@
 #include "vsync.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #ifndef SDL_DISABLE
 #define SDL_DISABLE SDL_IGNORE
@@ -429,11 +430,11 @@ ui_jam_action_t ui_jam_dialog(const char *format, ...)
 {
  //   int retval;
 	
-	c64d_is_cpu_in_jam_state = 1;
+	VICE_HOOK_LIFECYCLE_JAM_FLAG();
 
-	c64d_show_message("CPU JAM has occurred");
-	
-	c64d_set_debug_mode(DEBUGGER_MODE_PAUSED);
+	VICE_HOOK_LIFECYCLE_MESSAGE("CPU JAM has occurred");
+
+	VICE_HOOK_LIFECYCLE_DEBUG_MODE(DEBUGGER_MODE_PAUSED);
 	
 	return UI_JAM_NONE;
 }

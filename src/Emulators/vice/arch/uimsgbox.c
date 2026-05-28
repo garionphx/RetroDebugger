@@ -42,6 +42,7 @@
 #include "log.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #define MAX_MSGBOX_LEN 28
 
@@ -254,7 +255,7 @@ int message_box(const char *title, char *message, int message_mode)
 {
 	LOGError("message_box: %s %s", title, message);
 	
-	c64d_show_message(message);
+	VICE_HOOK_LIFECYCLE_MESSAGE(message);
 	
 	return -1;
 //    sdl_ui_init_draw_params();
