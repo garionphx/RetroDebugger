@@ -53,6 +53,7 @@
 #include "vicetypes.h"
 
 #include "c64.h"	// c64d
+#include "vice_debugger_hook.h"
 
 
 #define STORE_OFFSET 1
@@ -90,7 +91,7 @@ static inline void my_set_int(cia_context_t *cia_context, int value,
         cia_context->irq_enabled = 1;
 		
 		//LOGD("trigger Cia IRQ check by debugger");
-		cia_context->c64d_irq_flag = 1;
+		VICE_HOOK_CIA_IRQ_FLAG_SET(cia_context);
 		
     } else {
         (cia_context->cia_set_int_clk)(cia_context, 0, (rclk));
@@ -1564,7 +1565,7 @@ void ciacore_init(cia_context_t *cia_context, alarm_context_t *alarm_context,
     lib_free(buffer);
 	
 	// c64d: C64 debugger
-	cia_context->c64d_irq_flag = 0;
+	VICE_HOOK_CIA_IRQ_FLAG_CLEAR(cia_context);
 }
 
 void ciacore_shutdown(cia_context_t *cia_context)
