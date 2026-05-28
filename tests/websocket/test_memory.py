@@ -59,13 +59,17 @@ def test_ram_readblock_excludes_io(fresh_cpu):
 
 def test_read_drive_memory_returns_requested_size(fresh_cpu):
     """Drive 1541 readBlock should return exactly `size` bytes."""
-    data = fresh_cpu.read_drive_memory(0x00, 16)
+    rd = fresh_cpu
+    rd.pause()
+    data = rd.read_drive_memory(0x00, 16)
     assert len(data) == 16, f"Expected 16 bytes from drive, got {len(data)}"
 
 
 def test_drive_via1_readable(fresh_cpu):
     """VIA1 at $1800 (with_io=True) should produce some defined byte values."""
-    data = fresh_cpu.read_drive_memory(0x1800, 4, with_io=True)
+    rd = fresh_cpu
+    rd.pause()
+    data = rd.read_drive_memory(0x1800, 4, with_io=True)
     assert len(data) == 4
     # Bytes can be any value, but the call must succeed without exception.
 
@@ -73,6 +77,7 @@ def test_drive_via1_readable(fresh_cpu):
 def test_drive_memory_write_then_read(fresh_cpu):
     """Round-trip writeBlock/readBlock against drive RAM."""
     rd = fresh_cpu
+    rd.pause()
     payload = bytes([0x11, 0x22, 0x33, 0x44])
     rd.write_drive_memory(0x0500, payload)
     readback = rd.read_drive_memory(0x0500, len(payload))

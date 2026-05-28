@@ -38,6 +38,7 @@ import pytest
 import time
 
 
+@pytest.mark.slow
 def test_key_down_accepted_by_api(fresh_cpu):
     """key/down with a valid keyCode (ASCII letter) should return status 200.
 
@@ -71,12 +72,8 @@ def test_key_down_accepted_by_api(fresh_cpu):
     # WebSocket handler thread, so the KERNAL keyboard buffer is unreliable.
     buf_len = rd.read_memory(0x00C6, 1)[0]
     if buf_len == 0:
-        pytest.skip(
-            "KERNAL keyboard buffer empty after key/down+up — known threading "
-            "limitation: keyboard alarm_set() is called without LockMutex from "
-            "the WebSocket handler thread (see module docstring). "
-            "Flag for Phase 4: wrap key/down and key/up in LockMutex in "
-            "CDebuggerServerApiVice.cpp."
+        pytest.xfail(
+            "3.1 keyboard mutex race — alarm_set without LockMutex; see baseline notes"
         )
 
     buf = rd.read_memory(0x0277, max(buf_len, 1))

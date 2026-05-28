@@ -50,6 +50,7 @@ addresses + disassemble to find loops.
 import asyncio
 import json
 import struct
+import uuid
 from typing import Optional
 
 import websockets
@@ -86,7 +87,8 @@ class RetroDebugger:
         return self._loop.run_until_complete(self._call(fn, params, binary))
 
     async def _call(self, fn, params, binary):
-        msg = {"fn": fn}
+        token = uuid.uuid4().hex
+        msg = {"fn": fn, "token": token}
         if params is not None:
             msg["params"] = params
         text = json.dumps(msg)
@@ -95,13 +97,21 @@ class RetroDebugger:
             await self._ws.send(payload)
         else:
             await self._ws.send(text)
-        resp = await self._ws.recv()
-        if isinstance(resp, bytes):
-            nul = resp.find(b"\x00")
-            if nul >= 0:
-                return json.loads(resp[:nul].decode()), resp[nul + 1:]
-            return json.loads(resp.decode()), b""
-        return json.loads(resp), b""
+        # Read frames until we find the one whose token matches our request.
+        # Async event frames (no/!=token) are skipped. Bounded to avoid hangs.
+        for _ in range(64):
+            resp = await asyncio.wait_for(self._ws.recv(), timeout=5.0)
+            if isinstance(resp, bytes):
+                nul = resp.find(b"\x00")
+                if nul >= 0:
+                    j, payload_bytes = json.loads(resp[:nul].decode()), resp[nul + 1:]
+                else:
+                    j, payload_bytes = json.loads(resp.decode()), b""
+            else:
+                j, payload_bytes = json.loads(resp), b""
+            if j.get("token") == token:
+                return j, payload_bytes
+        raise RuntimeError(f"No response with matching token for fn={fn!r}")
 
     # ── Convenience wrappers ──────────────────────────────────────────────
 

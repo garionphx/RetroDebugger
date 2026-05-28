@@ -30,6 +30,7 @@ def test_counters_monotonic(fresh_cpu):
     """Cycle/instruction/frame counts must monotonically increase while running."""
     rd = fresh_cpu
     rd.cont()
+    time.sleep(0.15)  # let the async cycle-counter reset (3.1, ~10-20ms) settle first
     samples = []
     for _ in range(3):
         time.sleep(0.05)
@@ -82,18 +83,21 @@ def test_step_instruction_advances_pc(loaded_fixture):
 # ── control: step_cycle ────────────────────────────────────────────────────
 
 def test_step_cycle_advances_one_cycle(loaded_fixture):
-    """step/cycle should advance the cycle counter by exactly 1 (one machine cycle).
+    """step/cycle advances the cycle counter by exactly 1 (from a quiescent paused CPU).
 
-    Notes:
-    - Must use loaded_fixture (CPU in user RAM) — step/cycle does not update the
-      counter reliably when the CPU is paused mid-KERNAL after a bare reset.
-    - A short sleep is required after step/cycle before reading the counter;
-      the WebSocket response returns before the counter register is updated.
+    NOTE: RD 3.1's cycle counter has documented async behavior — it may tick by 1
+    even while the CPU is paused (background counter update). We allow <=1 background
+    tick between the two pre-step quiescence reads (strict equality is too tight).
+    The step/cycle itself must advance by exactly 1 on top of whatever s2 is.
     """
     rd = loaded_fixture
-    c_before = rd.cpu_counters()["result"]["cycle"]
+    # Prove the CPU is approximately quiescent: counter advances <=1 while paused.
+    # (RD 3.1 may tick the counter once asynchronously even while paused.)
+    s1 = rd.cpu_counters()["result"]["cycle"]
+    time.sleep(0.05)
+    s2 = rd.cpu_counters()["result"]["cycle"]
+    assert s2 - s1 <= 1, f"CPU not quiescent before step: {s1} -> {s2} (advance > 1)"
     rd.call(f"{rd.platform}/step/cycle")
-    time.sleep(0.05)  # Counter update is async; allow it to commit.
-    c_after = rd.cpu_counters()["result"]["cycle"]
-    delta = c_after - c_before
-    assert delta == 1, f"step/cycle: cycle counter advanced {delta}, expected 1"
+    time.sleep(0.05)  # counter update is async
+    s3 = rd.cpu_counters()["result"]["cycle"]
+    assert s3 - s2 == 1, f"step/cycle advanced {s3 - s2}, expected 1"

@@ -1,11 +1,17 @@
-"""Chip register tests: VIC-II, CIA1, CIA2, SID."""
+"""Chip register tests: VIC-II, CIA1, CIA2, SID.
+
+Confirmed response shape from RetroDebugger 3.1:
+  {"result": {"registers": [[reg_num, value], ...]}, "status": 200}
+  where registers is a list of [reg_num, value] pairs (nlohmann/json serialization
+  of a C++ unordered_map produces a JSON array of [key, value] pairs).
+"""
 
 
-def test_vic_read_returns_dict(fresh_cpu):
-    """VIC read with a list of register numbers returns a dict mapping to values.
+def test_vic_read_returns_requested_registers(fresh_cpu):
+    """VIC read with a list of register numbers returns the requested registers.
 
     API: c64/vic/read  params: registers (list of ints, 0-based from $D000)
-    Response shape: {"result": {"registers": {<num>: <val>, ...}}, "status": 200}
+    Response shape: {"result": {"registers": [[reg_num, val], ...]}, "status": 200}
     """
     rd = fresh_cpu
     rd.pause()
@@ -13,12 +19,14 @@ def test_vic_read_returns_dict(fresh_cpu):
     resp, _ = rd.call(f"{rd.platform}/vic/read", {"registers": [0x20, 0x21]})
     assert "result" in resp, f"vic/read returned no result: {resp}"
     result = resp["result"]
-    # Server wraps the register map under a "registers" key.
     assert "registers" in result, \
         f"vic/read result missing 'registers' key: {result}"
     regs = result["registers"]
-    assert isinstance(regs, dict) or isinstance(regs, list), \
-        f"vic/read registers is {type(regs).__name__}, expected dict or list"
+    # Server returns [[reg_num, value], ...] pairs.
+    assert isinstance(regs, list) and len(regs) >= 2, \
+        f"vic/read shape: {result}"
+    returned = {pair[0] for pair in regs}
+    assert {0x20, 0x21} <= returned, f"vic/read missing requested regs: got {returned}"
 
 
 def test_vic_write_then_read_round_trips(fresh_cpu):
@@ -47,30 +55,46 @@ def test_vic_write_then_read_round_trips(fresh_cpu):
     assert (val & 0x0F) == 7, f"VIC $D020 readback: got {val}, expected 7 (border yellow)"
 
 
-def test_cia1_read_returns_dict(fresh_cpu):
-    """CIA1 read with num=0 returns register values for CIA1.
+def test_cia1_read_returns_requested_registers(fresh_cpu):
+    """CIA1 read with num=0 returns the requested register values.
 
     API: c64/cia/read  params: num (0|1, optional, default 0), registers (list of ints)
     Note: the param is 'num', NOT 'cia' — confirmed from CDebuggerServerApiVice.cpp line 195.
+    Response shape: {"result": {"registers": [[reg_num, val], ...]}, "status": 200}
     """
     rd = fresh_cpu
     rd.pause()
     resp, _ = rd.call(f"{rd.platform}/cia/read", {"num": 0, "registers": [0x00, 0x01]})
     assert "result" in resp, f"cia/read returned no result: {resp}"
-    assert "registers" in resp["result"], \
-        f"cia/read result missing 'registers' key: {resp['result']}"
+    result = resp["result"]
+    assert "registers" in result, \
+        f"cia/read result missing 'registers' key: {result}"
+    regs = result["registers"]
+    # Server returns [[reg_num, value], ...] pairs.
+    assert isinstance(regs, list) and len(regs) >= 2, \
+        f"cia/read shape: {result}"
+    returned = {pair[0] for pair in regs}
+    assert {0x00, 0x01} <= returned, f"cia/read missing requested regs: got {returned}"
 
 
-def test_sid_read_returns_dict(fresh_cpu):
-    """SID read with num=0 returns register values for SID1.
+def test_sid_read_returns_requested_registers(fresh_cpu):
+    """SID read with num=0 returns the requested register values.
 
     API: c64/sid/read  params: num (0-based, optional, default 0), registers (list of ints)
     Note: the param is 'num', NOT 'sid' — confirmed from CDebuggerServerApiVice.cpp line 289.
+    Response shape: {"result": {"registers": [[reg_num, val], ...]}, "status": 200}
     """
     rd = fresh_cpu
     rd.pause()
     # $D418 = SID volume/filter mode (reg 0x18); $D41B = SID osc3 read (reg 0x1B).
     resp, _ = rd.call(f"{rd.platform}/sid/read", {"num": 0, "registers": [0x18, 0x1B]})
     assert "result" in resp, f"sid/read returned no result: {resp}"
-    assert "registers" in resp["result"], \
-        f"sid/read result missing 'registers' key: {resp['result']}"
+    result = resp["result"]
+    assert "registers" in result, \
+        f"sid/read result missing 'registers' key: {result}"
+    regs = result["registers"]
+    # Server returns [[reg_num, value], ...] pairs.
+    assert isinstance(regs, list) and len(regs) >= 2, \
+        f"sid/read shape: {result}"
+    returned = {pair[0] for pair in regs}
+    assert {0x18, 0x1B} <= returned, f"sid/read missing requested regs: got {returned}"

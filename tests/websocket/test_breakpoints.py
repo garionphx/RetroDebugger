@@ -1,37 +1,13 @@
-"""Breakpoint endpoint tests: CPU PC breakpoints, memory access breakpoints."""
+"""Breakpoint endpoint tests: CPU PC breakpoints, memory access breakpoints.
 
-import asyncio
+Note: _drain_events() was removed in the Phase 0.5 hardening pass. The client's
+_call() now uses token-correlated request/response matching (PART A), so async
+event frames are automatically skipped and never pollute response slots.
+"""
+
 import time
 
 PARK_ADDR = 0x0837  # `park` label in tests/fixtures/known_state.prg
-
-
-def _drain_events(rd, timeout=0.3):
-    """Drain any queued async event notifications (breakpoint-fired, etc.).
-
-    RetroDebugger pushes event frames asynchronously; they can arrive in
-    the WebSocket buffer before the response to the *next* request,
-    causing the client's call() to return an event dict instead of the
-    expected response.  Draining before cpu_status() prevents this.
-    Returns the list of event dicts consumed.
-    """
-    async def _drain():
-        msgs = []
-        for _ in range(8):
-            try:
-                raw = await asyncio.wait_for(rd._ws.recv(), timeout=timeout)
-                import json
-                if isinstance(raw, bytes):
-                    nul = raw.find(b"\x00")
-                    parsed = json.loads(raw[:nul].decode() if nul >= 0 else raw.decode())
-                else:
-                    parsed = json.loads(raw)
-                msgs.append(parsed)
-                # Stop once we have consumed all pending events
-            except asyncio.TimeoutError:
-                break
-        return msgs
-    return rd._loop.run_until_complete(_drain())
 
 
 def test_cpu_breakpoint_fires_on_pc_match(fresh_cpu):
@@ -43,7 +19,6 @@ def test_cpu_breakpoint_fires_on_pc_match(fresh_cpu):
     # Clear any stale breakpoints left by previous test runs (session-scoped rd).
     rd.call(f"{rd.platform}/cpu/breakpoint/remove", {"addr": 0xFCE2})
     rd.call(f"{rd.platform}/cpu/memory/breakpoint/remove", {"addr": 0xC000})
-    _drain_events(rd, timeout=0.05)  # discard any bp-fired events from stale bps
     rd.add_breakpoint(0xFCE2)
 
     try:
@@ -54,8 +29,7 @@ def test_cpu_breakpoint_fires_on_pc_match(fresh_cpu):
         rd.reset(hard=True)
         time.sleep(0.3)
 
-        # Drain any async bp-fired event frames so cpu_status() gets its own response.
-        _drain_events(rd)
+        # Token-correlated _call() skips async event frames automatically.
         pc = rd.cpu_status()["result"]["pc"]
         # PC might be exactly $FCE2 or a few instructions past if bp fires post-fetch.
         assert 0xFCE2 <= pc <= 0xFCF0, \
@@ -80,16 +54,12 @@ def test_memory_write_breakpoint_fires_on_store(loaded_fixture):
         rd.cont()
         time.sleep(0.1)
 
-        # Drain the async breakpoint-fired event before calling cpu_status(),
-        # otherwise the event frame lands in the response slot.
-        events = _drain_events(rd)
-        # If the bp fired, the event will contain addr==0xC000 with type=='data'.
-        bp_fired = any(e.get("event") == "breakpoint" and e.get("addr") == 0xC000 for e in events)
-
+        # Token-correlated _call() skips async event frames automatically —
+        # no drain needed. cpu_status() gets its own response directly.
         pc = rd.cpu_status()["result"]["pc"]
         # The STA $C000 instruction lives between $0820 and $0830 (after screen clear).
         # Just check we paused before reaching park ($0837).
-        assert pc < PARK_ADDR or bp_fired, \
+        assert pc < PARK_ADDR, \
             f"Write bp at $C000 did not fire — PC ran to {pc:#06x}, past park at {PARK_ADDR:#06x}"
     finally:
         # Always remove — even on assertion failure — to avoid leaking into next test.
@@ -97,7 +67,12 @@ def test_memory_write_breakpoint_fires_on_store(loaded_fixture):
 
 
 def test_breakpoint_remove_does_not_error(fresh_cpu):
-    """Removing a non-existent breakpoint should not error."""
+    """Removing a non-existent breakpoint should not error.
+
+    In RD 3.1, removing a non-existent breakpoint returns 406 (Not Acceptable).
+    Accept any reasonable 2xx/4xx status — the connection must survive.
+    """
     response = fresh_cpu.remove_breakpoint(0xDEAD)
-    # Status code may be 200 or 400 depending on impl, but should not raise.
-    assert "status" in response, f"remove_breakpoint returned no status: {response}"
+    # RD 3.1 returns 406 for non-existent breakpoint removal; also accept 200/400/404.
+    assert response.get("status") in (200, 400, 404, 406), \
+        f"remove_breakpoint unexpected status: {response}"
