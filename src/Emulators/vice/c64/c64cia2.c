@@ -57,6 +57,8 @@
 #include "rsuser.h"
 #endif
 
+#include "vice_debugger_hook.h"
+
 /* Flag for recording port A DDR changes (for c64gluelogic) */
 static int pa_ddr_change = 0;
 
@@ -69,8 +71,8 @@ extern unsigned char c64d_cia2_read_value;
 
 void cia2_store(WORD addr, BYTE data)
 {
-    c64d_cia2_register_written = addr & 0xf;
-    c64d_cia2_write_value = data;
+    VICE_HOOK_CIA2_REG_WRITTEN(addr);
+    VICE_HOOK_CIA2_WRITE_VALUE(data);
 
     if ((addr & 0xf) == CIA_CRA) {
         cia2_cra = data;
@@ -88,8 +90,8 @@ void cia2_store(WORD addr, BYTE data)
 BYTE cia2_read(WORD addr)
 {
     BYTE val = ciacore_read(machine_context.cia2, addr);
-    c64d_cia2_register_read = addr & 0xf;
-    c64d_cia2_read_value = val;
+    VICE_HOOK_CIA2_REG_READ(addr);
+    VICE_HOOK_CIA2_READ_VALUE(val);
     return val;
 }
 

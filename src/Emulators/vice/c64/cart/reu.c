@@ -60,6 +60,7 @@
 #include "vicetypes.h"
 #include "util.h"
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 #define CARTRIDGE_INCLUDE_PRIVATE_API
 #include "reu.h"
@@ -754,7 +755,7 @@ inline static void reu_clk_inc_pre(void)
 {
     if (!reu_ba.enabled) {
         maincpu_clk++;
-		c64d_maincpu_clk++;
+		VICE_HOOK_CPU_CLK_INC();
     }
 }
 
@@ -763,7 +764,7 @@ inline static void reu_clk_inc_post(void)
 {
     if (reu_ba.enabled) {
         maincpu_clk++;
-		c64d_maincpu_clk++;
+		VICE_HOOK_CPU_CLK_INC();
         if (reu_ba.check()) reu_ba.delay++; else reu_ba.delay = 0;
         reu_ba.last_cycle = (reu_ba.delay > 1);
         if (reu_ba.last_cycle) {
@@ -778,7 +779,7 @@ inline static void reu_clk_inc_post2(void)
 {
     if (reu_ba.enabled) {
         maincpu_clk++;
-		c64d_maincpu_clk++;
+		VICE_HOOK_CPU_CLK_INC();
         if (reu_ba.check()) {
             reu_ba.steal();
         }
