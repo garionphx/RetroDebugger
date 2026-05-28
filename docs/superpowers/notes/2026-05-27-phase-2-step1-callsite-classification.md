@@ -461,3 +461,12 @@ Zero injected call sites remain unconverted in include-list files.
 | `c64/` + `c64/cart/` | `2ddba3d` |
 | `monitor/` | `32f8dac` |
 | Xcode project (HEADER_SEARCH_PATHS) | `4176dbe` |
+
+### Final verification (MR-ready gate)
+
+- **Clean build from scratch:** `xcodebuild ... clean build` (Release, unsigned) → `** BUILD SUCCEEDED **`. Confirms the incremental per-directory builds didn't mask anything; the converted tree builds from zero.
+- **Suite vs clean-built binary:** `28 passed, 1 skipped, 1 xfailed` against the freshly clean-built Release app.
+- **Flag-OFF syntactic sanity:** compiled `vice_debugger_hook.h` with `RETRODEBUGGER` undefined, exercising each macro shape in statement and expression contexts (including the two value-guards used in `if (...)`). `cc -fsyntax-only -I src/Emulators/vice` passes — the OFF arm is well-formed (side-effect hooks → `((void)0)`, value-guards → `0`). A full hook-free app/link is out of scope for this MR (as planned); this confirms the OFF path is syntactically viable.
+- **Independent re-verification:** the final grep (no injected call sites remain) and 3× suite stability were re-run by the controller, not just the implementer.
+
+**Step 1 is MR-ready.** All clean-additive injected hooks route through gated `VICE_HOOK_*` macros; `RETRODEBUGGER` is wired into CMakeLists + the macOS Xcode project; the 17 hard/excluded files are untouched and documented for a later step.
