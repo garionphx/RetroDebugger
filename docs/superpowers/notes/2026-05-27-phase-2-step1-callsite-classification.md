@@ -331,4 +331,133 @@ All originally-flagged sites resolved cleanly:
 
 ## Completion Summary
 
-*To be appended after conversion tasks complete.*
+**Completion date:** 2026-05-27
+**Branch:** vice-3.10-phase-2
+
+### Files converted: 21
+
+| Directory | File |
+|-----------|------|
+| `drive/` | `drivemem.c` |
+| `drive/` | `rotation.c` |
+| `drive/iec/` | `memiec.c` |
+| `drive/iec/` | `via1d1541.c` |
+| `drive/iecieee/` | `via2d.c` |
+| `core/` | `ciacore.c` |
+| `core/` | `flash040core.c` |
+| `core/` | `viacore.c` |
+| `viciisc/` | `vicii.c` |
+| `viciisc/` | `vicii-cycle.c` |
+| `viciisc/` | `vicii-irq.c` |
+| `sid/` | `fastsid.c` |
+| `resid-fp/` | `residfp-sid.cpp` |
+| `resid/` | `resid-filter.h` (inline function bodies only) |
+| `arch/` | `ui.c` |
+| `arch/` | `uimon.c` |
+| `arch/` | `uimsgbox.c` |
+| `arch/` | `uistatusbar.c` |
+| `arch/` | `video.c` |
+| `arch/` | `vsyncarch.c` |
+| `root/` | `dma.c` |
+| `root/` | `machine.c` |
+| `root/` | `midi.c` |
+| `c64/` | `c64cia1.c` |
+| `c64/` | `c64cia2.c` |
+| `c64/cart/` | `reu.c` |
+| `monitor/` | `monitor.c` |
+
+Note: 27 files total (the original include list had 26 entries but `resid/resid-filter.h`
+header inline bodies were also converted per the problem statement instructions, bringing
+the total to 27 unique source files with code changes).
+
+### Call sites converted: ~60
+
+Approximate breakdown by macro:
+- `VICE_HOOK_DRIVE_CELL_READ`: 6 sites (memiec.c ×3, via1d1541.c, via2d.c, drivemem.c)
+- `VICE_HOOK_DRIVE_CELL_WRITE`: 6 sites (memiec.c ×3, via1d1541.c, via2d.c, drivemem.c)
+- `VICE_HOOK_DRIVE_TRACK_DIRTY`: 1 site (rotation.c)
+- `VICE_HOOK_DRIVE_IS_DEBUG`: 1 site (via1d1541.c)
+- `VICE_HOOK_VIA_IRQ_FLAG_SET`: 1 site (via1d1541.c)
+- `VICE_HOOK_VIA_IRQ_FLAG_CLEAR`: 1 site (viacore.c)
+- `VICE_HOOK_CIA_IRQ_FLAG_SET`: 1 site (ciacore.c)
+- `VICE_HOOK_CIA_IRQ_FLAG_CLEAR`: 1 site (ciacore.c)
+- `VICE_HOOK_CPU_CLK_INC`: 5 sites (reu.c ×3, vicii-cycle.c, flash040core.c, midi.c)
+- `VICE_HOOK_CPU_CLK_DEC`: 2 sites (flash040core.c, midi.c)
+- `VICE_HOOK_CPU_CLK_ADD`: 1 site (dma.c)
+- `VICE_HOOK_VIC_START_FRAME`: 1 site (vicii-cycle.c)
+- `VICE_HOOK_VIC_START_RASTER`: 2 sites (vicii-cycle.c)
+- `VICE_HOOK_VIC_CYCLE`: 1 site (vicii-cycle.c)
+- `VICE_HOOK_VIC_IRQ_FLAG_CLEAR`: 1 site (vicii.c)
+- `VICE_HOOK_VIC_IRQ_FLAG_SET`: 4 sites (vicii-irq.c)
+- `VICE_HOOK_VIC_REFRESH_SCREEN`: 1 site (video.c)
+- `VICE_HOOK_SID_IS_RECEIVING_CHANNELS`: 2 sites (fastsid.c) + 2 in resid-filter.h inline
+- `VICE_HOOK_SID_CHANNELS_DATA`: 2 sites (fastsid.c) + 2 in resid-filter.h inline
+- `VICE_HOOK_SID_SET_WAVE_ATTENUATION`: 2 sites (residfp-sid.cpp)
+- `VICE_HOOK_SID_SET_WAVE_SHIFT`: 2 sites (residfp-sid.cpp)
+- `VICE_HOOK_CIA1_REG_WRITTEN`: 1 site (c64cia1.c)
+- `VICE_HOOK_CIA1_WRITE_VALUE`: 1 site (c64cia1.c)
+- `VICE_HOOK_CIA1_REG_READ`: 1 site (c64cia1.c)
+- `VICE_HOOK_CIA1_READ_VALUE`: 1 site (c64cia1.c)
+- `VICE_HOOK_CIA2_REG_WRITTEN`: 1 site (c64cia2.c)
+- `VICE_HOOK_CIA2_WRITE_VALUE`: 1 site (c64cia2.c)
+- `VICE_HOOK_CIA2_REG_READ`: 1 site (c64cia2.c)
+- `VICE_HOOK_CIA2_READ_VALUE`: 1 site (c64cia2.c)
+- `VICE_HOOK_LIFECYCLE_DEBUG_MODE`: 5 sites (monitor.c ×4, machine.c) + 1 via ui.c
+- `VICE_HOOK_LIFECYCLE_JAM_FLAG`: 1 site (ui.c)
+- `VICE_HOOK_LIFECYCLE_MESSAGE`: 2 sites (ui.c, uimsgbox.c)
+- `VICE_HOOK_LIFECYCLE_SPEED`: 1 site (vsyncarch.c)
+- `VICE_HOOK_LIFECYCLE_UIMON_LINE`: 1 site (uimon.c)
+- `VICE_HOOK_LIFECYCLE_UIMON_PRINT`: 1 site (uimon.c)
+- `VICE_HOOK_INPUT_DRIVE_LED`: 1 site (uistatusbar.c)
+
+### Build change required
+
+`src/Emulators/vice/vice_debugger_hook.h` lives at the root of the VICE source tree, but
+the Xcode build's header map did not include this directory. To allow all subdirectories
+to find the header without relative paths, `$(PROJECT_DIR)/../../src/Emulators/vice` was
+added to `HEADER_SEARCH_PATHS` in both Debug and Release configurations of the Xcode
+project (`platform/MacOS/c64d.xcodeproj/project.pbxproj`).
+
+### Class-3 files excluded (not converted): 2 files
+
+- `root/sound.c` — functional insertions control SID emulation and audio threading
+- `c64/patchrom.c` — functional insertions modify KERNAL ROM bytes
+
+### Flag-ON verification (green builds + suite)
+
+Each per-directory commit was preceded by a green macOS Release build and
+`28 passed, 1 skipped, 1 xfailed` from `tests/run-ws-tests.sh`.
+
+### 3× stability run
+
+All three final runs: `28 passed, 1 skipped, 1 xfailed` (run times ~21.4s each).
+
+### Final grep verification
+
+After all conversions, the remaining `c64d_*` references in non-excluded files are
+exclusively:
+1. `c64d_*` function DEFINITIONS (e.g. `c64d_ciacore_peek`, `c64d_get_drive_context`)
+2. `extern` variable declarations (e.g. `extern CLOCK c64d_maincpu_clk`)
+3. Struct field declarations (e.g. `int c64d_irq_flag` in `cia.h`)
+4. Variable definitions/initializations (e.g. `int c64d_is_cpu_in_jam_state = 0`)
+5. Forward function declarations (e.g. `void c64d_set_debug_mode(int newMode)`)
+6. Struct field reads within macro arguments (e.g. `c64d_wave_attenuation` read inside
+   `VICE_HOOK_SID_CHANNELS_DATA(...)` call in residfp-sid.cpp)
+7. The macro ON-arm expansion in `vice_debugger_hook.h` itself
+
+Zero injected call sites remain unconverted in include-list files.
+
+### Per-directory commit SHAs
+
+| Directory | SHA |
+|-----------|-----|
+| `drive/` | `8dffd7e` |
+| `core/` | `83e7434` |
+| `viciisc/` | `0abe314` |
+| `sid/` | `c49e031` |
+| `resid-fp/` + `resid/` | `5a93586` |
+| `arch/` | `c0a8672` |
+| `root/` | `4f373e5` |
+| `c64/` + `c64/cart/` | `2ddba3d` |
+| `monitor/` | `32f8dac` |
+| Xcode project (HEADER_SEARCH_PATHS) | `4176dbe` |
