@@ -15,8 +15,8 @@ conversion tasks.
 | Candidate lines (grep output, all files, pre-filter) | **241** |
 | Candidate lines (after definition-heuristic filter) | **152** |
 | Distinct call symbols (injected into vanilla VICE) | **26** |
-| Class 1 — side-effect hooks | **21** |
-| Class 2 — value-returning observer hooks | **0** |
+| Class 1 macros (see Class 1 table) | **36** (34 pure side-effect with OFF=`((void)0)` + 2 value-guards with OFF=`0`); 26 distinct symbols map to 36 macros because some symbols yield multiple op-variants (e.g. `c64d_maincpu_clk` → INC/DEC/ADD) |
+| Class 2 — value-returning observer hooks | **0** (the 2 value-guards are folded into Class 1 with documented OFF=`0`) |
 | Class 3 — functional insertions (newly promoted to excluded) | **5 symbols across 2 files** |
 | Definition-only files (leave as-is) | **14** |
 | Final include-file count (files to convert) | **20** |
