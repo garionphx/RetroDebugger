@@ -43,6 +43,7 @@
 
 #include "SYS_Types.h"
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 BYTE drive_read_rom(drive_context_t *drv, WORD address)
 {
@@ -56,42 +57,42 @@ BYTE drive_read_rom_ds1216(drive_context_t *drv, WORD address)
 
 static BYTE drive_read_ram(drive_context_t *drv, WORD address)
 {
-	c64d_mark_drive1541_cell_read(address);
+	VICE_HOOK_DRIVE_CELL_READ(address);
 
     return drv->drive->drive_ram[address];
 }
 
 static void drive_store_ram(drive_context_t *drv, WORD address, BYTE value)
 {
-	c64d_mark_drive1541_cell_write(address, value);
+	VICE_HOOK_DRIVE_CELL_WRITE(address, value);
 
 	drv->drive->drive_ram[address] = value;
 }
 
 static BYTE drive_read_1541ram(drive_context_t *drv, WORD address)
 {
-	c64d_mark_drive1541_cell_read(address);
+	VICE_HOOK_DRIVE_CELL_READ(address);
 	
     return drv->drive->drive_ram[address & 0x7ff];
 }
 
 static void drive_store_1541ram(drive_context_t *drv, WORD address, BYTE value)
 {
-	c64d_mark_drive1541_cell_write(address, value);
+	VICE_HOOK_DRIVE_CELL_WRITE(address, value);
 	
 	drv->drive->drive_ram[address & 0x7ff] = value;
 }
 
 static BYTE drive_read_zero(drive_context_t *drv, WORD address)
 {
-	c64d_mark_drive1541_cell_read(address);
+	VICE_HOOK_DRIVE_CELL_READ(address);
 	
     return drv->drive->drive_ram[address & 0xff];
 }
 
 static void drive_store_zero(drive_context_t *drv, WORD address, BYTE value)
 {
-	c64d_mark_drive1541_cell_write(address, value);
+	VICE_HOOK_DRIVE_CELL_WRITE(address, value);
 
 	drv->drive->drive_ram[address & 0xff] = value;
 }

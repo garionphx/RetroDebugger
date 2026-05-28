@@ -57,6 +57,7 @@
 #include "drive-sound.h"
 
 #include "ViceWrapper.h"
+#include "vice_debugger_hook.h"
 
 typedef struct drivevia2_context_s {
     unsigned int number;
@@ -125,15 +126,15 @@ static void restore_int(via_context_t *via_context, unsigned int int_num, int va
 
 void via2d_store(drive_context_t *ctxptr, WORD addr, BYTE data)
 {
-	c64d_mark_drive1541_cell_write(addr, data);
-	
+	VICE_HOOK_DRIVE_CELL_WRITE(addr, data);
+
     viacore_store(ctxptr->via2, addr, data);
 }
 
 BYTE via2d_read(drive_context_t *ctxptr, WORD addr)
 {
-	c64d_mark_drive1541_cell_read(addr);
-	
+	VICE_HOOK_DRIVE_CELL_READ(addr);
+
     return viacore_read(ctxptr->via2, addr);
 }
 
