@@ -23,7 +23,10 @@
 #include "resid-config.h"
 
 // RD (c64d): debugger hook + wrapper headers (VICE_HOOK_SID_*, c64d, logging).
+// vice.h first: log.h's VICE_ATTR_PRINTF* live there, and this header is pulled
+// into C++ TUs (resid, GoatTracker plugin) that don't include vice.h themselves.
 extern "C" {
+	#include "vice.h"
 	#include "log.h"
 	#include "ViceWrapper.h"
 	#include "vice_debugger_hook.h"

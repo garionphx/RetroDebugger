@@ -266,7 +266,7 @@ static int residfp_calculate_samples(sound_t *psid, SWORD *pbuf, int nr,
 
 static char *residfp_dump_state(sound_t *psid)
 {
-    return lib_stralloc("");
+    return lib_strdup("");
 }
 
 static void residfp_state_read(sound_t *psid, sid_snapshot_state_t *sid_state)

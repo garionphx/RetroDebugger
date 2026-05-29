@@ -20,6 +20,7 @@
 #include "residfp-sid.h"
 
 extern "C" {
+	#include "vice.h"
 	#include "log.h"
 	#include "ViceWrapper.h"
 	#include "vice_debugger_hook.h"
