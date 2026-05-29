@@ -958,6 +958,7 @@
 		41C84D9223C6183B007C0889 /* printer-serial.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABD423AA0F1100A54EB2 /* printer-serial.c */; };
 		41C84D9323C6183B007C0889 /* printer-userport.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABD523AA0F1100A54EB2 /* printer-userport.c */; };
 		41C84D9423C6183B007C0889 /* printer.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABD623AA0F1100A54EB2 /* printer.c */; };
+		41C8CA0723C6183B007C0030 /* profiler.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0723C6183B007C0031 /* profiler.c */; };
 		41C84D9523C6183B007C0889 /* raster-cache.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABD823AA0F1100A54EB2 /* raster-cache.c */; };
 		41C84D9623C6183B007C0889 /* raster-canvas.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABDA23AA0F1100A54EB2 /* raster-canvas.c */; };
 		41C84D9723C6183B007C0889 /* raster-changes.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABDC23AA0F1100A54EB2 /* raster-changes.c */; };
@@ -984,6 +985,7 @@
 		41C84DAB23C6183B007C0889 /* cmdline.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC4723AA0F1100A54EB2 /* cmdline.c */; };
 		41C84DAC23C6183B007C0889 /* color.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC4923AA0F1100A54EB2 /* color.c */; };
 		41C84DAD23C6183B007C0889 /* datasette.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC4C23AA0F1100A54EB2 /* datasette.c */; };
+		41C8CA0723C6183B007C0020 /* datasette-sound.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0723C6183B007C0021 /* datasette-sound.c */; };
 		41C84DAE23C6183B007C0889 /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC4E23AA0F1100A54EB2 /* debug.c */; };
 		41C84DAF23C6183B007C0889 /* dma.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC5223AA0F1100A54EB2 /* dma.c */; };
 		41C84DB023C6183B007C0889 /* embedded.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC6223AA0F1100A54EB2 /* embedded.c */; };
@@ -1073,7 +1075,8 @@
 		41C84E0523C6183B007C0889 /* dtl-basic-dongle.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5323AA0F1100A54EB2 /* dtl-basic-dongle.c */; };
 		41C84E0623C6183B007C0889 /* sense-dongle.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5523AA0F1100A54EB2 /* sense-dongle.c */; };
 		41C84E0723C6183B007C0889 /* tape_diag_586220_harness.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5723AA0F1100A54EB2 /* tape_diag_586220_harness.c */; };
-		41C84E0823C6183B007C0889 /* tapelog.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5923AA0F1100A54EB2 /* tapelog.c */; };
+		41C8CA0723C6183B007C0010 /* tapecart.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0723C6183B007C0011 /* tapecart.c */; };
+		41C8CA0723C6183B007C0012 /* wordcraft-dongle.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0723C6183B007C0013 /* wordcraft-dongle.c */; };
 		41C84E0923C6183B007C0889 /* tapeport.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5B23AA0F1100A54EB2 /* tapeport.c */; };
 		41C84E0A23C6183B007C0889 /* userport.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD5E23AA0F1100A54EB2 /* userport.c */; };
 		41C84E0B23C6183B007C0889 /* userport_4bit_sampler.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AD6023AA0F1100A54EB2 /* userport_4bit_sampler.c */; };
@@ -1126,7 +1129,6 @@
 		41C84E3A23C6183B007C0889 /* video-color.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCB23AA0F1100A54EB2 /* video-color.c */; };
 		41C84E3B23C6183B007C0889 /* video-render-crtmono.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCD23AA0F1100A54EB2 /* video-render-crtmono.c */; };
 		41C84E3C23C6183B007C0889 /* video-render-rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCE23AA0F1100A54EB2 /* video-render-rgbi.c */; };
-		41C84E3D23C6183B007C0889 /* render-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCF23AA0F1100A54EB2 /* render-common.c */; };
 		41C84E3E23C6183B007C0889 /* video-render-palntsc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD023AA0F1100A54EB2 /* video-render-palntsc.c */; };
 		41C84E3F23C6183B007C0889 /* video-render.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD123AA0F1100A54EB2 /* video-render.c */; };
 		41C84E4023C6183B007C0889 /* video-resources.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD323AA0F1100A54EB2 /* video-resources.c */; };
@@ -3101,6 +3103,9 @@
 		41D4ABD423AA0F1100A54EB2 /* printer-serial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "printer-serial.c"; sourceTree = "<group>"; };
 		41D4ABD523AA0F1100A54EB2 /* printer-userport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "printer-userport.c"; sourceTree = "<group>"; };
 		41D4ABD623AA0F1100A54EB2 /* printer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = printer.c; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0031 /* profiler.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = profiler.c; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0032 /* profiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profiler.h; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0033 /* profiler_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profiler_data.h; sourceTree = "<group>"; };
 		41D4ABD823AA0F1100A54EB2 /* raster-cache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "raster-cache.c"; sourceTree = "<group>"; };
 		41D4ABD923AA0F1100A54EB2 /* raster-cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "raster-cache.h"; sourceTree = "<group>"; };
 		41D4ABDA23AA0F1100A54EB2 /* raster-canvas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "raster-canvas.c"; sourceTree = "<group>"; };
@@ -3172,6 +3177,8 @@
 		41D4AC4B23AA0F1100A54EB2 /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = console.h; sourceTree = "<group>"; };
 		41D4AC4C23AA0F1100A54EB2 /* datasette.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = datasette.c; sourceTree = "<group>"; };
 		41D4AC4D23AA0F1100A54EB2 /* datasette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = datasette.h; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0021 /* datasette-sound.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "datasette-sound.c"; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0022 /* datasette-sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "datasette-sound.h"; sourceTree = "<group>"; };
 		41D4AC4E23AA0F1100A54EB2 /* debug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		41D4AC4F23AA0F1100A54EB2 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		41D4AC5023AA0F1100A54EB2 /* diskconstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = diskconstants.h; sourceTree = "<group>"; };
@@ -3426,8 +3433,11 @@
 		41D4AD5623AA0F1100A54EB2 /* sense-dongle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "sense-dongle.h"; sourceTree = "<group>"; };
 		41D4AD5723AA0F1100A54EB2 /* tape_diag_586220_harness.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tape_diag_586220_harness.c; sourceTree = "<group>"; };
 		41D4AD5823AA0F1100A54EB2 /* tape_diag_586220_harness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tape_diag_586220_harness.h; sourceTree = "<group>"; };
-		41D4AD5923AA0F1100A54EB2 /* tapelog.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tapelog.c; sourceTree = "<group>"; };
-		41D4AD5A23AA0F1100A54EB2 /* tapelog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tapelog.h; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0011 /* tapecart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tapecart.c; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0013 /* wordcraft-dongle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "wordcraft-dongle.c"; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0014 /* tapecart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tapecart.h; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0015 /* tapecart-loader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "tapecart-loader.h"; sourceTree = "<group>"; };
+		41C8CA0723C6183B007C0016 /* wordcraft-dongle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "wordcraft-dongle.h"; sourceTree = "<group>"; };
 		41D4AD5B23AA0F1100A54EB2 /* tapeport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = tapeport.c; sourceTree = "<group>"; };
 		41D4AD5C23AA0F1100A54EB2 /* tapeport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tapeport.h; sourceTree = "<group>"; };
 		41D4AD5E23AA0F1100A54EB2 /* userport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = userport.c; sourceTree = "<group>"; };
@@ -6518,6 +6528,11 @@
 				41D4AC4B23AA0F1100A54EB2 /* console.h */,
 				41D4AC4C23AA0F1100A54EB2 /* datasette.c */,
 				41D4AC4D23AA0F1100A54EB2 /* datasette.h */,
+				41C8CA0723C6183B007C0021 /* datasette-sound.c */,
+				41C8CA0723C6183B007C0022 /* datasette-sound.h */,
+				41C8CA0723C6183B007C0031 /* profiler.c */,
+				41C8CA0723C6183B007C0032 /* profiler.h */,
+				41C8CA0723C6183B007C0033 /* profiler_data.h */,
 				41D4AC4E23AA0F1100A54EB2 /* debug.c */,
 				41D4AC4F23AA0F1100A54EB2 /* debug.h */,
 				41D4AC5023AA0F1100A54EB2 /* diskconstants.h */,
@@ -6830,8 +6845,11 @@
 				41D4AD5623AA0F1100A54EB2 /* sense-dongle.h */,
 				41D4AD5723AA0F1100A54EB2 /* tape_diag_586220_harness.c */,
 				41D4AD5823AA0F1100A54EB2 /* tape_diag_586220_harness.h */,
-				41D4AD5923AA0F1100A54EB2 /* tapelog.c */,
-				41D4AD5A23AA0F1100A54EB2 /* tapelog.h */,
+				41C8CA0723C6183B007C0011 /* tapecart.c */,
+				41C8CA0723C6183B007C0014 /* tapecart.h */,
+				41C8CA0723C6183B007C0015 /* tapecart-loader.h */,
+				41C8CA0723C6183B007C0013 /* wordcraft-dongle.c */,
+				41C8CA0723C6183B007C0016 /* wordcraft-dongle.h */,
 				41D4AD5B23AA0F1100A54EB2 /* tapeport.c */,
 				41D4AD5C23AA0F1100A54EB2 /* tapeport.h */,
 			);
@@ -8015,6 +8033,7 @@
 				41C84D9223C6183B007C0889 /* printer-serial.c in Sources */,
 				41C84D9323C6183B007C0889 /* printer-userport.c in Sources */,
 				41C84D9423C6183B007C0889 /* printer.c in Sources */,
+				41C8CA0723C6183B007C0030 /* profiler.c in Sources */,
 				41C84D9523C6183B007C0889 /* raster-cache.c in Sources */,
 				41C84D9623C6183B007C0889 /* raster-canvas.c in Sources */,
 				4113CE9825F8AF2000FB1236 /* TextEditor.cpp in Sources */,
@@ -8044,6 +8063,7 @@
 				41C84DAC23C6183B007C0889 /* color.c in Sources */,
 				41EE302925E92A930050257F /* CViewNesPpuPatterns.cpp in Sources */,
 				41C84DAD23C6183B007C0889 /* datasette.c in Sources */,
+				41C8CA0723C6183B007C0020 /* datasette-sound.c in Sources */,
 				41C84DAE23C6183B007C0889 /* debug.c in Sources */,
 				41C84DAF23C6183B007C0889 /* dma.c in Sources */,
 				41C84DB023C6183B007C0889 /* embedded.c in Sources */,
@@ -8148,7 +8168,8 @@
 				41C84E0523C6183B007C0889 /* dtl-basic-dongle.c in Sources */,
 				41C84E0623C6183B007C0889 /* sense-dongle.c in Sources */,
 				41C84E0723C6183B007C0889 /* tape_diag_586220_harness.c in Sources */,
-				41C84E0823C6183B007C0889 /* tapelog.c in Sources */,
+				41C8CA0723C6183B007C0010 /* tapecart.c in Sources */,
+				41C8CA0723C6183B007C0012 /* wordcraft-dongle.c in Sources */,
 				41C84E0923C6183B007C0889 /* tapeport.c in Sources */,
 				41C84E0A23C6183B007C0889 /* userport.c in Sources */,
 				41C84E0B23C6183B007C0889 /* userport_4bit_sampler.c in Sources */,
@@ -8210,7 +8231,6 @@
 				41C84E3A23C6183B007C0889 /* video-color.c in Sources */,
 				41C84E3B23C6183B007C0889 /* video-render-crtmono.c in Sources */,
 				41C84E3C23C6183B007C0889 /* video-render-rgbi.c in Sources */,
-				41C84E3D23C6183B007C0889 /* render-common.c in Sources */,
 				41C84E3E23C6183B007C0889 /* video-render-palntsc.c in Sources */,
 				41C84E3F23C6183B007C0889 /* video-render.c in Sources */,
 				41C84E4023C6183B007C0889 /* video-resources.c in Sources */,

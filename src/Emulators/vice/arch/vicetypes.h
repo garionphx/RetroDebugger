@@ -70,9 +70,22 @@ typedef signed int SDWORD;
 //#endif
 #endif
 
-#ifdef LINUX
-#include "stdint.h"
-#include "inttypes.h"
+#include <inttypes.h>	/* VICE 3.10: PRIx64/PRIu64 for printing 64-bit CLOCK -- needed on all platforms, not just LINUX (was #ifdef LINUX in slajerek's 3.1) */
+
+/* VICE 3.10: MSVC <2019 lacks PRIu64/PRIx64, which 3.10 uses to print CLOCK. Provide fallbacks (no-op where <inttypes.h> already defines them). */
+#ifndef PRIu64
+#  ifdef _WIN32
+#    define PRIu64 "llu"
+#  else
+#    define PRIu64 "lu"
+#  endif
+#endif
+#ifndef PRIx64
+#  ifdef _WIN32
+#    define PRIx64 "llx"
+#  else
+#    define PRIx64 "lx"
+#  endif
 #endif
 
 typedef uint64_t CLOCK;   /* VICE 3.10: CLOCK is 64-bit (was DWORD/32-bit); 3.10's

@@ -33,6 +33,7 @@
 
 #include "sound.h"
 #include "archdep_tick.h"		/* VICE 3.10: tick_t + tick_now/tick_sleep/... */
+#include "archdep_dir.h"		/* VICE 3.10: archdep_dir_t + archdep_opendir/readdir/closedir (palette/fileio dir scans expect this via archdep.h) */
 
 /* Extra functions for SDL UI */
 //extern char *archdep_default_hotkey_file_name(void);
@@ -60,6 +61,12 @@ extern int archdep_require_vkbd(void);
 #define ARCHDEP_ACCESS_F_OK 0
 int archdep_access(const char *pathname, int mode);
 
+/* VICE 3.10: archdep_mkdir() mode constants (from arch/shared/archdep_mkdir.h).
+   Octal POSIX permission bits passed straight to mkdir(). */
+#define ARCHDEP_MKDIR_RWXU   0700
+#define ARCHDEP_MKDIR_RWXUG  0770
+#define ARCHDEP_MKDIR_RWXUGO 0777
+
 /* VICE 3.10 UI factory defaults referenced by the (3.10) core resources. */
 #define ARCHDEP_MOUSE_ENABLE_DEFAULT    0
 #define ARCHDEP_SHOW_STATUSBAR_FACTORY  0
@@ -69,6 +76,7 @@ int archdep_access(const char *pathname, int mode);
 #define PRI_SIZE_T          "zu"
 #define ARCHDEP_DIR_SEP_STR "/"
 #define ARCHDEP_DIR_SEP_CHR '/'
+#define ARCHDEP_FSDEVICE_DEFAULT_DIR "."   /* CWD (archdep_unix.h value) */
 
 /* Video chip scaling.  */
 #define ARCHDEP_VICII_DSIZE   1

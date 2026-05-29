@@ -478,7 +478,7 @@ int patch_rom_idx(int rev)
 	c64d_un_patch_kernal_fast_boot();
 #endif /* RETRODEBUGGER */
 
-    if (c64rom_get_kernal_chksum_id(&sum, &curr) < 0) {
+    if (c64rom_get_kernal_chksum_id(&sum, &curr, NULL) < 0) {	/* VICE 3.10: + sha1hash out (NULL = don't want it) */
         log_error(LOG_DEFAULT, "ROM not patched: Unknown Kernal image.  ID: %d ($%02X) Sum: %d ($%04X).", curr, curr, sum, sum);
         return -1;
     }

@@ -49,7 +49,10 @@ CLOCK maincpu_clk = 0L;
 CLOCK maincpu_clk_limit = 0L;
 
 CLOCK c64d_maincpu_clk = 0L;
-CLOCK c64d_maincpu_current_instruction_clk = 0L;
+/* RD debugger clk-display var: kept 32-bit (matches ViceWrapper.h decl + the
+   unsigned-int C++ getter and the previous/previous2 siblings). VICE 3.10 widened
+   CLOCK to 64-bit; truncating maincpu_clk here preserves the original 3.1 semantics. */
+unsigned int c64d_maincpu_current_instruction_clk = 0;
 
 #define REWIND_FETCH_OPCODE(clock) /*clock-=2*/
 
@@ -4665,6 +4668,11 @@ int c64d_check_cpu_snapshot_manager_restore()
 	if (c64d_check_snapshot_restore())
 	{
 		enum cpu_int pending_interrupt;
+		/* DO_INTERRUPT below expands CHECK_PROFILE_INTERRUPT, which references
+		   profiling_clock_start (a per-instruction local in the main loop). This
+		   one-off restore dispatch isn't a profiled instruction, so anchor it at
+		   the current clock (zero attributed duration). */
+		CLOCK profiling_clock_start = CLK;
 
 //		EXPORT_REGISTERS();                                            \
 //		interrupt_do_trap(CPU_INT_STATUS, (WORD)reg_pc);               \

@@ -88,7 +88,7 @@ static uint8_t val_pot_x = 0xff, val_pot_y = 0xff; /* last sampling value */
 
 /* ------------------------------------------------------------------------- */
 
-struct sound_s *fakesid_open(uint8_t *sidstate);
+struct sound_s *fakesid_open(uint8_t *sidstate, int chipNo);	/* RD: sid_engine_t.open carries chipNo (multi-SID) */
 int fakesid_init(struct sound_s *psid, int speed, int cycles_per_sec, int factor);
 void fakesid_close(struct sound_s *psid);
 uint8_t fakesid_read(struct sound_s *psid, uint16_t addr);
@@ -1435,7 +1435,7 @@ int sid_machine_can_have_multiple_sids(void)
 
 /* ------------------------------------------------------------------------- */
 
-struct sound_s *fakesid_open(uint8_t *sidstate) {
+struct sound_s *fakesid_open(uint8_t *sidstate, int chipNo) {
     sound_t *psid;
 
     psid = lib_calloc(1, sizeof(sound_t));

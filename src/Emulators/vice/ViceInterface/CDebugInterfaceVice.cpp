@@ -2445,7 +2445,7 @@ uint8 CDebugInterfaceVice::GetDebugMode()
 extern "C" {
 	int tape_image_attach(unsigned int unit, const char *name);
 	int tape_image_detach(unsigned int unit);
-	void datasette_control(int command);
+	void datasette_control(int port, int command);	/* VICE 3.10: + port (C64 datasette is tape port 0) */
 }
 
 static void tape_attach_trap(WORD addr, void *v)
@@ -2479,32 +2479,32 @@ void CDebugInterfaceVice::DetachTape()
 
 void CDebugInterfaceVice::DatasettePlay()
 {
-	datasette_control(DATASETTE_CONTROL_START);
+	datasette_control(0, DATASETTE_CONTROL_START);
 }
 
 void CDebugInterfaceVice::DatasetteStop()
 {
-	datasette_control(DATASETTE_CONTROL_STOP);
+	datasette_control(0, DATASETTE_CONTROL_STOP);
 }
 
 void CDebugInterfaceVice::DatasetteForward()
 {
-	datasette_control(DATASETTE_CONTROL_FORWARD);
+	datasette_control(0, DATASETTE_CONTROL_FORWARD);
 }
 
 void CDebugInterfaceVice::DatasetteRewind()
 {
-	datasette_control(DATASETTE_CONTROL_REWIND);
+	datasette_control(0, DATASETTE_CONTROL_REWIND);
 }
 
 void CDebugInterfaceVice::DatasetteRecord()
 {
-	datasette_control(DATASETTE_CONTROL_RECORD);
+	datasette_control(0, DATASETTE_CONTROL_RECORD);
 }
 
 void CDebugInterfaceVice::DatasetteReset()
 {
-	datasette_control(DATASETTE_CONTROL_RESET);
+	datasette_control(0, DATASETTE_CONTROL_RESET);
 }
 
 void CDebugInterfaceVice::DatasetteSetSpeedTuning(int speedTuning)

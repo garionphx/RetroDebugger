@@ -1576,8 +1576,10 @@ int c64d_sound_run_sound_when_paused(void)
     int16_t *bufferptr;
     static int overflow_warning_count = 0;
 
-    /* XXX: implement the exact ... */
-    if (!playback_enabled || (suspend_time > 0 && disabletime)) {
+    /* VICE 3.10: the 3.1 suspend_time/disabletime statics were replaced by the
+       device-level snddata.issuspended flag; preserve the original guard intent
+       (skip running sound when playback is off or the device is suspended). */
+    if (!playback_enabled || snddata.issuspended) {
         return 1;
     }
 
