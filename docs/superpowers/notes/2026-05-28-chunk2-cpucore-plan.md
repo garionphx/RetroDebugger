@@ -172,6 +172,18 @@ bank_base==NULL JAM guard + 3.10 lastop/SET_OPCODE jam recovery + profile_sample
 11 > all intentional (VICE_DEBUG + cosmetic 3.10 paren-conditional formatting), 144 <.
 Assembled c64cpusc.c: 4785 lines, braces 437/437, 0 markers, _DUMMY 54 total.
 
-### NEXT: A3 c64acia1.c (aciacore re-merge, 30 conflicts + clkguard straggler), C datasette.c +
-delete clkguard.c/.h, D build-list reconciliation (ADD profiler.c + joyport/mouse_* + new headers'
-.c; REMOVE clkguard.c/translate.c/patchrom.c) + link + WebSocket suite (28/1/1) acceptance gate.
+## A3 c64acia1.c DONE + datasette.c DONE (clkguard stragglers) — this session.
+- c64acia1.c (c64/cart/, inlines aciacore.c): aciacore 3.1->3.10 isolated merge = 30 conflicts, ALL
+  reindent (RD never instrumented the 6551 ACIA -> 0 hooks). Wrapper c64acia1.c merge: 0 conflicts
+  (RD added nothing to the wrapper). RD's only ACIA change = inline + reindent + DEBUG->VICE_DEBUG.
+  aciacore clkguard auto-dropped (3.1 had 3 refs, 3.10 0). Gate: aciacore 1 intentional > (VICE_DEBUG),
+  wrapper 1 blank line. Assembled 1809 lines, braces 189/189, 0 markers, 0 clkguard.
+- datasette.c (RD root/datasette.c, 3.10 moved to datasette/datasette.c): PURE 3.1 (only rename, 0
+  c64d hooks) -> merged = identical to vanilla 3.10 + rename, clkguard removed.
+- CLKGUARD now has ZERO functional users tree-wide (c64cpusc/drivecpu/c64acia1/datasette all clean;
+  only arch/vicetypes.h has a COMMENT mentioning it). clkguard.c/.h are orphaned -> DELETE in step D
+  (with the Xcode build-list edit).
+
+### NEXT: D build-list reconciliation (ADD profiler.c + joyport/mouse_* + new headers' .c; REMOVE
+clkguard.c/translate.c/patchrom.c) + translation removal + link + WebSocket suite (28/1/1) gate.
+This is the FINAL Chunk 2 sub-task — all heavy/core subsystem merges are now done.
