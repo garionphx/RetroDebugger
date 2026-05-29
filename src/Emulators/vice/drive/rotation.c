@@ -46,6 +46,7 @@
 
 #define ROTATION_TABLE_SIZE 0x1000
 
+
 struct rotation_s {
     uint32_t accum;
     CLOCK rotation_last_clk;
