@@ -280,35 +280,19 @@ char *archdep_default_sysfile_pathlist(const char *emu_id)
 		lib_free(default_path_temp);
 		
 #else
-#if defined(MACOSX_BUNDLE)
-		/* Mac OS X Bundles keep their ROMS in Resources/bin/../ROM */
-#if defined(MACOSX_COCOA) || defined(USE_SDLUI)
-#define MACOSX_ROMDIR "/../Resources/ROM/"
-#else
-#define MACOSX_ROMDIR "/../ROM/"
-#endif
-		default_path = util_concat(boot_path, MACOSX_ROMDIR, emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/", emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/", emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   
-								   boot_path, MACOSX_ROMDIR, "DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   
-								   boot_path, MACOSX_ROMDIR, "PRINTER", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/PRINTER", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/PRINTER", NULL);
-#else
-		default_path = util_concat(LIBDIR, "/", emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/", emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/", emu_id, ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   LIBDIR, "/DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/DRIVES", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   LIBDIR, "/PRINTER", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   home_path, "/", VICEUSERDIR, "/PRINTER", ARCHDEP_FINDPATH_SEPARATOR_STRING,
-								   boot_path, "/PRINTER", NULL);
-#endif
+		/* VICE 3.10 changed the contract: sysfile_open now appends a subpath ("C64",
+		   "DRIVES", "PRINTER", ...) onto each search-path element. The 3.1-vintage
+		   list below baked the machine name *into* each path, which would now produce
+		   "<dir>/C64/C64/kernal-901227-03.bin" -- double-suffix, never found, hard
+		   reset jumps to PC=$0000. Return generic VICE-data roots and let the caller
+		   supply the subpath. (void)emu_id since the caller already encodes it.
+		   Also add /opt/homebrew/share/vice for arm64 Homebrew (LIBDIR points at
+		   /usr/local/lib/vice from the legacy Intel prefix). */
+		(void)emu_id;
+		default_path = util_concat("/opt/homebrew/share/vice", ARCHDEP_FINDPATH_SEPARATOR_STRING,
+								   LIBDIR, ARCHDEP_FINDPATH_SEPARATOR_STRING,
+								   home_path, "/", VICEUSERDIR, ARCHDEP_FINDPATH_SEPARATOR_STRING,
+								   boot_path, NULL);
 #endif
 	}
 	

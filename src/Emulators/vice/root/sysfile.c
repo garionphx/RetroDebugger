@@ -258,21 +258,27 @@ int sysfile_load(const char *name, const char *subpath, uint8_t *dest, int minsi
     char *complete_path = NULL;
     int load_at_end;
 
+    fp = sysfile_open(name, subpath, &complete_path, MODE_READ);
+
 #ifdef USE_EMBEDDED
-    /* VICE 3.10 dropped this hook from sysfile_load. RD relies on it to satisfy
-       ROM/palette loads from src/Embedded/* without shipping loose files. If the
-       embedded table claims to provide the file, accept that as the load. */
-    {
+    /* VICE 3.10 dropped the c64embedded hook from sysfile_load. RD's c64embedded
+       table has all entries with esrc=NULL (it never shipped real ROM bytes);
+       embedded_check_file then matches the filename and returns size>0 while
+       writing nothing into dest, leaving the buffer zero -- a hard reset jumps
+       to PC=$0000 instead of the kernal entry $FCE2. Use it ONLY as a fallback
+       when the filesystem load misses: real ROMs at ~/.vice/C64/ or in the app
+       bundle take precedence; the embedded table just keeps machine_specific_init
+       from failing when no ROMs are present (the boot snapshot fills in state). */
+    if (fp == NULL) {
         size_t embedded_size = embedded_check_file(name, (BYTE *)dest,
                                                    minsize < 0 ? -minsize : minsize,
                                                    maxsize);
         if (embedded_size != 0) {
+            lib_free(complete_path);
             return (int)embedded_size;
         }
     }
 #endif
-
-    fp = sysfile_open(name, subpath, &complete_path, MODE_READ);
 
     if (fp == NULL) {
         /* Try to open the file from the current directory. */
