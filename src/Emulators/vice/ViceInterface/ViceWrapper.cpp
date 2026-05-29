@@ -1394,7 +1394,7 @@ void c64d_debug_pause_check(int allowRestore)
 			{
 				if (c64d_is_performing_snapshot_restore())
 				{
-					vsync_do_vsync(vicii.raster.canvas, 0, 1);
+					vsync_do_vsync(vicii.raster.canvas);
 					return;
 				}
 			}
@@ -1405,7 +1405,7 @@ void c64d_debug_pause_check(int allowRestore)
 				debugInterfaceVice->sidDataToRestore = NULL;
 			}
 
-			vsync_do_vsync(vicii.raster.canvas, 0, 1);
+			vsync_do_vsync(vicii.raster.canvas);
 			//mt_SYS_Sleep(50);
 		}
 	}

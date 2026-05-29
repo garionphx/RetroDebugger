@@ -212,6 +212,14 @@ void keyboard_clear_keymatrix(void)
     memset(latch_rev_keyarr, 0, sizeof(latch_rev_keyarr));
 }
 
+/* VICE 3.10 accessor required by 3.10-migrated callers (e.g. c64/c64cia1.c).
+   RD keeps its synchronous keyboard model; keyboard_shiftlock already tracks the
+   shift-lock state, so this simply exposes it (matches vanilla 3.10 semantics). */
+int keyboard_get_shiftlock(void)
+{
+    return keyboard_shiftlock;
+}
+
 void keyboard_register_machine(keyboard_machine_func_t func)
 {
     keyboard_machine_func = func;
