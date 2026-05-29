@@ -78,113 +78,138 @@
  */
 
 /* This source file contains the sound core for the cartridge,
- the shortbus and userport versions of the device, and is intended
- to be included from a specific digimax device. */
+   the shortbus and userport versions of the device, and is intended
+   to be included from a specific digimax device. */
 
 
 /* Some prototypes are needed */
 static int digimax_sound_machine_init(sound_t *psid, int speed, int cycles_per_sec);
-static int digimax_sound_machine_calculate_samples(sound_t **psid, SWORD *pbuf, int nr, int sound_output_channels, int sound_chip_channels, int *delta_t);
-static void digimax_sound_machine_store(sound_t *psid, WORD addr, BYTE val);
-static BYTE digimax_sound_machine_read(sound_t *psid, WORD addr);
+static void digimax_sound_machine_store(sound_t *psid, uint16_t addr, uint8_t val);
+static uint8_t digimax_sound_machine_read(sound_t *psid, uint16_t addr);
 static void digimax_sound_reset(sound_t *psid, CLOCK cpu_clk);
+
+#ifdef SOUND_SYSTEM_FLOAT
+static int digimax_sound_machine_calculate_samples(sound_t **psid, float *pbuf, int nr, int sound_chip_channels, CLOCK *delta_t);
+#else
+static int digimax_sound_machine_calculate_samples(sound_t **psid, int16_t *pbuf, int nr, int sound_output_channels, int sound_chip_channels, CLOCK *delta_t);
+#endif
 
 static int digimax_sound_machine_cycle_based(void)
 {
-	return 0;
+    return 0;
 }
 
 static int digimax_sound_machine_channels(void)
 {
-	return 1;     /* FIXME: needs to become stereo for stereo capable ports */
+    return 4;
 }
 
+#ifdef SOUND_SYSTEM_FLOAT
+/* stereo mixing placement of the DigiMAX sound */
+static sound_chip_mixing_spec_t digimax_sound_mixing_spec[SOUND_CHIP_CHANNELS_MAX] = {
+    {
+        100, /* DAC 1 left channel volume % in case of stereo output, default output to left only */
+        0,   /* DAC 1 right channel volume % in case of stereo output, default output to left only */
+    },
+    {
+        100, /* DAC 2 left channel volume % in case of stereo output, default output to left only */
+        0,   /* DAC 2 right channel volume % in case of stereo output, default output to left only */
+    },
+    {
+        0,   /* DAC 3 left channel volume % in case of stereo output, default output to right only */
+        100, /* DAC 3 right channel volume % in case of stereo output, default output to right only */
+    },
+    {
+        0,   /* DAC 4 left channel volume % in case of stereo output, default output to right only */
+        100, /* DAC 4 right channel volume % in case of stereo output, default output to right only */
+    }
+};
+#endif
+
+/* DigiMAX sound chip, as used in the IDE64-shortbus DigiMAX device, userport DigiMAX device and c64/c128 DigiMAX cartridge */
 static sound_chip_t digimax_sound_chip = {
-	NULL, /* no open */
-	digimax_sound_machine_init,
-	NULL, /* no close */
-	digimax_sound_machine_calculate_samples,
-	digimax_sound_machine_store,
-	digimax_sound_machine_read,
-	digimax_sound_reset,
-	digimax_sound_machine_cycle_based,
-	digimax_sound_machine_channels,
-	0 /* chip enabled */
+    NULL,                                    /* NO sound chip open function */
+    digimax_sound_machine_init,              /* sound chip init function */
+    NULL,                                    /* NO sound chip close function */
+    digimax_sound_machine_calculate_samples, /* sound chip calculate samples function */
+    digimax_sound_machine_store,             /* sound chip store function */
+    digimax_sound_machine_read,              /* sound chip read function */
+    digimax_sound_reset,                     /* sound chip reset function */
+    digimax_sound_machine_cycle_based,       /* sound chip 'is_cycle_based()' function, chip is NOT cycle based */
+    digimax_sound_machine_channels,          /* sound chip 'get_amount_of_channels()' function, sound chip has 4 channels */
+#ifdef SOUND_SYSTEM_FLOAT
+    digimax_sound_mixing_spec,               /* stereo mixing placement specs */
+#endif
+    0                                        /* sound chip enabled flag, toggled upon device (de-)activation */
 };
 
-static WORD digimax_sound_chip_offset = 0;
+static uint16_t digimax_sound_chip_offset = 0;
 
 /* ---------------------------------------------------------------------*/
 
 static sound_dac_t digimax_dac[4];
 
-static BYTE digimax_sound_data[4];
+static uint8_t digimax_sound_data[4];
 
 struct digimax_sound_s {
-	BYTE voice0;
-	BYTE voice1;
-	BYTE voice2;
-	BYTE voice3;
+    uint8_t voice[4];
 };
 
 static struct digimax_sound_s snd;
 
-static int digimax_sound_machine_calculate_samples(sound_t **psid, SWORD *pbuf, int nr, int soc, int scc, int *delta_t)
+#ifdef SOUND_SYSTEM_FLOAT
+/* FIXME: fix this for multichannel output */
+static int digimax_sound_machine_calculate_samples(sound_t **psid, float *pbuf, int nr, int scc, CLOCK *delta_t)
 {
-	sound_dac_calculate_samples(&digimax_dac[0], pbuf, (int)snd.voice0 * 64, nr, soc, 1);
-	sound_dac_calculate_samples(&digimax_dac[1], pbuf, (int)snd.voice1 * 64, nr, soc, (soc > 1) ? 2 : 1);
-	sound_dac_calculate_samples(&digimax_dac[2], pbuf, (int)snd.voice2 * 64, nr, soc, 1);
-	sound_dac_calculate_samples(&digimax_dac[3], pbuf, (int)snd.voice3 * 64, nr, soc, (soc > 1) ? 2 : 1);
-	return nr;
+    sound_dac_calculate_samples(&digimax_dac[scc], pbuf, (int)snd.voice[scc] * 64, nr);
+
+    return nr;
 }
+#else
+static int digimax_sound_machine_calculate_samples(sound_t **psid, int16_t *pbuf, int nr, int soc, int scc, CLOCK *delta_t)
+{
+    sound_dac_calculate_samples(&digimax_dac[0], pbuf, (int)snd.voice[0] * 64, nr, soc, SOUND_CHANNEL_1);
+    sound_dac_calculate_samples(&digimax_dac[1], pbuf, (int)snd.voice[1] * 64, nr, soc, (soc == SOUND_OUTPUT_STEREO) ? SOUND_CHANNEL_2 : SOUND_CHANNEL_1);
+    sound_dac_calculate_samples(&digimax_dac[2], pbuf, (int)snd.voice[2] * 64, nr, soc, SOUND_CHANNEL_1);
+    sound_dac_calculate_samples(&digimax_dac[3], pbuf, (int)snd.voice[3] * 64, nr, soc, (soc == SOUND_OUTPUT_STEREO) ? SOUND_CHANNEL_2 : SOUND_CHANNEL_1);
+    return nr;
+}
+#endif
 
 static int digimax_sound_machine_init(sound_t *psid, int speed, int cycles_per_sec)
 {
-	sound_dac_init(&digimax_dac[0], speed);
-	sound_dac_init(&digimax_dac[1], speed);
-	sound_dac_init(&digimax_dac[2], speed);
-	sound_dac_init(&digimax_dac[3], speed);
-	snd.voice0 = 0;
-	snd.voice1 = 0;
-	snd.voice2 = 0;
-	snd.voice3 = 0;
-	
-	return 1;
+    sound_dac_init(&digimax_dac[0], speed);
+    sound_dac_init(&digimax_dac[1], speed);
+    sound_dac_init(&digimax_dac[2], speed);
+    sound_dac_init(&digimax_dac[3], speed);
+    snd.voice[0] = 0;
+    snd.voice[1] = 0;
+    snd.voice[2] = 0;
+    snd.voice[3] = 0;
+
+    return 1;
 }
 
-static void digimax_sound_machine_store(sound_t *psid, WORD addr, BYTE val)
+static void digimax_sound_machine_store(sound_t *psid, uint16_t addr, uint8_t val)
 {
-	switch (addr & 3) {
-		case 0:
-			snd.voice0 = val;
-			break;
-		case 1:
-			snd.voice1 = val;
-			break;
-		case 2:
-			snd.voice2 = val;
-			break;
-		case 3:
-			snd.voice3 = val;
-			break;
-	}
+    snd.voice[addr & 3] = val;
 }
 
-static BYTE digimax_sound_machine_read(sound_t *psid, WORD addr)
+static uint8_t digimax_sound_machine_read(sound_t *psid, uint16_t addr)
 {
-	return digimax_sound_data[addr & 3];
+    return digimax_sound_data[addr & 3];
 }
 
 static void digimax_sound_reset(sound_t *psid, CLOCK cpu_clk)
 {
-	snd.voice0 = 0;
-	snd.voice1 = 0;
-	snd.voice2 = 0;
-	snd.voice3 = 0;
-	digimax_sound_data[0] = 0;
-	digimax_sound_data[1] = 0;
-	digimax_sound_data[2] = 0;
-	digimax_sound_data[3] = 0;
+    snd.voice[0] = 0;
+    snd.voice[1] = 0;
+    snd.voice[2] = 0;
+    snd.voice[3] = 0;
+    digimax_sound_data[0] = 0;
+    digimax_sound_data[1] = 0;
+    digimax_sound_data[2] = 0;
+    digimax_sound_data[3] = 0;
 }
 
 
