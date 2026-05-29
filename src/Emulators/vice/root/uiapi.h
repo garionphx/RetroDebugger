@@ -60,7 +60,7 @@ int ui_cmdline_options_init(void);
 void ui_init_with_args(int *argc, char **argv);
 int ui_init_finalize(void);
 void ui_shutdown(void);
-int ui_init(void);
+int ui_init(int *argc, char **argv);	/* RD: arch ui_init + (vendor-kept) main.c use the 2-arg form */
 
 /* Print a message.  */
 void ui_message(const char *format, ...) VICE_ATTR_PRINTF;

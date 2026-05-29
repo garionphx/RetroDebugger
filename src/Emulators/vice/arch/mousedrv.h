@@ -41,7 +41,7 @@ extern int mousedrv_get_y(void);
 extern unsigned long mousedrv_get_timestamp(void);
 
 extern void mouse_button(int bnumber, int state);
-extern void mouse_move(int x, int y);
+extern void mouse_move(float dx, float dy);	/* VICE 3.10: int -> float coords */
 
 extern void mousedrv_button_left(int pressed);
 extern void mousedrv_button_right(int pressed);

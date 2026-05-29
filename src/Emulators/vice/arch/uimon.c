@@ -58,7 +58,7 @@ void uimon_window_close(void)
 
 console_t c64d_console_log = { 80, 25, 1, 0 };
 
-console_t *uimon_window_open(void)
+console_t *uimon_window_open(bool display_now)	/* VICE 3.10: + display_now */
 {
 	return &c64d_console_log;
 	
@@ -79,7 +79,7 @@ void uimon_window_suspend(void)
 
 console_t *uimon_window_resume(void)
 {
-    return uimon_window_open();
+    return uimon_window_open(true);
 }
 
 int uimon_out(const char *buffer)
