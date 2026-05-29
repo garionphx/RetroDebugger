@@ -206,7 +206,7 @@ static int set_sdl_gl_aspect_mode(int v, void *param)
     sdl_gl_aspect_mode = v;
 
     if (old_v != v) {
-        if (sdl_active_canvas && sdl_active_canvas->videoconfig->hwscale) {
+        if (sdl_active_canvas) {	/* VICE 3.10: hwscale removed (always hardware-scaled) */
             video_viewport_resize(sdl_active_canvas, 1);
         }
     }
@@ -242,7 +242,7 @@ static int set_aspect_ratio(const char *val, void *param)
     util_string_set(&aspect_ratio_s, buf);
 
     if (old_aspect != aspect_ratio) {
-        if (sdl_active_canvas && sdl_active_canvas->videoconfig->hwscale) {
+        if (sdl_active_canvas) {	/* VICE 3.10: hwscale removed (always hardware-scaled) */
             video_viewport_resize(sdl_active_canvas, 1);
         }
     }

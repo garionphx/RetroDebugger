@@ -32,6 +32,7 @@
 #include "vice_sdl.h"
 
 #include "sound.h"
+#include "archdep_tick.h"		/* VICE 3.10: tick_t + tick_now/tick_sleep/... */
 
 /* Extra functions for SDL UI */
 //extern char *archdep_default_hotkey_file_name(void);
@@ -58,6 +59,10 @@ extern int archdep_require_vkbd(void);
 #define ARCHDEP_ACCESS_X_OK 1
 #define ARCHDEP_ACCESS_F_OK 0
 int archdep_access(const char *pathname, int mode);
+
+/* VICE 3.10 UI factory defaults referenced by the (3.10) core resources. */
+#define ARCHDEP_MOUSE_ENABLE_DEFAULT    0
+#define ARCHDEP_SHOW_STATUSBAR_FACTORY  0
 
 /* Video chip scaling.  */
 #define ARCHDEP_VICII_DSIZE   1

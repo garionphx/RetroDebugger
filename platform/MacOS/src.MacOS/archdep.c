@@ -38,6 +38,8 @@
 #include <pwd.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include <time.h>
+#include <mach/mach_time.h>
 
 #include "vice_sdl.h"
 #include <sys/stat.h>
@@ -109,6 +111,58 @@ void archdep_network_shutdown(void)
 int archdep_access(const char *pathname, int mode)
 {
 	return access(pathname, mode);
+}
+
+/* VICE 3.10 tick subsystem (mach_absolute_time on macOS). Vanilla's
+   arch/shared/archdep_tick.c is gated on configure-set MACOS_COMPILE which RD's
+   Xcode build doesn't define, so the implementation lives here. */
+static mach_timebase_info_data_t c64d_timebase_info;
+
+void tick_init(void)
+{
+	mach_timebase_info(&c64d_timebase_info);
+}
+
+tick_t tick_per_second(void)
+{
+	return TICK_PER_SECOND;
+}
+
+tick_t tick_now(void)
+{
+	return NANO_TO_TICK(mach_absolute_time() * c64d_timebase_info.numer / c64d_timebase_info.denom);
+}
+
+void tick_sleep(tick_t sleep_ticks)
+{
+	uint64_t nanos = TICK_TO_NANO(sleep_ticks);
+	struct timespec ts;
+
+	if (nanos < NANO_PER_SECOND) {
+		ts.tv_sec = 0;
+		ts.tv_nsec = nanos;
+	} else {
+		ts.tv_sec = nanos / NANO_PER_SECOND;
+		ts.tv_nsec = nanos % NANO_PER_SECOND;
+	}
+
+	nanosleep(&ts, NULL);
+}
+
+tick_t tick_now_after(tick_t previous_tick)
+{
+	tick_t after = tick_now();
+
+	if (after == previous_tick - 1) {
+		after = previous_tick;
+	}
+
+	return after;
+}
+
+tick_t tick_now_delta(tick_t previous_tick)
+{
+	return tick_now_after(previous_tick) - previous_tick;
 }
 
 static int archdep_init_extra(int *argc, char **argv)
