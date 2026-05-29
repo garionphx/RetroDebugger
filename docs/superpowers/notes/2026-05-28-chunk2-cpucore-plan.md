@@ -126,6 +126,52 @@ fn present (drivecpu.c calls it). Gate: 0 dropped 3.10 lines, 133 RD additions, 
 NOTE: BSD sed lacks \b -> used Python regex for word-bounded migration.
 ### B3 DONE: drive-overflow.c/.h deleted (3.10 removed; only exported drive_overflow_init, 0 callers).
 
-### DRIVE CLUSTER COMPLETE -> committing together (drivecpu.c + drive.c + delete drive-overflow.c/.h).
-### NEXT: A2 c64cpusc.c (mainc64cpu.c + nested 6510dtvcore.c re-merge + scaffolding), A3 c64acia1.c
-(aciacore re-merge, 30 conflicts), C datasette.c + delete clkguard.c/.h, D build-list+link+WebSocket.
+### DRIVE CLUSTER COMPLETE (commit 4874d68): drivecpu.c + drive.c + delete drive-overflow.c/.h.
+
+## A2 c64cpusc.c DONE (installed to LIVE, this session) — the MAIN C64 CPU, second big core.
+Structure: c64cpusc.c = 3 vanilla files. (1) wrapper c64/c64cpusc.c (192 ln), (2) inlined
+mainc64cpu.c (795->988), (3) nested-inlined 6510dtvcore.c (2556->2799). RD's nested-core markers:
+`//#include "6510dtvcore.c"` opens, `/// end of 6510dtvcore.c` closes. Did THREE isolated 3-way
+merges, then reassembled by swapping the 4 content regions into the original (preserving RD's exact
+inline markers).
+
+### Wrapper merge: 0 conflicts. Adopted 3.10 deltas: memmap_mem_update(addr,0,0) signature +
+BYTE/WORD/DWORD->uint8/16/32_t. RD's CLK_INC override (c64d_c64_do_cycle) + profiler/includes kept.
+
+### mainc64cpu.c merge: 26 conflicts -> 7 reindent(->3.10) + 19 hooks. KEY resolutions:
+- DEBUG->VICE_DEBUG renames folded with 3.10's `#if defined(DEBUG)||defined(FEATURE_CPUMEMHISTORY)`.
+- mem-access layer (FEATURE_CPUMEMHISTORY is LIVE, vice-config.h:69): adopted 3.10 dummy infra
+  (memmap_mem_store_dummy/read_dummy, STORE_DUMMY/LOAD_DUMMY, REU-in-STORE) + kept RD cell-marking
+  on the REAL accessors only (added c64d_mark_c64_cell_read to the split-out real memmap_mem_read;
+  dummies stay unmarked). RD's c64d_mem_* API funcs preserved.
+- 2 DIFF MISALIGNMENTS (RD reorganized init): 3.10's 6 new mem_bank fields (current_bank_index,
+  mem_bank_list_nos, mem_bank_index_from_bank, mem_bank_flags_from_bank, mem_peek_with_config,
+  mem_bank_poke) folded into monitor_interface_get; maincpu_log=log_open folded into early_init.
+  Symbols verified: fields exist in root/monitor.h (3.10), funcs in c64memsc.c (012ad85).
+- mainloop cluster (RD moved CPU regs to FILE SCOPE for debugger + uses o_bank_base pointers +
+  `while(c64d_vice_run_emulation)`): KEPT RD's organization, DROPPED 3.10 bank_base_ready refactor,
+  INJECTED 3.10 macros (CPU_LOG_ID, ANE/LXA_LOG_LEVEL, CPU_IS_JAMMED, ORIGIN_MEMSPACE) +
+  MODE_SOFT->MODE_RESET_CPU.
+- JAM: 3.10 JAM_RESET_CPU/JAM_POWER_CYCLE/machine_powerup + RD LOGError.
+- suffix: RD per-instruction debug-hook block + 3.10 maincpu_log/archdep_vice_exit/autostart_advance.
+- snapshot: full 3.10 (SMR/SMW_CLOCK 64-bit + ane_log_level/lxa_log_level/maincpu_jammed fields +
+  interrupt_read/write _snapshot/_new_snapshot/_sc_snapshot, SNAP 1.4). Gate: 31 > all intentional
+  (VICE_DEBUG, marking-routed STOREs, file-scope regs, o_bank_base, while-cond, FIXME comments,
+  mainloop/ORIGIN_MEMSPACE alignment artifacts), 669 <.
+
+### 6510dtvcore.c merge (THE HEADLINE): 45 conflicts -> 35 reindent + 10 hooks. _DUMMY 12->34 (==3.10
+exactly) -> cycle-exact dummy reads landed (main-CPU analogue of drive 6510core's 0->107). ALL
+cycle-critical tokens == 3.10: CLK_INC 88, LOAD_DUMMY 12, DO_IRQBRK 3, LOCAL_SET_INTERRUPT 7,
+CHECK_PROFILE_INTERRUPT 5. PROFILING ADOPTED (consistent w/ drivecpu.c; profiler.c added in step D;
+main CPU has DRIVE_CPU undefined so #if !defined(DRIVE_CPU) blocks active). Hooks: DO_IRQBRK +
+DO_INTERRUPT (C64D_ANNOTATE_PUSH x10 stack annotation + IRQ/NMI source tracking via
+vicii/cia1/cia2 c64d_irq_flag + c64d_irqbrk source), BRK/JSR/RTS (RD annotate + CHAMP c64d_profiler_*
+kept ALONGSIDE 3.10 CHECK_PROFILE_*), per-instruction block (RD breakpoint checks
+c64d_c64_check_irq{nmi,vic,cia}_breakpoint + snapshot mgr + 3.10 JAMMED-recovery HACK), FETCH (RD
+bank_base==NULL JAM guard + 3.10 lastop/SET_OPCODE jam recovery + profile_sample_start). Gate -w:
+11 > all intentional (VICE_DEBUG + cosmetic 3.10 paren-conditional formatting), 144 <.
+Assembled c64cpusc.c: 4785 lines, braces 437/437, 0 markers, _DUMMY 54 total.
+
+### NEXT: A3 c64acia1.c (aciacore re-merge, 30 conflicts + clkguard straggler), C datasette.c +
+delete clkguard.c/.h, D build-list reconciliation (ADD profiler.c + joyport/mouse_* + new headers'
+.c; REMOVE clkguard.c/translate.c/patchrom.c) + link + WebSocket suite (28/1/1) acceptance gate.
