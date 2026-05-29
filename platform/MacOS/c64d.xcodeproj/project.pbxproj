@@ -971,6 +971,7 @@
 		41C84D9F23C6183B007C0889 /* raster-sprite-status.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABEA23AA0F1100A54EB2 /* raster-sprite-status.c */; };
 		41C84DA023C6183B007C0889 /* raster-sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABEC23AA0F1100A54EB2 /* raster-sprite.c */; };
 		41C84DA123C6183B007C0889 /* raster.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ABEE23AA0F1100A54EB2 /* raster.c */; };
+		41C8DEAD23C6183B007C0001 /* raster-snapshot.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8DEAD23C6183B007C0002 /* raster-snapshot.c */; };
 		41C84DA223C6183B007C0889 /* alarm.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC2323AA0F1100A54EB2 /* alarm.c */; };
 		41C84DA323C6183B007C0889 /* attach.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC2623AA0F1100A54EB2 /* attach.c */; };
 		41C84DA423C6183B007C0889 /* autostart-prg.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AC2823AA0F1100A54EB2 /* autostart-prg.c */; };
@@ -1107,26 +1108,26 @@
 		41C84E2823C6183B007C0889 /* vicii-timing.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADA723AA0F1100A54EB2 /* vicii-timing.c */; };
 		41C84E2923C6183B007C0889 /* vicii.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADA923AA0F1100A54EB2 /* vicii.c */; };
 		41C84E2A23C6183B007C0889 /* render1x1.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADAC23AA0F1100A54EB2 /* render1x1.c */; };
-		41C84E2B23C6183B007C0889 /* render1x1crt.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADAE23AA0F1100A54EB2 /* render1x1crt.c */; };
+		41C84E2B23C6183B007C0889 /* render1x1rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADAE23AA0F1100A54EB2 /* render1x1rgbi.c */; };
 		41C84E2C23C6183B007C0889 /* render1x1ntsc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB023AA0F1100A54EB2 /* render1x1ntsc.c */; };
 		41C84E2D23C6183B007C0889 /* render1x1pal.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB223AA0F1100A54EB2 /* render1x1pal.c */; };
 		41C84E2E23C6183B007C0889 /* render1x2.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB423AA0F1100A54EB2 /* render1x2.c */; };
-		41C84E2F23C6183B007C0889 /* render1x2crt.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB623AA0F1100A54EB2 /* render1x2crt.c */; };
+		41C84E2F23C6183B007C0889 /* render1x2rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB623AA0F1100A54EB2 /* render1x2rgbi.c */; };
 		41C84E3023C6183B007C0889 /* render2x2.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADB823AA0F1100A54EB2 /* render2x2.c */; };
-		41C84E3123C6183B007C0889 /* render2x2crt.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADBA23AA0F1100A54EB2 /* render2x2crt.c */; };
+		41C84E3123C6183B007C0889 /* render2x2rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADBA23AA0F1100A54EB2 /* render2x2rgbi.c */; };
 		41C84E3223C6183B007C0889 /* render2x2ntsc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADBC23AA0F1100A54EB2 /* render2x2ntsc.c */; };
 		41C84E3323C6183B007C0889 /* render2x2pal.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADBE23AA0F1100A54EB2 /* render2x2pal.c */; };
 		41C84E3423C6183B007C0889 /* render2x4.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC023AA0F1100A54EB2 /* render2x4.c */; };
-		41C84E3523C6183B007C0889 /* render2x4crt.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC223AA0F1100A54EB2 /* render2x4crt.c */; };
+		41C84E3523C6183B007C0889 /* render2x4rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC223AA0F1100A54EB2 /* render2x4rgbi.c */; };
 		41C84E3623C6183B007C0889 /* renderscale2x.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC423AA0F1100A54EB2 /* renderscale2x.c */; };
-		41C84E3723C6183B007C0889 /* renderyuv.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC623AA0F1100A54EB2 /* renderyuv.c */; };
+		41C84E3723C6183B007C0889 /* render2x2palu.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC623AA0F1100A54EB2 /* render2x2palu.c */; };
 		41C84E3823C6183B007C0889 /* video-canvas.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADC823AA0F1100A54EB2 /* video-canvas.c */; };
 		41C84E3923C6183B007C0889 /* video-cmdline-options.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCA23AA0F1100A54EB2 /* video-cmdline-options.c */; };
 		41C84E3A23C6183B007C0889 /* video-color.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCB23AA0F1100A54EB2 /* video-color.c */; };
-		41C84E3B23C6183B007C0889 /* video-render-1x2.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCD23AA0F1100A54EB2 /* video-render-1x2.c */; };
-		41C84E3C23C6183B007C0889 /* video-render-2x2.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCE23AA0F1100A54EB2 /* video-render-2x2.c */; };
-		41C84E3D23C6183B007C0889 /* video-render-crt.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCF23AA0F1100A54EB2 /* video-render-crt.c */; };
-		41C84E3E23C6183B007C0889 /* video-render-pal.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD023AA0F1100A54EB2 /* video-render-pal.c */; };
+		41C84E3B23C6183B007C0889 /* video-render-crtmono.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCD23AA0F1100A54EB2 /* video-render-crtmono.c */; };
+		41C84E3C23C6183B007C0889 /* video-render-rgbi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCE23AA0F1100A54EB2 /* video-render-rgbi.c */; };
+		41C84E3D23C6183B007C0889 /* render-common.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADCF23AA0F1100A54EB2 /* render-common.c */; };
+		41C84E3E23C6183B007C0889 /* video-render-palntsc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD023AA0F1100A54EB2 /* video-render-palntsc.c */; };
 		41C84E3F23C6183B007C0889 /* video-render.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD123AA0F1100A54EB2 /* video-render.c */; };
 		41C84E4023C6183B007C0889 /* video-resources.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD323AA0F1100A54EB2 /* video-resources.c */; };
 		41C84E4123C6183B007C0889 /* video-sound.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ADD523AA0F1100A54EB2 /* video-sound.c */; };
@@ -3123,6 +3124,7 @@
 		41D4ABEC23AA0F1100A54EB2 /* raster-sprite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "raster-sprite.c"; sourceTree = "<group>"; };
 		41D4ABED23AA0F1100A54EB2 /* raster-sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "raster-sprite.h"; sourceTree = "<group>"; };
 		41D4ABEE23AA0F1100A54EB2 /* raster.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = raster.c; sourceTree = "<group>"; };
+		41C8DEAD23C6183B007C0002 /* raster-snapshot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "raster-snapshot.c"; sourceTree = "<group>"; };
 		41D4ABEF23AA0F1100A54EB2 /* raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = raster.h; sourceTree = "<group>"; };
 		41D4ABF123AA0F1100A54EB2 /* resid-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "resid-config.h"; sourceTree = "<group>"; };
 		41D4AC2123AA0F1100A54EB2 /* 6510core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 6510core.h; sourceTree = "<group>"; };
@@ -3504,41 +3506,41 @@
 		41D4ADAA23AA0F1100A54EB2 /* viciitypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viciitypes.h; sourceTree = "<group>"; };
 		41D4ADAC23AA0F1100A54EB2 /* render1x1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x1.c; sourceTree = "<group>"; };
 		41D4ADAD23AA0F1100A54EB2 /* render1x1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x1.h; sourceTree = "<group>"; };
-		41D4ADAE23AA0F1100A54EB2 /* render1x1crt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x1crt.c; sourceTree = "<group>"; };
-		41D4ADAF23AA0F1100A54EB2 /* render1x1crt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x1crt.h; sourceTree = "<group>"; };
+		41D4ADAE23AA0F1100A54EB2 /* render1x1rgbi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x1rgbi.c; sourceTree = "<group>"; };
+		41D4ADAF23AA0F1100A54EB2 /* render1x1rgbi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x1rgbi.h; sourceTree = "<group>"; };
 		41D4ADB023AA0F1100A54EB2 /* render1x1ntsc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x1ntsc.c; sourceTree = "<group>"; };
 		41D4ADB123AA0F1100A54EB2 /* render1x1ntsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x1ntsc.h; sourceTree = "<group>"; };
 		41D4ADB223AA0F1100A54EB2 /* render1x1pal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x1pal.c; sourceTree = "<group>"; };
 		41D4ADB323AA0F1100A54EB2 /* render1x1pal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x1pal.h; sourceTree = "<group>"; };
 		41D4ADB423AA0F1100A54EB2 /* render1x2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x2.c; sourceTree = "<group>"; };
 		41D4ADB523AA0F1100A54EB2 /* render1x2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x2.h; sourceTree = "<group>"; };
-		41D4ADB623AA0F1100A54EB2 /* render1x2crt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x2crt.c; sourceTree = "<group>"; };
-		41D4ADB723AA0F1100A54EB2 /* render1x2crt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x2crt.h; sourceTree = "<group>"; };
+		41D4ADB623AA0F1100A54EB2 /* render1x2rgbi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render1x2rgbi.c; sourceTree = "<group>"; };
+		41D4ADB723AA0F1100A54EB2 /* render1x2rgbi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render1x2rgbi.h; sourceTree = "<group>"; };
 		41D4ADB823AA0F1100A54EB2 /* render2x2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2.c; sourceTree = "<group>"; };
 		41D4ADB923AA0F1100A54EB2 /* render2x2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2.h; sourceTree = "<group>"; };
-		41D4ADBA23AA0F1100A54EB2 /* render2x2crt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2crt.c; sourceTree = "<group>"; };
-		41D4ADBB23AA0F1100A54EB2 /* render2x2crt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2crt.h; sourceTree = "<group>"; };
+		41D4ADBA23AA0F1100A54EB2 /* render2x2rgbi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2rgbi.c; sourceTree = "<group>"; };
+		41D4ADBB23AA0F1100A54EB2 /* render2x2rgbi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2rgbi.h; sourceTree = "<group>"; };
 		41D4ADBC23AA0F1100A54EB2 /* render2x2ntsc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2ntsc.c; sourceTree = "<group>"; };
 		41D4ADBD23AA0F1100A54EB2 /* render2x2ntsc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2ntsc.h; sourceTree = "<group>"; };
 		41D4ADBE23AA0F1100A54EB2 /* render2x2pal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2pal.c; sourceTree = "<group>"; };
 		41D4ADBF23AA0F1100A54EB2 /* render2x2pal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2pal.h; sourceTree = "<group>"; };
 		41D4ADC023AA0F1100A54EB2 /* render2x4.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x4.c; sourceTree = "<group>"; };
 		41D4ADC123AA0F1100A54EB2 /* render2x4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x4.h; sourceTree = "<group>"; };
-		41D4ADC223AA0F1100A54EB2 /* render2x4crt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x4crt.c; sourceTree = "<group>"; };
-		41D4ADC323AA0F1100A54EB2 /* render2x4crt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x4crt.h; sourceTree = "<group>"; };
+		41D4ADC223AA0F1100A54EB2 /* render2x4rgbi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x4rgbi.c; sourceTree = "<group>"; };
+		41D4ADC323AA0F1100A54EB2 /* render2x4rgbi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x4rgbi.h; sourceTree = "<group>"; };
 		41D4ADC423AA0F1100A54EB2 /* renderscale2x.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = renderscale2x.c; sourceTree = "<group>"; };
 		41D4ADC523AA0F1100A54EB2 /* renderscale2x.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderscale2x.h; sourceTree = "<group>"; };
-		41D4ADC623AA0F1100A54EB2 /* renderyuv.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = renderyuv.c; sourceTree = "<group>"; };
-		41D4ADC723AA0F1100A54EB2 /* renderyuv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderyuv.h; sourceTree = "<group>"; };
+		41D4ADC623AA0F1100A54EB2 /* render2x2palu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = render2x2palu.c; sourceTree = "<group>"; };
+		41D4ADC723AA0F1100A54EB2 /* render2x2palu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = render2x2palu.h; sourceTree = "<group>"; };
 		41D4ADC823AA0F1100A54EB2 /* video-canvas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-canvas.c"; sourceTree = "<group>"; };
 		41D4ADC923AA0F1100A54EB2 /* video-canvas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "video-canvas.h"; sourceTree = "<group>"; };
 		41D4ADCA23AA0F1100A54EB2 /* video-cmdline-options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-cmdline-options.c"; sourceTree = "<group>"; };
 		41D4ADCB23AA0F1100A54EB2 /* video-color.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-color.c"; sourceTree = "<group>"; };
 		41D4ADCC23AA0F1100A54EB2 /* video-color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "video-color.h"; sourceTree = "<group>"; };
-		41D4ADCD23AA0F1100A54EB2 /* video-render-1x2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-1x2.c"; sourceTree = "<group>"; };
-		41D4ADCE23AA0F1100A54EB2 /* video-render-2x2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-2x2.c"; sourceTree = "<group>"; };
-		41D4ADCF23AA0F1100A54EB2 /* video-render-crt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-crt.c"; sourceTree = "<group>"; };
-		41D4ADD023AA0F1100A54EB2 /* video-render-pal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-pal.c"; sourceTree = "<group>"; };
+		41D4ADCD23AA0F1100A54EB2 /* video-render-crtmono.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-crtmono.c"; sourceTree = "<group>"; };
+		41D4ADCE23AA0F1100A54EB2 /* video-render-rgbi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-rgbi.c"; sourceTree = "<group>"; };
+		41D4ADCF23AA0F1100A54EB2 /* render-common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "render-common.c"; sourceTree = "<group>"; };
+		41D4ADD023AA0F1100A54EB2 /* video-render-palntsc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render-palntsc.c"; sourceTree = "<group>"; };
 		41D4ADD123AA0F1100A54EB2 /* video-render.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-render.c"; sourceTree = "<group>"; };
 		41D4ADD223AA0F1100A54EB2 /* video-render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "video-render.h"; sourceTree = "<group>"; };
 		41D4ADD323AA0F1100A54EB2 /* video-resources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "video-resources.c"; sourceTree = "<group>"; };
@@ -6402,6 +6404,7 @@
 				41D4ABEC23AA0F1100A54EB2 /* raster-sprite.c */,
 				41D4ABED23AA0F1100A54EB2 /* raster-sprite.h */,
 				41D4ABEE23AA0F1100A54EB2 /* raster.c */,
+				41C8DEAD23C6183B007C0002 /* raster-snapshot.c */,
 				41D4ABEF23AA0F1100A54EB2 /* raster.h */,
 			);
 			path = raster;
@@ -6949,41 +6952,41 @@
 			children = (
 				41D4ADAC23AA0F1100A54EB2 /* render1x1.c */,
 				41D4ADAD23AA0F1100A54EB2 /* render1x1.h */,
-				41D4ADAE23AA0F1100A54EB2 /* render1x1crt.c */,
-				41D4ADAF23AA0F1100A54EB2 /* render1x1crt.h */,
+				41D4ADAE23AA0F1100A54EB2 /* render1x1rgbi.c */,
+				41D4ADAF23AA0F1100A54EB2 /* render1x1rgbi.h */,
 				41D4ADB023AA0F1100A54EB2 /* render1x1ntsc.c */,
 				41D4ADB123AA0F1100A54EB2 /* render1x1ntsc.h */,
 				41D4ADB223AA0F1100A54EB2 /* render1x1pal.c */,
 				41D4ADB323AA0F1100A54EB2 /* render1x1pal.h */,
 				41D4ADB423AA0F1100A54EB2 /* render1x2.c */,
 				41D4ADB523AA0F1100A54EB2 /* render1x2.h */,
-				41D4ADB623AA0F1100A54EB2 /* render1x2crt.c */,
-				41D4ADB723AA0F1100A54EB2 /* render1x2crt.h */,
+				41D4ADB623AA0F1100A54EB2 /* render1x2rgbi.c */,
+				41D4ADB723AA0F1100A54EB2 /* render1x2rgbi.h */,
 				41D4ADB823AA0F1100A54EB2 /* render2x2.c */,
 				41D4ADB923AA0F1100A54EB2 /* render2x2.h */,
-				41D4ADBA23AA0F1100A54EB2 /* render2x2crt.c */,
-				41D4ADBB23AA0F1100A54EB2 /* render2x2crt.h */,
+				41D4ADBA23AA0F1100A54EB2 /* render2x2rgbi.c */,
+				41D4ADBB23AA0F1100A54EB2 /* render2x2rgbi.h */,
 				41D4ADBC23AA0F1100A54EB2 /* render2x2ntsc.c */,
 				41D4ADBD23AA0F1100A54EB2 /* render2x2ntsc.h */,
 				41D4ADBE23AA0F1100A54EB2 /* render2x2pal.c */,
 				41D4ADBF23AA0F1100A54EB2 /* render2x2pal.h */,
 				41D4ADC023AA0F1100A54EB2 /* render2x4.c */,
 				41D4ADC123AA0F1100A54EB2 /* render2x4.h */,
-				41D4ADC223AA0F1100A54EB2 /* render2x4crt.c */,
-				41D4ADC323AA0F1100A54EB2 /* render2x4crt.h */,
+				41D4ADC223AA0F1100A54EB2 /* render2x4rgbi.c */,
+				41D4ADC323AA0F1100A54EB2 /* render2x4rgbi.h */,
 				41D4ADC423AA0F1100A54EB2 /* renderscale2x.c */,
 				41D4ADC523AA0F1100A54EB2 /* renderscale2x.h */,
-				41D4ADC623AA0F1100A54EB2 /* renderyuv.c */,
-				41D4ADC723AA0F1100A54EB2 /* renderyuv.h */,
+				41D4ADC623AA0F1100A54EB2 /* render2x2palu.c */,
+				41D4ADC723AA0F1100A54EB2 /* render2x2palu.h */,
 				41D4ADC823AA0F1100A54EB2 /* video-canvas.c */,
 				41D4ADC923AA0F1100A54EB2 /* video-canvas.h */,
 				41D4ADCA23AA0F1100A54EB2 /* video-cmdline-options.c */,
 				41D4ADCB23AA0F1100A54EB2 /* video-color.c */,
 				41D4ADCC23AA0F1100A54EB2 /* video-color.h */,
-				41D4ADCD23AA0F1100A54EB2 /* video-render-1x2.c */,
-				41D4ADCE23AA0F1100A54EB2 /* video-render-2x2.c */,
-				41D4ADCF23AA0F1100A54EB2 /* video-render-crt.c */,
-				41D4ADD023AA0F1100A54EB2 /* video-render-pal.c */,
+				41D4ADCD23AA0F1100A54EB2 /* video-render-crtmono.c */,
+				41D4ADCE23AA0F1100A54EB2 /* video-render-rgbi.c */,
+				41D4ADCF23AA0F1100A54EB2 /* render-common.c */,
+				41D4ADD023AA0F1100A54EB2 /* video-render-palntsc.c */,
 				41D4ADD123AA0F1100A54EB2 /* video-render.c */,
 				41D4ADD223AA0F1100A54EB2 /* video-render.h */,
 				41D4ADD323AA0F1100A54EB2 /* video-resources.c */,
@@ -8026,6 +8029,7 @@
 				41C84D9F23C6183B007C0889 /* raster-sprite-status.c in Sources */,
 				41C84DA023C6183B007C0889 /* raster-sprite.c in Sources */,
 				41C84DA123C6183B007C0889 /* raster.c in Sources */,
+				41C8DEAD23C6183B007C0001 /* raster-snapshot.c in Sources */,
 				41C84DA223C6183B007C0889 /* alarm.c in Sources */,
 				41C84DA323C6183B007C0889 /* attach.c in Sources */,
 				41C84DA423C6183B007C0889 /* autostart-prg.c in Sources */,
@@ -8184,30 +8188,30 @@
 				41C84E2823C6183B007C0889 /* vicii-timing.c in Sources */,
 				41C84E2923C6183B007C0889 /* vicii.c in Sources */,
 				41C84E2A23C6183B007C0889 /* render1x1.c in Sources */,
-				41C84E2B23C6183B007C0889 /* render1x1crt.c in Sources */,
+				41C84E2B23C6183B007C0889 /* render1x1rgbi.c in Sources */,
 				41C84E2C23C6183B007C0889 /* render1x1ntsc.c in Sources */,
 				41C84E2D23C6183B007C0889 /* render1x1pal.c in Sources */,
 				41C84E2E23C6183B007C0889 /* render1x2.c in Sources */,
 				41FD535B293CD9420051A851 /* CViewC64AllGraphicsBitmaps.cpp in Sources */,
-				41C84E2F23C6183B007C0889 /* render1x2crt.c in Sources */,
+				41C84E2F23C6183B007C0889 /* render1x2rgbi.c in Sources */,
 				41C84E3023C6183B007C0889 /* render2x2.c in Sources */,
-				41C84E3123C6183B007C0889 /* render2x2crt.c in Sources */,
+				41C84E3123C6183B007C0889 /* render2x2rgbi.c in Sources */,
 				416C256A28D6A3DB002BDC0D /* CVicEditorBrush.cpp in Sources */,
 				41C84E3223C6183B007C0889 /* render2x2ntsc.c in Sources */,
 				41C84E3323C6183B007C0889 /* render2x2pal.c in Sources */,
 				41C84E3423C6183B007C0889 /* render2x4.c in Sources */,
 				4134D04D2B06CBB90032BE07 /* CViewDrive1541DiskData.cpp in Sources */,
-				41C84E3523C6183B007C0889 /* render2x4crt.c in Sources */,
+				41C84E3523C6183B007C0889 /* render2x4rgbi.c in Sources */,
 				41C84E3623C6183B007C0889 /* renderscale2x.c in Sources */,
-				41C84E3723C6183B007C0889 /* renderyuv.c in Sources */,
+				41C84E3723C6183B007C0889 /* render2x2palu.c in Sources */,
 				4110D864262BE2A400CF6F36 /* gt-log.c in Sources */,
 				41C84E3823C6183B007C0889 /* video-canvas.c in Sources */,
 				41C84E3923C6183B007C0889 /* video-cmdline-options.c in Sources */,
 				41C84E3A23C6183B007C0889 /* video-color.c in Sources */,
-				41C84E3B23C6183B007C0889 /* video-render-1x2.c in Sources */,
-				41C84E3C23C6183B007C0889 /* video-render-2x2.c in Sources */,
-				41C84E3D23C6183B007C0889 /* video-render-crt.c in Sources */,
-				41C84E3E23C6183B007C0889 /* video-render-pal.c in Sources */,
+				41C84E3B23C6183B007C0889 /* video-render-crtmono.c in Sources */,
+				41C84E3C23C6183B007C0889 /* video-render-rgbi.c in Sources */,
+				41C84E3D23C6183B007C0889 /* render-common.c in Sources */,
+				41C84E3E23C6183B007C0889 /* video-render-palntsc.c in Sources */,
 				41C84E3F23C6183B007C0889 /* video-render.c in Sources */,
 				41C84E4023C6183B007C0889 /* video-resources.c in Sources */,
 				41C84E4123C6183B007C0889 /* video-sound.c in Sources */,
