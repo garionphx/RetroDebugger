@@ -92,3 +92,40 @@ D. POST-MERGE: build-list reconciliation (add new 3.10 .c units, drop GONE files
 Status when this plan was written: monitor.c committed (00f5e94). drivecpu.c type-migration
 (B1 field/type sed) staged on /tmp/dcpu_work only — NOT applied to live; live drivecpu.c is
 still untouched RD 3.1. No core re-merge started yet (paused here to reassess per user).
+
+## PROGRESS UPDATE (2026-05-28, after user approved "proceed with recommended sequence")
+
+### A1 + B1 DONE (drivecpu.c) — installed to LIVE, NOT yet committed (cluster pending drive.c):
+- 6510core.c isolated 3-way re-merge: 68 conflicts -> 59 auto (RD reindent-only, took 3.10) +
+  9 manual hook merges (DO_INTERRUPT, BRK, JSR, FETCH_OPCODE, CPU-emulated header, interrupt
+  processing, FETCH jam, opcode switch, header marker). Method: /tmp/resolve_6510.py inserted RD
+  hooks (C64D_DRIVE_ANNOTATE_PUSH, IRQ-source/breakpoint checks, PC-override, VICE_DEBUG) onto
+  3.10's cycle-exact base. Core gate (diff -w vs vanilla 3.10): 0 dropped cycle logic (17 > all
+  intentional: 3 VICE_DEBUG renames + conflict-8 C64D_FETCH_OPCODE_LOAD replacement + blanks).
+  _DUMMY count now 107 (== 3.10; was 0 stale) — cycle-exact dummy reads landed. drive_context[0]
+  -> diskunit_context[0]. jam recovery (lastop/SET_OPCODE) + CPU_IS_JAMMED preserved.
+- Scaffolding B1: includes (-clkguard +mainlock +uiapi), diskunit_clk[NUM_DISK_UNITS],
+  setup_context (mem_bank_list_nos/mem_bank_poke, %u, -clk_guard_new), LOAD/STORE +6 host DUMMY
+  macros, JUMP uint types, cpu_reset (ui_display_reset + dual rotation_reset), drivecpu_shutdown
+  (-clk_guard_destroy), drivecpu_init (drivemem_init(drv)), REMOVED drivecpu_prevent_clk_overflow,
+  drive_trap_handler uint types, drivecpu_execute (CLOCK tcycles, 64-bit loop cond, ORIGIN_MEMSPACE/
+  CPU_LOG_ID/CPU_IS_JAMMED, JAM->drivecpu_jam), -MSVC pragmas, drivecpu_jam (rename, DRIVE_TYPE_9000,
+  machine_jam->drive_jam(drv->mynumber,...), JAM_RESET_CPU/JAM_POWER_CYCLE, MACHINE_RESET_MODE_*),
+  snapshot (SNAP_MINOR 3, SMW/SMR_CLOCK, +cpu_last_data, uint casts). Scaffolding gate: 11 > all
+  diff-alignment artifacts from RD relocating reg-defines to file scope (all 11 verified PRESENT).
+  Whole file: 4511 lines, 0 markers, braces 367/367, 0 drive_context_t, 0 clkguard.
+- NOTE: uint8/uint16 (non-_t) in c64d_get_drivecpu_regs_internal are an established RD alias used
+  by committed iecbus.c/memiec.c — left as-is (not a regression).
+
+### B2 drive.c DONE: 3 conflicts resolved (took 3.10 dual-drive nested loops + re-added RD snapshot
+fields GCR_dirty_track_for_snapshot/needs_refresh, P64_dirty_for_snapshot; dropped clock_frequency
+[now diskunit-level] + rotation_reset [3.10 moved it]). Residual c64d helpers migrated:
+drive_context_t->diskunit_context_t, drive_context[]->diskunit_context[], drv->drive->drv->drives[0]
+(RD drive-0 assumption). Preserved 3.10's drive->drive index field (drive_s.drive). drive_jam() ext
+fn present (drivecpu.c calls it). Gate: 0 dropped 3.10 lines, 133 RD additions, braces 166/166.
+NOTE: BSD sed lacks \b -> used Python regex for word-bounded migration.
+### B3 DONE: drive-overflow.c/.h deleted (3.10 removed; only exported drive_overflow_init, 0 callers).
+
+### DRIVE CLUSTER COMPLETE -> committing together (drivecpu.c + drive.c + delete drive-overflow.c/.h).
+### NEXT: A2 c64cpusc.c (mainc64cpu.c + nested 6510dtvcore.c re-merge + scaffolding), A3 c64acia1.c
+(aciacore re-merge, 30 conflicts), C datasette.c + delete clkguard.c/.h, D build-list+link+WebSocket.
