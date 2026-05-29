@@ -36,7 +36,14 @@ int   ui_set_fullscreen_custom_width(int w, void *canvas) { (void)w; (void)canva
 int   ui_set_glfilter(int val, void *canvas) { (void)val; (void)canvas; return 0; }
 int   ui_set_rotate(int val, void *canvas) { (void)val; (void)canvas; return 0; }
 int   ui_set_vsync(int val, void *canvas) { (void)val; (void)canvas; return 0; }
-void  set_warp_mode(int value) { (void)value; }
+/* Stock VICE's set_warp_mode lives in arch/<ui>/menu_speed.c (returns int, takes
+   the resource setter's void *param). RD doesn't link those UI files, so we
+   forward to vsync_set_warp_mode here. Without this, RD's
+   CDebugInterfaceVice::SetSettingIsWarpSpeed calls a no-op and warp_enabled
+   never flips -- the C64 thread stays throttled at ~1 MHz even with warp ON
+   (caught by test_warp_on_increases_cycle_rate). */
+extern void vsync_set_warp_mode(int val);
+int set_warp_mode(int value, void *param) { (void)param; vsync_set_warp_mode(value); return 0; }
 
 /* --- monitor PETSCII/screencode output (echo back, RD shows debugger console) --- */
 int uimon_petscii_out(const char *buffer, int len)         { (void)buffer; return len; }
