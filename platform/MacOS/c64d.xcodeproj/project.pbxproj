@@ -1018,7 +1018,6 @@
 		41C84DCE23C6183B007C0889 /* socket.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACBE23AA0F1100A54EB2 /* socket.c */; };
 		41C84DCF23C6183B007C0889 /* sound.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACBF23AA0F1100A54EB2 /* sound.c */; };
 		41C84DD023C6183B007C0889 /* sysfile.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACC223AA0F1100A54EB2 /* sysfile.c */; };
-		41C84DD123C6183B007C0889 /* translate.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACC723AA0F1100A54EB2 /* translate.c */; };
 		41C84DD223C6183B007C0889 /* traps.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACCB23AA0F1100A54EB2 /* traps.c */; };
 		41C84DD323C6183B007C0889 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACD123AA0F1100A54EB2 /* util.c */; };
 		41C84DD423C6183B007C0889 /* vice-crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4ACD623AA0F1100A54EB2 /* vice-crc32.c */; };
@@ -3293,10 +3292,6 @@
 		41D4ACC423AA0F1100A54EB2 /* tap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tap.h; sourceTree = "<group>"; };
 		41D4ACC523AA0F1100A54EB2 /* tape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tape.h; sourceTree = "<group>"; };
 		41D4ACC623AA0F1100A54EB2 /* tpi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tpi.h; sourceTree = "<group>"; };
-		41D4ACC723AA0F1100A54EB2 /* translate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = translate.c; sourceTree = "<group>"; };
-		41D4ACC823AA0F1100A54EB2 /* translate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = translate.h; sourceTree = "<group>"; };
-		41D4ACC923AA0F1100A54EB2 /* translate_funcs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = translate_funcs.h; sourceTree = "<group>"; };
-		41D4ACCA23AA0F1100A54EB2 /* translate_languages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = translate_languages.h; sourceTree = "<group>"; };
 		41D4ACCB23AA0F1100A54EB2 /* traps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = traps.c; sourceTree = "<group>"; };
 		41D4ACCC23AA0F1100A54EB2 /* traps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = traps.h; sourceTree = "<group>"; };
 		41D4ACCD23AA0F1100A54EB2 /* uiapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uiapi.h; sourceTree = "<group>"; };
@@ -6642,10 +6637,6 @@
 				41D4ACC423AA0F1100A54EB2 /* tap.h */,
 				41D4ACC523AA0F1100A54EB2 /* tape.h */,
 				41D4ACC623AA0F1100A54EB2 /* tpi.h */,
-				41D4ACC723AA0F1100A54EB2 /* translate.c */,
-				41D4ACC823AA0F1100A54EB2 /* translate.h */,
-				41D4ACC923AA0F1100A54EB2 /* translate_funcs.h */,
-				41D4ACCA23AA0F1100A54EB2 /* translate_languages.h */,
 				41D4ACCB23AA0F1100A54EB2 /* traps.c */,
 				41D4ACCC23AA0F1100A54EB2 /* traps.h */,
 				41D4ACCD23AA0F1100A54EB2 /* uiapi.h */,
@@ -8089,7 +8080,6 @@
 				41C84DCE23C6183B007C0889 /* socket.c in Sources */,
 				41C84DCF23C6183B007C0889 /* sound.c in Sources */,
 				41C84DD023C6183B007C0889 /* sysfile.c in Sources */,
-				41C84DD123C6183B007C0889 /* translate.c in Sources */,
 				41C84DD223C6183B007C0889 /* traps.c in Sources */,
 				41E9A5CA26301C58008F013A /* CAudioChannelGoatTracker.cpp in Sources */,
 				41C84DD323C6183B007C0889 /* util.c in Sources */,

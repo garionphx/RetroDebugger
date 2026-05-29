@@ -63,7 +63,6 @@
 #include "resources.h"
 #include "sysfile.h"
 #ifdef HAS_TRANSLATION
-#include "translate.h"
 #endif
 #include "vicetypes.h"
 #include "uiapi.h"

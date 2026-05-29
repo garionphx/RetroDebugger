@@ -51,7 +51,7 @@
 #include "util.h"
 #include "vkbd.h"
 
-static log_t sdlkbd_log = LOG_ERR;
+static log_t sdlkbd_log = LOG_DEFAULT;
 
 /* Hotkey filename */
 static char *hotkey_file = NULL;
@@ -202,7 +202,7 @@ int sdlkbd_hotkeys_load(const char *filename)
 //    char buffer[1000];
 //
 //    /* Silently ignore keymap load on resource & cmdline init */
-//    if (sdlkbd_log == LOG_ERR) {
+//    if (sdlkbd_log == LOG_DEFAULT) {
 //        return 0;
 //    }
 //

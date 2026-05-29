@@ -57,7 +57,6 @@
 #include "resources.h"
 #include "snapshot.h"
 #include "sysfile.h"
-#include "translate.h"
 #include "vicetypes.h"
 #include "util.h"
 #include "vice-event.h"
@@ -1827,32 +1826,17 @@ void keyboard_resources_shutdown(void)
 static cmdline_option_t const cmdline_options[] =
 {
     { "-keymap", SET_RESOURCE, 1,
-      NULL, NULL, "KeymapIndex", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NUMBER, IDCLS_SPECIFY_KEYMAP_FILE_INDEX,
-      NULL, NULL },
+      NULL, NULL, "KeymapIndex", NULL, N_("<number>"), N_("Specify index of keymap file (0=symbolic, 1=positional, 2=symbolic (user), 3=positional (user))")},
 /* FIXME: build description dynamically */
     { "-keyboardmapping", SET_RESOURCE, 1,
-      NULL, NULL, "KeyboardMapping", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NUMBER, IDCLS_SPECIFY_KEYBOARD_MAPPING,
-      NULL, NULL },
+      NULL, NULL, "KeyboardMapping", NULL, N_("<number>"), N_("Specify host keyboard layout")},
 /* FIXME: build description dynamically */
     { "-keyboardtype", SET_RESOURCE, 1,
-      NULL, NULL, "KeyboardType", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NUMBER, IDCLS_SPECIFY_KEYBOARD_TYPE,
-      NULL, NULL },
+      NULL, NULL, "KeyboardType", NULL, N_("<number>"), N_("Specify emulated keyboard type")},
     { "-symkeymap", SET_RESOURCE, 1,
-      NULL, NULL, "KeymapUserSymFile", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NAME, IDCLS_SPECIFY_SYM_KEYMAP_FILE_NAME,
-      NULL, NULL },
+      NULL, NULL, "KeymapUserSymFile", NULL, N_("<Name>"), N_("Specify name of symbolic keymap file")},
     { "-poskeymap", SET_RESOURCE, 1,
-      NULL, NULL, "KeymapUserPosFile", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NAME, IDCLS_SPECIFY_POS_KEYMAP_FILE_NAME,
-      NULL, NULL },
+      NULL, NULL, "KeymapUserPosFile", NULL, N_("<Name>"), N_("Specify name of positional keymap file")},
     CMDLINE_LIST_END
 };
 

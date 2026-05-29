@@ -51,7 +51,6 @@ TAPEPORT | TAPELOG
 #include "resources.h"
 #include "snapshot.h"
 #include "tapeport.h"
-#include "translate.h"
 #include "util.h"
 
 /* Device enabled */
@@ -290,30 +289,15 @@ void tapelog_resources_shutdown(void)
 static const cmdline_option_t cmdline_options[] =
 {
     { "-tapelog", SET_RESOURCE, 0,
-      NULL, NULL, "TapeLog", (resource_value_t)1,
-      USE_PARAM_STRING, USE_DESCRIPTION_ID,
-      IDCLS_UNUSED, IDCLS_ENABLE_TAPELOG,
-      NULL, NULL },
+      NULL, NULL, "TapeLog", (resource_value_t)1, NULL, N_("Enable the tape log device")},
     { "+tapelog", SET_RESOURCE, 0,
-      NULL, NULL, "TapeLog", (resource_value_t)0,
-      USE_PARAM_STRING, USE_DESCRIPTION_ID,
-      IDCLS_UNUSED, IDCLS_DISABLE_TAPELOG,
-      NULL, NULL },
+      NULL, NULL, "TapeLog", (resource_value_t)0, NULL, N_("Disable the tape log device")},
     { "-tapelogtofile", SET_RESOURCE, 0,
-      NULL, NULL, "TapeLogDestination", (resource_value_t)1,
-      USE_PARAM_STRING, USE_DESCRIPTION_ID,
-      IDCLS_UNUSED, IDCLS_ENABLE_TAPELOG_LOG_TO_FILE,
-      NULL, NULL },
+      NULL, NULL, "TapeLogDestination", (resource_value_t)1, NULL, N_("Enable logging to a file")},
     { "-tapelogtolog", SET_RESOURCE, 0,
-      NULL, NULL, "TapeLogDestination", (resource_value_t)0,
-      USE_PARAM_STRING, USE_DESCRIPTION_ID,
-      IDCLS_UNUSED, IDCLS_ENABLE_TAPELOG_LOG_TO_LOG,
-      NULL, NULL },
+      NULL, NULL, "TapeLogDestination", (resource_value_t)0, NULL, N_("Enable logging to the emulator log file")},
     { "-tapelogimage", SET_RESOURCE, 1,
-      NULL, NULL, "TapeLogfilename", NULL,
-      USE_PARAM_ID, USE_DESCRIPTION_ID,
-      IDCLS_P_NAME, IDCLS_SPECIFY_TAPELOG_NAME,
-      NULL, NULL },
+      NULL, NULL, "TapeLogfilename", NULL, N_("<Name>"), N_("Specify tape log file name")},
     CMDLINE_LIST_END
 };
 
