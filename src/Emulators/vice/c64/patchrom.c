@@ -482,10 +482,10 @@ int patch_rom_idx(int rev)
         log_error(LOG_DEFAULT, "ROM not patched: Unknown Kernal image.  ID: %d ($%02X) Sum: %d ($%04X).", curr, curr, sum, sum);
         return -1;
     }
-    log_verbose("Trying Kernal ROM patch: id:%d/sum:%d to id:%d.", curr, sum, rev);
+    log_verbose(LOG_DEFAULT, "Trying Kernal ROM patch: id:%d/sum:%d to id:%d.", curr, sum, rev);
 
     if (rev == curr) {
-        log_verbose("ROM not patched: Already revision #%d.", curr);
+        log_verbose(LOG_DEFAULT, "ROM not patched: Already revision #%d.", curr);
 #ifdef RETRODEBUGGER
         if (c64d_patch_kernal_fast_boot_flag)
         {
@@ -530,7 +530,7 @@ int patch_rom_idx(int rev)
     while ((bytes = patch_bytes[i++]) > 0) {
         a = (WORD)patch_bytes[i++];
 
-        log_verbose("  %.4X (%d byte%s)", a & 0xFFFF, bytes, ((bytes > 1) ? "s" : ""));
+        log_verbose(LOG_DEFAULT, "  %.4X (%d byte%s)", a & 0xFFFF, bytes, ((bytes > 1) ? "s" : ""));
 
         i += (bytes * rev);     /* select patch */
         for (n = bytes; n--; ) {

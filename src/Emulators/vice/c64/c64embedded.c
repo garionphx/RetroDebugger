@@ -36,6 +36,7 @@
 #include <stdio.h>
 
 #include "c64mem.h"
+#include "c64rom.h"
 #include "embedded.h"
 #include "machine.h"
 
@@ -55,10 +56,24 @@
 #include "vicii_rgb_vpl.h"
 #include "vicii_vice_vpl.h"
 
+/* VICE 3.10 added version-suffixed default ROM filenames (KernalName="kernal-901227-03.bin" etc.).
+   RD doesn't ship real ROM bytes here (esrc=NULL) -- the lookup just claims success so
+   machine_specific_init proceeds; actual ROM/RAM state is restored from
+   src/Embedded/reset_basic_snap_zlib.h after vice_main_program returns.
+   These entries match the 3.10 default names AND keep the 3.1 bare names for any
+   third-party harness that still sets KernalName="kernal" etc. */
 static embedded_t c64files[] = {
-    { "basic", C64_BASIC_ROM_SIZE, C64_BASIC_ROM_SIZE, C64_BASIC_ROM_SIZE, NULL },
-    { "kernal", C64_KERNAL_ROM_SIZE, C64_KERNAL_ROM_SIZE, C64_KERNAL_ROM_SIZE, NULL },
-    { "chargen", C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, NULL },
+    { "basic",                C64_BASIC_ROM_SIZE,   C64_BASIC_ROM_SIZE,   C64_BASIC_ROM_SIZE,   NULL },
+    { "kernal",               C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { "chargen",              C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, NULL },
+    { C64_BASIC_NAME,         C64_BASIC_ROM_SIZE,   C64_BASIC_ROM_SIZE,   C64_BASIC_ROM_SIZE,   NULL },
+    { C64_KERNAL_REV2_NAME,   C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_KERNAL_REV3_NAME,   C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_KERNAL_JAP_NAME,    C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_KERNAL_SX64_NAME,   C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_KERNAL_GS64_NAME,   C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_KERNAL_4064_NAME,   C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  C64_KERNAL_ROM_SIZE,  NULL },
+    { C64_CHARGEN_NAME,       C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, C64_CHARGEN_ROM_SIZE, NULL },
     EMBEDDED_LIST_END
 };
 

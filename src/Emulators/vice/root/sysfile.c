@@ -31,7 +31,10 @@
 #include <string.h>
 
 #include "archdep.h"
+#include "archdep_current_dir.h"
+#include "archdep_default_sysfile_pathlist.h"
 #include "cmdline.h"
+#include "embedded.h"
 #include "findpath.h"
 #include "lib.h"
 #include "log.h"
@@ -254,6 +257,20 @@ int sysfile_load(const char *name, const char *subpath, uint8_t *dest, int minsi
     off_t tmpsize;
     char *complete_path = NULL;
     int load_at_end;
+
+#ifdef USE_EMBEDDED
+    /* VICE 3.10 dropped this hook from sysfile_load. RD relies on it to satisfy
+       ROM/palette loads from src/Embedded/* without shipping loose files. If the
+       embedded table claims to provide the file, accept that as the load. */
+    {
+        size_t embedded_size = embedded_check_file(name, (BYTE *)dest,
+                                                   minsize < 0 ? -minsize : minsize,
+                                                   maxsize);
+        if (embedded_size != 0) {
+            return (int)embedded_size;
+        }
+    }
+#endif
 
     fp = sysfile_open(name, subpath, &complete_path, MODE_READ);
 

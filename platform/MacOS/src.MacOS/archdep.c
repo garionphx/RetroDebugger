@@ -188,7 +188,7 @@ static int archdep_init_extra(int *argc, char **argv)
 	return 0;
 }
 
-char *archdep_program_name(void)
+const char *archdep_program_name(void)
 {
 	static char *program_name = NULL;
 	
@@ -661,19 +661,19 @@ int archdep_mkdir(const char *pathname, int mode)
 #endif
 }
 
-int archdep_stat(const char *file_name, unsigned int *len, unsigned int *isdir)
+int archdep_stat(const char *file_name, size_t *len, unsigned int *isdir)
 {
 	struct stat statbuf;
-	
+
 	if (stat(file_name, &statbuf) < 0) {
-		*len = 0;
-		*isdir = 0;
+		if (len)   { *len = 0; }
+		if (isdir) { *isdir = 0; }
 		return -1;
 	}
-	
-	*len = statbuf.st_size;
-	*isdir = S_ISDIR(statbuf.st_mode);
-	
+
+	if (len)   { *len = (size_t)statbuf.st_size; }
+	if (isdir) { *isdir = S_ISDIR(statbuf.st_mode); }
+
 	return 0;
 }
 

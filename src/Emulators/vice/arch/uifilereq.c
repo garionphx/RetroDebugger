@@ -609,13 +609,13 @@ char* sdl_ui_slot_selection_dialog(const char* title, ui_menu_slot_mode_t mode)
     slots = lib_malloc(sizeof(ui_menu_slots));
     slots->entries = lib_malloc(sizeof(ui_menu_slot_entry) * total);
     
-    progname = archdep_program_name();
+    progname = (char *)archdep_program_name();	/* 3.10 returns const char *; this SDL-UI path is dead in RD (MTEngineSDL is the active UI), preserve the legacy mutation/free behavior with a cast. */
     temp_name = strchr(progname, FSDEV_EXT_SEP_CHR);
     if (temp_name) {
         *temp_name = 0;
     }
     for (i = 0; i < total; ++i) {
-        unsigned int len;
+        size_t len;
         unsigned int isdir;
 
         slots->entries[i].slot_name = lib_msprintf("snapshot_%s_%02d.vsf", progname, i + 1);
