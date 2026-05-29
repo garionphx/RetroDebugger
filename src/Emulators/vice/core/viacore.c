@@ -1328,18 +1328,18 @@ BYTE c64d_viacore_peek(via_context_t *via_context, WORD addr)
 			/* Timers */
 			
 		case VIA_T1CL /*TIMER_AL */ :     /* timer A low */
-			return (BYTE)(myviata(via_context) & 0xff);
+			return (BYTE)(viacore_t1(via_context, rclk) & 0xff);
 			
 		case VIA_T2CL /*TIMER_BL */ :     /* timer B low */
-			return (BYTE)(myviatb(via_context) & 0xff);
+			return (BYTE)(viacore_t2(via_context, rclk) & 0xff);
 			
 			/* Timers */
 			
 		case VIA_T1CH /*TIMER_AH */ :     /* timer A high */
-			return (BYTE)((myviata(via_context) >> 8) & 0xff);
+			return (BYTE)((viacore_t1(via_context, rclk) >> 8) & 0xff);
 			
 		case VIA_T2CH /*TIMER_BH */ :     /* timer B high */
-			return (BYTE)((myviatb(via_context) >> 8) & 0xff);
+			return (BYTE)((viacore_t2(via_context, rclk) >> 8) & 0xff);
 			
 		case VIA_SR:              /* Serial Port Shift Register */
 			return via_context->via[addr];

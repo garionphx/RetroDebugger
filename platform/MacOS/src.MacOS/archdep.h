@@ -146,3 +146,7 @@ extern char *archdep_sdl2_default_renderers[];
 #endif
 
 #endif
+
+/* VICE 3.10: socket error retrieval (unix uses errno). */
+#include <errno.h>
+#define ARCHDEP_SOCKET_ERROR errno

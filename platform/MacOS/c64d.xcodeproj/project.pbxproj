@@ -604,10 +604,29 @@
 		41C84C2F23C6183A007C0889 /* catweaselmkiii.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92623AA0F1000A54EB2 /* catweaselmkiii.c */; };
 		41C84C3023C6183A007C0889 /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92723AA0F1000A54EB2 /* console.c */; };
 		41C84C3123C6183A007C0889 /* coproc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92823AA0F1000A54EB2 /* coproc.c */; };
+		41C8CA1223C6183B007C0001 /* rd_ui_stubs.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA1323C6183B007C0001 /* rd_ui_stubs.c */; };
+		41C8CA0C23C6183B007C0001 /* archdep_chdir.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0001 /* archdep_chdir.c */; };
+		41C8CA0C23C6183B007C0002 /* archdep_close.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0002 /* archdep_close.c */; };
+		41C8CA0C23C6183B007C0003 /* archdep_current_dir.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0003 /* archdep_current_dir.c */; };
+		41C8CA0C23C6183B007C0004 /* archdep_default_portable_resource_file_name.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0004 /* archdep_default_portable_resource_file_name.c */; };
+		41C8CA0C23C6183B007C0005 /* archdep_dir.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0005 /* archdep_dir.c */; };
+		41C8CA0C23C6183B007C0007 /* archdep_exit.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0007 /* archdep_exit.c */; };
+		41C8CA0C23C6183B007C0008 /* archdep_fdopen.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0008 /* archdep_fdopen.c */; };
+		41C8CA0C23C6183B007C0009 /* archdep_file_exists.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0009 /* archdep_file_exists.c */; };
+		41C8CA0C23C6183B007C000A /* archdep_file_size.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000A /* archdep_file_size.c */; };
+		41C8CA0C23C6183B007C000B /* archdep_fseeko.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000B /* archdep_fseeko.c */; };
+		41C8CA0C23C6183B007C000C /* archdep_ftello.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000C /* archdep_ftello.c */; };
+		41C8CA0C23C6183B007C000D /* archdep_getcwd.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000D /* archdep_getcwd.c */; };
+		41C8CA0C23C6183B007C000E /* archdep_is_haiku.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000E /* archdep_is_haiku.c */; };
+		41C8CA0C23C6183B007C000F /* archdep_quote_unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C000F /* archdep_quote_unzip.c */; };
+		41C8CA0C23C6183B007C0010 /* archdep_real_path.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0010 /* archdep_real_path.c */; };
+		41C8CA0C23C6183B007C0011 /* archdep_remove.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0011 /* archdep_remove.c */; };
+		41C8CA0C23C6183B007C0012 /* archdep_rmdir.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0012 /* archdep_rmdir.c */; };
+		41C8CA0C23C6183B007C0013 /* archdep_sound.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0013 /* archdep_sound.c */; };
+		41C8CA0C23C6183B007C0014 /* archdep_usleep.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0D23C6183B007C0014 /* archdep_usleep.c */; };
 		41C84C3223C6183A007C0889 /* dynlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92A23AA0F1000A54EB2 /* dynlib.c */; };
 		41C84C3323C6183A007C0889 /* fullscreen.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92B23AA0F1000A54EB2 /* fullscreen.c */; };
 		41C84C3423C6183A007C0889 /* c64-hardsid.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92D23AA0F1000A54EB2 /* c64-hardsid.c */; };
-		41C84C3523C6183A007C0889 /* joy.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A92E23AA0F1000A54EB2 /* joy.c */; };
 		41C84C3623C6183A007C0889 /* kbd.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A93023AA0F1000A54EB2 /* kbd.c */; };
 		41C84C3723C6183A007C0889 /* lightpendrv.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A93223AA0F1000A54EB2 /* lightpendrv.c */; };
 		41C84C3823C6183A007C0889 /* menu_c64_common_expansions.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4A93423AA0F1000A54EB2 /* menu_c64_common_expansions.c */; };
@@ -821,6 +840,10 @@
 		41C84CEC23C6183B007C0889 /* ciatimer.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AA8C23AA0F1000A54EB2 /* ciatimer.c */; };
 		41C84CED23C6183B007C0889 /* cs8900.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AA8E23AA0F1000A54EB2 /* cs8900.c */; };
 		41C84CEE23C6183B007C0889 /* flash040core.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AA9023AA0F1000A54EB2 /* flash040core.c */; };
+		41C8CA0E23C6183B007C0001 /* cmdhd.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0F23C6183B007C0001 /* cmdhd.c */; };
+		41C8CA0E23C6183B007C0002 /* rtc-72421.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0F23C6183B007C0002 /* rtc-72421.c */; };
+		41C8CA0E23C6183B007C0003 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0F23C6183B007C0003 /* sha1.c */; };
+		41C8CA0E23C6183B007C0004 /* iec-ieee488-shared.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0F23C6183B007C0004 /* iec-ieee488-shared.c */; };
 		41C8CA0823C6183B007C001E /* flash800core.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0923C6183B007C001E /* flash800core.c */; };
 		41C8CA0823C6183B007C001F /* spi-flash.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0923C6183B007C001F /* spi-flash.c */; };
 		41C8CA0823C6183B007C0020 /* archdep_sleep.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0923C6183B007C0020 /* archdep_sleep.c */; };
@@ -898,6 +921,7 @@
 		41C84D3423C6183B007C0889 /* fsdevice-close.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2123AA0F1100A54EB2 /* fsdevice-close.c */; };
 		41C84D3523C6183B007C0889 /* fsdevice-cmdline-options.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2323AA0F1100A54EB2 /* fsdevice-cmdline-options.c */; };
 		41C84D3623C6183B007C0889 /* fsdevice-flush.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2523AA0F1100A54EB2 /* fsdevice-flush.c */; };
+		41C8CA1023C6183B007C0001 /* fsdevice-filename.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA1123C6183B007C0001 /* fsdevice-filename.c */; };
 		41C84D3723C6183B007C0889 /* fsdevice-open.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2723AA0F1100A54EB2 /* fsdevice-open.c */; };
 		41C84D3823C6183B007C0889 /* fsdevice-read.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2923AA0F1100A54EB2 /* fsdevice-read.c */; };
 		41C84D3923C6183B007C0889 /* fsdevice-resources.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB2B23AA0F1100A54EB2 /* fsdevice-resources.c */; };
@@ -926,6 +950,36 @@
 		41C84D5023C6183B007C0889 /* cx21.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB5823AA0F1100A54EB2 /* cx21.c */; };
 		41C84D5123C6183B007C0889 /* cx85.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB5A23AA0F1100A54EB2 /* cx85.c */; };
 		41C84D5223C6183B007C0889 /* joyport.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB5C23AA0F1100A54EB2 /* joyport.c */; };
+		41C8CA0A23C6183B007C0001 /* inception.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0001 /* inception.c */; };
+		41C8CA0A23C6183B007C0002 /* joyport_io_sim.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0002 /* joyport_io_sim.c */; };
+		41C8CA0A23C6183B007C0003 /* multijoy.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0003 /* multijoy.c */; };
+		41C8CA0A23C6183B007C0004 /* ninja_snespad.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0004 /* ninja_snespad.c */; };
+		41C8CA0A23C6183B007C0005 /* paperclip2.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0005 /* paperclip2.c */; };
+		41C8CA0A23C6183B007C0006 /* paperclip64e.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0006 /* paperclip64e.c */; };
+		41C8CA0A23C6183B007C0007 /* paperclip64sc.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0007 /* paperclip64sc.c */; };
+		41C8CA0A23C6183B007C0008 /* powerpad.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0008 /* powerpad.c */; };
+		41C8CA0A23C6183B007C0009 /* protopad.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0009 /* protopad.c */; };
+		41C8CA0A23C6183B007C000A /* spaceballs.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000A /* spaceballs.c */; };
+		41C8CA0A23C6183B007C000B /* trapthem_snespad.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000B /* trapthem_snespad.c */; };
+		41C8CA0A23C6183B007C000C /* waasoft_dongle.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000C /* waasoft_dongle.c */; };
+		41C8CA0A23C6183B007C000D /* mouse_1351.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000D /* mouse_1351.c */; };
+		41C8CA0A23C6183B007C000E /* mouse_neos.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000E /* mouse_neos.c */; };
+		41C8CA0A23C6183B007C000F /* mouse_paddle.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C000F /* mouse_paddle.c */; };
+		41C8CA0A23C6183B007C0010 /* mouse_quadrature.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0010 /* mouse_quadrature.c */; };
+		41C8CA0A23C6183B007C0011 /* userport_diag_pin.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0011 /* userport_diag_pin.c */; };
+		41C8CA0A23C6183B007C0012 /* userport_io_sim.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0012 /* userport_io_sim.c */; };
+		41C8CA0A23C6183B007C0013 /* userport_petscii_snespad.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0013 /* userport_petscii_snespad.c */; };
+		41C8CA0A23C6183B007C0014 /* userport_ps2mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0014 /* userport_ps2mouse.c */; };
+		41C8CA0A23C6183B007C0015 /* userport_spt_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0015 /* userport_spt_joystick.c */; };
+		41C8CA0A23C6183B007C0016 /* userport_superpad64.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0016 /* userport_superpad64.c */; };
+		41C8CA0A23C6183B007C0017 /* userport_hummer_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0017 /* userport_hummer_joystick.c */; };
+		41C8CA0A23C6183B007C0018 /* userport_synergy_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0018 /* userport_synergy_joystick.c */; };
+		41C8CA0A23C6183B007C0019 /* userport_woj_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C0019 /* userport_woj_joystick.c */; };
+		41C8CA0A23C6183B007C001A /* userport_hks_joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C001A /* userport_hks_joystick.c */; };
+		41C8CA0A23C6183B007C001B /* i8255a.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C001B /* i8255a.c */; };
+		41C8CA0A23C6183B007C001C /* scsi.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C001C /* scsi.c */; };
+		41C8CA0A23C6183B007C001D /* mon_profile.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C001D /* mon_profile.c */; };
+		41C8CA0A23C6183B007C001E /* monitor_binary.c in Sources */ = {isa = PBXBuildFile; fileRef = 41C8CA0B23C6183B007C001E /* monitor_binary.c */; };
 		41C84D5323C6183B007C0889 /* joystick.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB5E23AA0F1100A54EB2 /* joystick.c */; };
 		41C84D5423C6183B007C0889 /* lightpen.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB6023AA0F1100A54EB2 /* lightpen.c */; };
 		41C84D5523C6183B007C0889 /* mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AB6223AA0F1100A54EB2 /* mouse.c */; };
@@ -2476,12 +2530,31 @@
 		41D4A92623AA0F1000A54EB2 /* catweaselmkiii.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = catweaselmkiii.c; sourceTree = "<group>"; };
 		41D4A92723AA0F1000A54EB2 /* console.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = console.c; sourceTree = "<group>"; };
 		41D4A92823AA0F1000A54EB2 /* coproc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coproc.c; sourceTree = "<group>"; };
+		41C8CA1323C6183B007C0001 /* rd_ui_stubs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rd_ui_stubs.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0001 /* archdep_chdir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_chdir.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0002 /* archdep_close.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_close.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0003 /* archdep_current_dir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_current_dir.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0004 /* archdep_default_portable_resource_file_name.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_default_portable_resource_file_name.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0005 /* archdep_dir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_dir.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0007 /* archdep_exit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_exit.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0008 /* archdep_fdopen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_fdopen.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0009 /* archdep_file_exists.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_file_exists.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000A /* archdep_file_size.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_file_size.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000B /* archdep_fseeko.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_fseeko.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000C /* archdep_ftello.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_ftello.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000D /* archdep_getcwd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_getcwd.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000E /* archdep_is_haiku.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_is_haiku.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C000F /* archdep_quote_unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_quote_unzip.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0010 /* archdep_real_path.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_real_path.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0011 /* archdep_remove.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_remove.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0012 /* archdep_rmdir.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_rmdir.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0013 /* archdep_sound.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_sound.c"; sourceTree = "<group>"; };
+		41C8CA0D23C6183B007C0014 /* archdep_usleep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_usleep.c"; sourceTree = "<group>"; };
 		41D4A92923AA0F1000A54EB2 /* coproc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coproc.h; sourceTree = "<group>"; };
 		41D4A92A23AA0F1000A54EB2 /* dynlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dynlib.c; sourceTree = "<group>"; };
 		41D4A92B23AA0F1000A54EB2 /* fullscreen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fullscreen.c; sourceTree = "<group>"; };
 		41D4A92C23AA0F1000A54EB2 /* fullscreenarch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fullscreenarch.h; sourceTree = "<group>"; };
 		41D4A92D23AA0F1000A54EB2 /* c64-hardsid.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "c64-hardsid.c"; sourceTree = "<group>"; };
-		41D4A92E23AA0F1000A54EB2 /* joy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = joy.c; sourceTree = "<group>"; };
 		41D4A92F23AA0F1000A54EB2 /* joy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = joy.h; sourceTree = "<group>"; };
 		41D4A93023AA0F1000A54EB2 /* kbd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = kbd.c; sourceTree = "<group>"; };
 		41D4A93123AA0F1000A54EB2 /* kbd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kbd.h; sourceTree = "<group>"; };
@@ -2861,6 +2934,10 @@
 		41D4AA8E23AA0F1000A54EB2 /* cs8900.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cs8900.c; sourceTree = "<group>"; };
 		41D4AA8F23AA0F1000A54EB2 /* cs8900.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cs8900.h; sourceTree = "<group>"; };
 		41D4AA9023AA0F1000A54EB2 /* flash040core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = flash040core.c; sourceTree = "<group>"; };
+		41C8CA0F23C6183B007C0001 /* cmdhd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "cmdhd.c"; sourceTree = "<group>"; };
+		41C8CA0F23C6183B007C0002 /* rtc-72421.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "rtc-72421.c"; sourceTree = "<group>"; };
+		41C8CA0F23C6183B007C0003 /* sha1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "sha1.c"; sourceTree = "<group>"; };
+		41C8CA0F23C6183B007C0004 /* iec-ieee488-shared.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "iec-ieee488-shared.c"; sourceTree = "<group>"; };
 		41C8CA0923C6183B007C001E /* flash800core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "flash800core.c"; sourceTree = "<group>"; };
 		41C8CA0923C6183B007C001F /* spi-flash.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "spi-flash.c"; sourceTree = "<group>"; };
 		41C8CA0923C6183B007C0020 /* archdep_sleep.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "archdep_sleep.c"; sourceTree = "<group>"; };
@@ -3004,6 +3081,7 @@
 		41D4AB2323AA0F1100A54EB2 /* fsdevice-cmdline-options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fsdevice-cmdline-options.c"; sourceTree = "<group>"; };
 		41D4AB2423AA0F1100A54EB2 /* fsdevice-cmdline-options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fsdevice-cmdline-options.h"; sourceTree = "<group>"; };
 		41D4AB2523AA0F1100A54EB2 /* fsdevice-flush.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fsdevice-flush.c"; sourceTree = "<group>"; };
+		41C8CA1123C6183B007C0001 /* fsdevice-filename.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fsdevice-filename.c"; sourceTree = "<group>"; };
 		41D4AB2623AA0F1100A54EB2 /* fsdevice-flush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fsdevice-flush.h"; sourceTree = "<group>"; };
 		41D4AB2723AA0F1100A54EB2 /* fsdevice-open.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "fsdevice-open.c"; sourceTree = "<group>"; };
 		41D4AB2823AA0F1100A54EB2 /* fsdevice-open.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "fsdevice-open.h"; sourceTree = "<group>"; };
@@ -3055,6 +3133,36 @@
 		41D4AB5A23AA0F1100A54EB2 /* cx85.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cx85.c; sourceTree = "<group>"; };
 		41D4AB5B23AA0F1100A54EB2 /* cx85.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cx85.h; sourceTree = "<group>"; };
 		41D4AB5C23AA0F1100A54EB2 /* joyport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = joyport.c; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0001 /* inception.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "inception.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0002 /* joyport_io_sim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "joyport_io_sim.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0003 /* multijoy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "multijoy.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0004 /* ninja_snespad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "ninja_snespad.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0005 /* paperclip2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "paperclip2.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0006 /* paperclip64e.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "paperclip64e.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0007 /* paperclip64sc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "paperclip64sc.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0008 /* powerpad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "powerpad.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0009 /* protopad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "protopad.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000A /* spaceballs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "spaceballs.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000B /* trapthem_snespad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "trapthem_snespad.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000C /* waasoft_dongle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "waasoft_dongle.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000D /* mouse_1351.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mouse_1351.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000E /* mouse_neos.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mouse_neos.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C000F /* mouse_paddle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mouse_paddle.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0010 /* mouse_quadrature.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mouse_quadrature.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0011 /* userport_diag_pin.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_diag_pin.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0012 /* userport_io_sim.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_io_sim.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0013 /* userport_petscii_snespad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_petscii_snespad.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0014 /* userport_ps2mouse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_ps2mouse.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0015 /* userport_spt_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_spt_joystick.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0016 /* userport_superpad64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_superpad64.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0017 /* userport_hummer_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_hummer_joystick.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0018 /* userport_synergy_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_synergy_joystick.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C0019 /* userport_woj_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_woj_joystick.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C001A /* userport_hks_joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "userport_hks_joystick.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C001B /* i8255a.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "i8255a.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C001C /* scsi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "scsi.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C001D /* mon_profile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "mon_profile.c"; sourceTree = "<group>"; };
+		41C8CA0B23C6183B007C001E /* monitor_binary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "monitor_binary.c"; sourceTree = "<group>"; };
 		41D4AB5D23AA0F1100A54EB2 /* joyport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = joyport.h; sourceTree = "<group>"; };
 		41D4AB5E23AA0F1100A54EB2 /* joystick.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = joystick.c; sourceTree = "<group>"; };
 		41D4AB5F23AA0F1100A54EB2 /* joystick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = joystick.h; sourceTree = "<group>"; };
@@ -5621,13 +5729,32 @@
 				41D4A92623AA0F1000A54EB2 /* catweaselmkiii.c */,
 				41D4A92723AA0F1000A54EB2 /* console.c */,
 				41D4A92823AA0F1000A54EB2 /* coproc.c */,
+				41C8CA1323C6183B007C0001 /* rd_ui_stubs.c */,
+				41C8CA0D23C6183B007C0001 /* archdep_chdir.c */,
+				41C8CA0D23C6183B007C0002 /* archdep_close.c */,
+				41C8CA0D23C6183B007C0003 /* archdep_current_dir.c */,
+				41C8CA0D23C6183B007C0004 /* archdep_default_portable_resource_file_name.c */,
+				41C8CA0D23C6183B007C0005 /* archdep_dir.c */,
+				41C8CA0D23C6183B007C0007 /* archdep_exit.c */,
+				41C8CA0D23C6183B007C0008 /* archdep_fdopen.c */,
+				41C8CA0D23C6183B007C0009 /* archdep_file_exists.c */,
+				41C8CA0D23C6183B007C000A /* archdep_file_size.c */,
+				41C8CA0D23C6183B007C000B /* archdep_fseeko.c */,
+				41C8CA0D23C6183B007C000C /* archdep_ftello.c */,
+				41C8CA0D23C6183B007C000D /* archdep_getcwd.c */,
+				41C8CA0D23C6183B007C000E /* archdep_is_haiku.c */,
+				41C8CA0D23C6183B007C000F /* archdep_quote_unzip.c */,
+				41C8CA0D23C6183B007C0010 /* archdep_real_path.c */,
+				41C8CA0D23C6183B007C0011 /* archdep_remove.c */,
+				41C8CA0D23C6183B007C0012 /* archdep_rmdir.c */,
+				41C8CA0D23C6183B007C0013 /* archdep_sound.c */,
+				41C8CA0D23C6183B007C0014 /* archdep_usleep.c */,
 				41C8CA0923C6183B007C0020 /* archdep_sleep.c */,
 				41D4A92923AA0F1000A54EB2 /* coproc.h */,
 				41D4A92A23AA0F1000A54EB2 /* dynlib.c */,
 				41D4A92B23AA0F1000A54EB2 /* fullscreen.c */,
 				41D4A92C23AA0F1000A54EB2 /* fullscreenarch.h */,
 				41D4A92D23AA0F1000A54EB2 /* c64-hardsid.c */,
-				41D4A92E23AA0F1000A54EB2 /* joy.c */,
 				41D4A92F23AA0F1000A54EB2 /* joy.h */,
 				41D4A93023AA0F1000A54EB2 /* kbd.c */,
 				41D4A93123AA0F1000A54EB2 /* kbd.h */,
@@ -6025,6 +6152,9 @@
 				41D4AA8E23AA0F1000A54EB2 /* cs8900.c */,
 				41D4AA8F23AA0F1000A54EB2 /* cs8900.h */,
 				41D4AA9023AA0F1000A54EB2 /* flash040core.c */,
+				41C8CA0F23C6183B007C0002 /* rtc-72421.c */,
+				41C8CA0B23C6183B007C001B /* i8255a.c */,
+				41C8CA0B23C6183B007C001C /* scsi.c */,
 				41C8CA0923C6183B007C001E /* flash800core.c */,
 				41C8CA0923C6183B007C001F /* spi-flash.c */,
 				41D4AA9123AA0F1000A54EB2 /* fmopl.c */,
@@ -6150,6 +6280,7 @@
 				41D4AAF423AA0F1000A54EB2 /* pc8477.c */,
 				41D4AAF523AA0F1000A54EB2 /* pc8477.h */,
 				41D4AAF623AA0F1000A54EB2 /* via1d1541.c */,
+				41C8CA0F23C6183B007C0001 /* cmdhd.c */,
 				41D4AAF723AA0F1000A54EB2 /* via1d1541.h */,
 				41D4AAF823AA0F1000A54EB2 /* via4000.c */,
 				41D4AAF923AA0F1000A54EB2 /* via4000.h */,
@@ -6240,6 +6371,7 @@
 				41D4AB2323AA0F1100A54EB2 /* fsdevice-cmdline-options.c */,
 				41D4AB2423AA0F1100A54EB2 /* fsdevice-cmdline-options.h */,
 				41D4AB2523AA0F1100A54EB2 /* fsdevice-flush.c */,
+				41C8CA1123C6183B007C0001 /* fsdevice-filename.c */,
 				41D4AB2623AA0F1100A54EB2 /* fsdevice-flush.h */,
 				41D4AB2723AA0F1100A54EB2 /* fsdevice-open.c */,
 				41D4AB2823AA0F1100A54EB2 /* fsdevice-open.h */,
@@ -6326,6 +6458,22 @@
 				41D4AB5A23AA0F1100A54EB2 /* cx85.c */,
 				41D4AB5B23AA0F1100A54EB2 /* cx85.h */,
 				41D4AB5C23AA0F1100A54EB2 /* joyport.c */,
+				41C8CA0B23C6183B007C0001 /* inception.c */,
+				41C8CA0B23C6183B007C0002 /* joyport_io_sim.c */,
+				41C8CA0B23C6183B007C0003 /* multijoy.c */,
+				41C8CA0B23C6183B007C0004 /* ninja_snespad.c */,
+				41C8CA0B23C6183B007C0005 /* paperclip2.c */,
+				41C8CA0B23C6183B007C0006 /* paperclip64e.c */,
+				41C8CA0B23C6183B007C0007 /* paperclip64sc.c */,
+				41C8CA0B23C6183B007C0008 /* powerpad.c */,
+				41C8CA0B23C6183B007C0009 /* protopad.c */,
+				41C8CA0B23C6183B007C000A /* spaceballs.c */,
+				41C8CA0B23C6183B007C000B /* trapthem_snespad.c */,
+				41C8CA0B23C6183B007C000C /* waasoft_dongle.c */,
+				41C8CA0B23C6183B007C000D /* mouse_1351.c */,
+				41C8CA0B23C6183B007C000E /* mouse_neos.c */,
+				41C8CA0B23C6183B007C000F /* mouse_paddle.c */,
+				41C8CA0B23C6183B007C0010 /* mouse_quadrature.c */,
 				41D4AB5D23AA0F1100A54EB2 /* joyport.h */,
 				41D4AB5E23AA0F1100A54EB2 /* joystick.c */,
 				41D4AB5F23AA0F1100A54EB2 /* joystick.h */,
@@ -6411,6 +6559,8 @@
 				41D4AB9D23AA0F1100A54EB2 /* mon_util.c */,
 				41D4AB9E23AA0F1100A54EB2 /* mon_util.h */,
 				41D4AB9F23AA0F1100A54EB2 /* monitor.c */,
+				41C8CA0B23C6183B007C001D /* mon_profile.c */,
+				41C8CA0B23C6183B007C001E /* monitor_binary.c */,
 				41D4ABA023AA0F1100A54EB2 /* monitor_network.c */,
 				41D4ABA123AA0F1100A54EB2 /* monitor_network.h */,
 				41D4ABA223AA0F1100A54EB2 /* montypes.h */,
@@ -6627,6 +6777,7 @@
 				41D4AC4A23AA0F1100A54EB2 /* color.h */,
 				41D4AC4B23AA0F1100A54EB2 /* console.h */,
 				41D4AC4C23AA0F1100A54EB2 /* datasette.c */,
+				41C8CA0F23C6183B007C0003 /* sha1.c */,
 				41D4AC4D23AA0F1100A54EB2 /* datasette.h */,
 				41C8CA0723C6183B007C0021 /* datasette-sound.c */,
 				41C8CA0723C6183B007C0022 /* datasette-sound.h */,
@@ -6865,6 +7016,7 @@
 				41D4AD1E23AA0F1100A54EB2 /* serial-iec-bus.c */,
 				41D4AD1F23AA0F1100A54EB2 /* serial-iec-bus.h */,
 				41D4AD2023AA0F1100A54EB2 /* serial-iec-device.c */,
+				41C8CA0F23C6183B007C0004 /* iec-ieee488-shared.c */,
 				41D4AD2123AA0F1100A54EB2 /* serial-iec-device.h */,
 				41D4AD2223AA0F1100A54EB2 /* serial-iec-lib.c */,
 				41D4AD2323AA0F1100A54EB2 /* serial-iec.c */,
@@ -6960,6 +7112,16 @@
 			isa = PBXGroup;
 			children = (
 				41D4AD5E23AA0F1100A54EB2 /* userport.c */,
+				41C8CA0B23C6183B007C0011 /* userport_diag_pin.c */,
+				41C8CA0B23C6183B007C0012 /* userport_io_sim.c */,
+				41C8CA0B23C6183B007C0013 /* userport_petscii_snespad.c */,
+				41C8CA0B23C6183B007C0014 /* userport_ps2mouse.c */,
+				41C8CA0B23C6183B007C0015 /* userport_spt_joystick.c */,
+				41C8CA0B23C6183B007C0016 /* userport_superpad64.c */,
+				41C8CA0B23C6183B007C0017 /* userport_hummer_joystick.c */,
+				41C8CA0B23C6183B007C0018 /* userport_synergy_joystick.c */,
+				41C8CA0B23C6183B007C0019 /* userport_woj_joystick.c */,
+				41C8CA0B23C6183B007C001A /* userport_hks_joystick.c */,
 				41D4AD5F23AA0F1100A54EB2 /* userport.h */,
 				41D4AD6023AA0F1100A54EB2 /* userport_4bit_sampler.c */,
 				41D4AD6123AA0F1100A54EB2 /* userport_4bit_sampler.h */,
@@ -7721,10 +7883,29 @@
 				416FDA9C28D5FF41003DAB13 /* CVicEditorLayerC64Canvas.cpp in Sources */,
 				41C84C3023C6183A007C0889 /* console.c in Sources */,
 				41C84C3123C6183A007C0889 /* coproc.c in Sources */,
+				41C8CA1223C6183B007C0001 /* rd_ui_stubs.c in Sources */,
+				41C8CA0C23C6183B007C0001 /* archdep_chdir.c in Sources */,
+				41C8CA0C23C6183B007C0002 /* archdep_close.c in Sources */,
+				41C8CA0C23C6183B007C0003 /* archdep_current_dir.c in Sources */,
+				41C8CA0C23C6183B007C0004 /* archdep_default_portable_resource_file_name.c in Sources */,
+				41C8CA0C23C6183B007C0005 /* archdep_dir.c in Sources */,
+				41C8CA0C23C6183B007C0007 /* archdep_exit.c in Sources */,
+				41C8CA0C23C6183B007C0008 /* archdep_fdopen.c in Sources */,
+				41C8CA0C23C6183B007C0009 /* archdep_file_exists.c in Sources */,
+				41C8CA0C23C6183B007C000A /* archdep_file_size.c in Sources */,
+				41C8CA0C23C6183B007C000B /* archdep_fseeko.c in Sources */,
+				41C8CA0C23C6183B007C000C /* archdep_ftello.c in Sources */,
+				41C8CA0C23C6183B007C000D /* archdep_getcwd.c in Sources */,
+				41C8CA0C23C6183B007C000E /* archdep_is_haiku.c in Sources */,
+				41C8CA0C23C6183B007C000F /* archdep_quote_unzip.c in Sources */,
+				41C8CA0C23C6183B007C0010 /* archdep_real_path.c in Sources */,
+				41C8CA0C23C6183B007C0011 /* archdep_remove.c in Sources */,
+				41C8CA0C23C6183B007C0012 /* archdep_rmdir.c in Sources */,
+				41C8CA0C23C6183B007C0013 /* archdep_sound.c in Sources */,
+				41C8CA0C23C6183B007C0014 /* archdep_usleep.c in Sources */,
 				41C84C3223C6183A007C0889 /* dynlib.c in Sources */,
 				41C84C3323C6183A007C0889 /* fullscreen.c in Sources */,
 				41C84C3423C6183A007C0889 /* c64-hardsid.c in Sources */,
-				41C84C3523C6183A007C0889 /* joy.c in Sources */,
 				41BA937C2AEAACF30006D4F0 /* CViewDataPlot.cpp in Sources */,
 				41C84C3623C6183A007C0889 /* kbd.c in Sources */,
 				41C84C3723C6183A007C0889 /* lightpendrv.c in Sources */,
@@ -7967,6 +8148,10 @@
 				41C84CEC23C6183B007C0889 /* ciatimer.c in Sources */,
 				41C84CED23C6183B007C0889 /* cs8900.c in Sources */,
 				41C84CEE23C6183B007C0889 /* flash040core.c in Sources */,
+				41C8CA0E23C6183B007C0001 /* cmdhd.c in Sources */,
+				41C8CA0E23C6183B007C0002 /* rtc-72421.c in Sources */,
+				41C8CA0E23C6183B007C0003 /* sha1.c in Sources */,
+				41C8CA0E23C6183B007C0004 /* iec-ieee488-shared.c in Sources */,
 				41C8CA0823C6183B007C001E /* flash800core.c in Sources */,
 				41C8CA0823C6183B007C001F /* spi-flash.c in Sources */,
 				41C8CA0823C6183B007C0020 /* archdep_sleep.c in Sources */,
@@ -8056,6 +8241,7 @@
 				41C84D3423C6183B007C0889 /* fsdevice-close.c in Sources */,
 				41C84D3523C6183B007C0889 /* fsdevice-cmdline-options.c in Sources */,
 				41C84D3623C6183B007C0889 /* fsdevice-flush.c in Sources */,
+				41C8CA1023C6183B007C0001 /* fsdevice-filename.c in Sources */,
 				41C84D3723C6183B007C0889 /* fsdevice-open.c in Sources */,
 				41C84D3823C6183B007C0889 /* fsdevice-read.c in Sources */,
 				41C84D3923C6183B007C0889 /* fsdevice-resources.c in Sources */,
@@ -8090,6 +8276,36 @@
 				41EE302425E92A930050257F /* CViewNesStatePPU.cpp in Sources */,
 				41C84D5123C6183B007C0889 /* cx85.c in Sources */,
 				41C84D5223C6183B007C0889 /* joyport.c in Sources */,
+				41C8CA0A23C6183B007C0001 /* inception.c in Sources */,
+				41C8CA0A23C6183B007C0002 /* joyport_io_sim.c in Sources */,
+				41C8CA0A23C6183B007C0003 /* multijoy.c in Sources */,
+				41C8CA0A23C6183B007C0004 /* ninja_snespad.c in Sources */,
+				41C8CA0A23C6183B007C0005 /* paperclip2.c in Sources */,
+				41C8CA0A23C6183B007C0006 /* paperclip64e.c in Sources */,
+				41C8CA0A23C6183B007C0007 /* paperclip64sc.c in Sources */,
+				41C8CA0A23C6183B007C0008 /* powerpad.c in Sources */,
+				41C8CA0A23C6183B007C0009 /* protopad.c in Sources */,
+				41C8CA0A23C6183B007C000A /* spaceballs.c in Sources */,
+				41C8CA0A23C6183B007C000B /* trapthem_snespad.c in Sources */,
+				41C8CA0A23C6183B007C000C /* waasoft_dongle.c in Sources */,
+				41C8CA0A23C6183B007C000D /* mouse_1351.c in Sources */,
+				41C8CA0A23C6183B007C000E /* mouse_neos.c in Sources */,
+				41C8CA0A23C6183B007C000F /* mouse_paddle.c in Sources */,
+				41C8CA0A23C6183B007C0010 /* mouse_quadrature.c in Sources */,
+				41C8CA0A23C6183B007C0011 /* userport_diag_pin.c in Sources */,
+				41C8CA0A23C6183B007C0012 /* userport_io_sim.c in Sources */,
+				41C8CA0A23C6183B007C0013 /* userport_petscii_snespad.c in Sources */,
+				41C8CA0A23C6183B007C0014 /* userport_ps2mouse.c in Sources */,
+				41C8CA0A23C6183B007C0015 /* userport_spt_joystick.c in Sources */,
+				41C8CA0A23C6183B007C0016 /* userport_superpad64.c in Sources */,
+				41C8CA0A23C6183B007C0017 /* userport_hummer_joystick.c in Sources */,
+				41C8CA0A23C6183B007C0018 /* userport_synergy_joystick.c in Sources */,
+				41C8CA0A23C6183B007C0019 /* userport_woj_joystick.c in Sources */,
+				41C8CA0A23C6183B007C001A /* userport_hks_joystick.c in Sources */,
+				41C8CA0A23C6183B007C001B /* i8255a.c in Sources */,
+				41C8CA0A23C6183B007C001C /* scsi.c in Sources */,
+				41C8CA0A23C6183B007C001D /* mon_profile.c in Sources */,
+				41C8CA0A23C6183B007C001E /* monitor_binary.c in Sources */,
 				41C84D5323C6183B007C0889 /* joystick.c in Sources */,
 				41C84D5423C6183B007C0889 /* lightpen.c in Sources */,
 				41C84D5523C6183B007C0889 /* mouse.c in Sources */,

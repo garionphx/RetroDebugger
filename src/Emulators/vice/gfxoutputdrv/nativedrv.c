@@ -67,7 +67,6 @@
     when all is done, remove #if 0'ed code
 */
 
-#if 0
 void native_smooth_scroll_borderize_colormap(native_data_t *source, uint8_t bordercolor, uint8_t xcover, uint8_t ycover)
 {
     int i, j, k;
@@ -132,7 +131,6 @@ void native_smooth_scroll_borderize_colormap(native_data_t *source, uint8_t bord
         }
     }
 }
-#endif
 
 native_data_t *native_borderize_colormap(native_data_t *source, uint8_t bordercolor, int xsize, int ysize)
 {
@@ -758,24 +756,21 @@ static native_data_t *native_generic_render(screenshot_t *screenshot, const char
 native_data_t *native_vicii_render(screenshot_t *screenshot, const char *filename)
 {
     native_data_t *data = native_generic_render(screenshot, filename, 320, 200, 1);
-#if 0
     uint8_t *regs = screenshot->video_regs;
     if (((regs[0x16] & 8) == 0) || ((regs[0x11] & 8) == 0)) {
         native_smooth_scroll_borderize_colormap(data, (uint8_t)(regs[0x20] & 0xf), (uint8_t)((regs[0x16] & 8) ? 255 : regs[0x16] & 7), (uint8_t)((regs[0x11] & 8) ? 255 : regs[0x11] & 7));
     }
-#endif
     return data;
 }
 
 native_data_t *native_ted_render(screenshot_t *screenshot, const char *filename)
 {
     native_data_t *data = native_generic_render(screenshot, filename, 320, 200, 1);
-#if 0
     uint8_t *regs = screenshot->video_regs;
+    uint8_t brdrcolor = regs[0x19] & 0x7f;	/* TED border color (matches 3.10) */
     if (((regs[0x07] & 8) == 0) || ((regs[0x06] & 8) == 0)) {
         native_smooth_scroll_borderize_colormap(data, brdrcolor, (uint8_t)((regs[0x07] & 8) ? 255 : regs[0x07] & 7), (uint8_t)((regs[0x06] & 8) ? 255 : regs[0x06] & 7));
     }
-#endif
     return data;
 }
 
@@ -923,7 +918,6 @@ native_data_t *native_vdc_render(screenshot_t *screenshot, const char *filename)
     return data;
 }
 
-#if 0
 native_data_t *native_vicii_text_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -962,9 +956,7 @@ native_data_t *native_vicii_text_mode_render(screenshot_t *screenshot, const cha
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_vicii_extended_background_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1002,9 +994,7 @@ native_data_t *native_vicii_extended_background_mode_render(screenshot_t *screen
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_vicii_multicolor_text_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1071,9 +1061,7 @@ native_data_t *native_vicii_multicolor_text_mode_render(screenshot_t *screenshot
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_vicii_hires_bitmap_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1115,9 +1103,7 @@ native_data_t *native_vicii_hires_bitmap_mode_render(screenshot_t *screenshot, c
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_vicii_multicolor_bitmap_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1176,7 +1162,6 @@ native_data_t *native_vicii_multicolor_bitmap_mode_render(screenshot_t *screensh
     }
     return data;
 }
-#endif
 
 /* ------------------------------------------------------------------------ */
 
@@ -1553,7 +1538,6 @@ void ted_color_to_vic_color_colormap(native_data_t *source, int ted_lum_handling
     }
 }
 
-#if 0
 native_data_t *native_ted_text_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1603,9 +1587,7 @@ native_data_t *native_ted_text_mode_render(screenshot_t *screenshot, const char 
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_ted_extended_background_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1650,9 +1632,7 @@ native_data_t *native_ted_extended_background_mode_render(screenshot_t *screensh
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_ted_hires_bitmap_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1696,9 +1676,7 @@ native_data_t *native_ted_hires_bitmap_mode_render(screenshot_t *screenshot, con
     }
     return data;
 }
-#endif
 
-#if 0
 native_data_t *native_ted_multicolor_bitmap_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -1758,7 +1736,6 @@ native_data_t *native_ted_multicolor_bitmap_mode_render(screenshot_t *screenshot
     }
     return data;
 }
-#endif
 
 /* ------------------------------------------------------------------------ */
 
@@ -2157,7 +2134,6 @@ void vdc_color_to_vic_color_colormap(native_data_t *source)
     }
 }
 
-#if 0
 native_data_t *native_vdc_text_mode_render(screenshot_t *screenshot, const char *filename)
 {
     uint8_t *regs = screenshot->video_regs;
@@ -2219,4 +2195,3 @@ native_data_t *native_vdc_text_mode_render(screenshot_t *screenshot, const char 
     }
     return data;
 }
-#endif

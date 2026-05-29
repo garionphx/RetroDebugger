@@ -1161,3 +1161,14 @@ char **util_strsplit(const char *string, const char *delimiter, int max_tokens)
     result[resindex] = NULL;
     return result;
 }
+
+/* RD: vice-crc32.c expects util_file_length(FILE *) — not provided by 3.10.
+   Compute via fseek/ftell, restoring position. */
+off_t util_file_length(FILE *fd)
+{
+    off_t pos = ftello(fd);
+    if (fseeko(fd, 0, SEEK_END) != 0) return -1;
+    off_t len = ftello(fd);
+    fseeko(fd, pos, SEEK_SET);
+    return len;
+}

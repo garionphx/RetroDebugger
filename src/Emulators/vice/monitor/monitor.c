@@ -3468,3 +3468,11 @@ void mon_maincpu_toggle_trace(int state)
 #endif
     mon_maincpu_trace();
 }
+
+/* RD: drivecpu65c02.c expands a macro that calls monitor_force_import(CALLER).
+   Vanilla 3.10 has no such function; RD has no monitor import gating, so stub it. */
+int monitor_force_import(int mem)
+{
+    (void)mem;
+    return 0;
+}

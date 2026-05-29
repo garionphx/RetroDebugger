@@ -96,6 +96,7 @@ typedef uint64_t CLOCK;   /* VICE 3.10: CLOCK is 64-bit (was DWORD/32-bit); 3.10
 /* VICE 3.10: int<->ptr helper (RD already has int_to_void_ptr; 3.10 code uses
    vice_int_to_ptr). intptr_t cast works for both 32/64-bit. */
 #define vice_int_to_ptr(x) ((void *)(intptr_t)(x))
+#define vice_uint_to_ptr(x) ((void *)(uintptr_t)(x))	/* VICE 3.10 */
 
 #ifdef _WIN64
 #define vice_ptr_to_int(x) ((int)(long long)(x))

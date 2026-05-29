@@ -1053,3 +1053,11 @@ void lib_debug_set_output(int state)
 #endif
 }
 
+
+/* RD: VICE 3.10's main.c calls lib_init_rand() separately from lib_init().
+   3.10 itself does this inside lib_init via lib_rand_seed; wrap it so the
+   RD main.c call resolves. */
+void lib_init_rand(void)
+{
+    lib_rand_seed((uint64_t)time(NULL));
+}

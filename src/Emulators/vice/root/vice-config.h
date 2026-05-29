@@ -382,7 +382,7 @@
 #define HAVE_NETINET_IN_H 1
 
 /* Enable netplay support */
-// change me? #define HAVE_NETWORK /**/
+#define HAVE_NETWORK /**/
 
 /* Support for OpenCBM (former CBM4Linux). */
 /* #undef HAVE_OPENCBM */
