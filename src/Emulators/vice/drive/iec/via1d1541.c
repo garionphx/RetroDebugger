@@ -352,8 +352,7 @@ BYTE c64d_via1d1541_peek(diskunit_context_t *ctxptr, WORD addr)
 		
 		if (via_context->via[VIA_ACR] & 0x80)
 		{
-			byte = (byte & 0x7f) | (((via_context->pb7 ^ via_context->pb7x)
-									 | via_context->pb7o) ? 0x80 : 0);
+			byte = (byte & 0x7f) | via_context->t1_pb7;	/* VICE 3.10: pb7/pb7x/pb7o -> t1_pb7 */
 		}
 		return byte;
 		

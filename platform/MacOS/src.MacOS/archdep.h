@@ -64,6 +64,12 @@ int archdep_access(const char *pathname, int mode);
 #define ARCHDEP_MOUSE_ENABLE_DEFAULT    0
 #define ARCHDEP_SHOW_STATUSBAR_FACTORY  0
 
+/* VICE 3.10 archdep macros normally from arch/shared/archdep_defs.h+archdep_unix.h
+   (gated on configure-set *_COMPILE macros RD doesn't define). macOS values. */
+#define PRI_SIZE_T          "zu"
+#define ARCHDEP_DIR_SEP_STR "/"
+#define ARCHDEP_DIR_SEP_CHR '/'
+
 /* Video chip scaling.  */
 #define ARCHDEP_VICII_DSIZE   1
 #define ARCHDEP_VICII_DSCAN   1

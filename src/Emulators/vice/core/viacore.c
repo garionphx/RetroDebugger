@@ -1320,8 +1320,7 @@ BYTE c64d_viacore_peek(via_context_t *via_context, WORD addr)
 			byte = (byte & ~(via_context->via[VIA_DDRB])) | (via_context->via[VIA_PRB] & via_context->via[VIA_DDRB]);
 			if (via_context->via[VIA_ACR] & 0x80)
 			{
-				byte = (byte & 0x7f) | (((via_context->pb7 ^ via_context->pb7x)
-										 | via_context->pb7o) ? 0x80 : 0);
+				byte = (byte & 0x7f) | via_context->t1_pb7;	/* VICE 3.10: pb7/pb7x/pb7o -> t1_pb7 */
 			}
 			return byte;
 		}
