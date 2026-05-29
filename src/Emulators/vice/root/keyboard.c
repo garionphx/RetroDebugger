@@ -486,7 +486,7 @@ int keyboard_key_pressed(signed long key)
     }
 
 #ifdef COMMON_JOYKEYS
-    for (i = 0; i < JOYSTICK_NUM; ++i) {
+    for (i = 0; i < JOYPORT_MAX_PORTS; ++i) {
         if (joystick_port_map[i] == JOYDEV_NUMPAD
             || joystick_port_map[i] == JOYDEV_KEYSET1
             || joystick_port_map[i] == JOYDEV_KEYSET2) {
@@ -636,7 +636,7 @@ int keyboard_key_released(signed long key)
     }
 
 #ifdef COMMON_JOYKEYS
-    for (i = 0; i < JOYSTICK_NUM; ++i) {
+    for (i = 0; i < JOYPORT_MAX_PORTS; ++i) {
         if (joystick_port_map[i] == JOYDEV_NUMPAD
             || joystick_port_map[i] == JOYDEV_KEYSET1
             || joystick_port_map[i] == JOYDEV_KEYSET2) {
@@ -1061,7 +1061,7 @@ static int keyboard_parse_keymap(const char *filename, int child)
     DBG((">keyboard_parse_keymap(%s)\n", filename));
 
     /* open in binary mode so the newline system doesn't matter */
-    fp = sysfile_open(filename, &complete_path, "rb");
+    fp = sysfile_open(filename, NULL, &complete_path, "rb");
 
     if (fp == NULL) {
         log_message(keyboard_log, "Error loading keymap `%s'->`%s'.", filename, complete_path ? complete_path : "<empty/null>");
@@ -1613,7 +1613,7 @@ static int try_set_keymap_file(int atidx, int idx, int mapping, int type)
 
     util_string_set(&machine_keymap_file_list[atidx], name);
     DBG(("try_set_keymap_file calls sysfile_locate(%s)\n", name));
-    if (sysfile_locate(name, &complete_path) != 0) {
+    if (sysfile_locate(name, NULL, &complete_path) != 0) {
         DBG(("<try_set_keymap_file ERROR locating keymap `%s'.\n", name ? name : "(null)"));
         lib_free(name);
         lib_free(complete_path);

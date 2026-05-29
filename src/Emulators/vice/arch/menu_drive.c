@@ -86,7 +86,7 @@ static int has_fs(void)
 
 static int is_fs(int type)
 {
-    return ((type == 0 || type == ATTACH_DEVICE_FS || type == ATTACH_DEVICE_REAL || type == ATTACH_DEVICE_RAW) && has_fs());
+    return ((type == 0 || type == ATTACH_DEVICE_FS || type == ATTACH_DEVICE_REAL) && has_fs());	/* VICE 3.10: ATTACH_DEVICE_RAW removed */
 }
 
 static int get_drive_type(int drive)
@@ -718,10 +718,12 @@ static const ui_menu_entry_t create_disk_image_type_menu[] = {
       MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_P64 },
+#ifdef HAVE_X64_IMAGE	/* VICE 3.10 deprecated X64; gate behind the (off-by-default) feature macro */
     { "X64",
       MENU_ENTRY_RESOURCE_RADIO,
       set_disk_type_callback,
       (ui_callback_data_t)DISK_IMAGE_TYPE_X64 },
+#endif
     SDL_MENU_LIST_END
 };
 

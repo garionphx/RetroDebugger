@@ -30,6 +30,23 @@
 
 #include <stdio.h>
 
+/* RD: log.h is included by non-VICE plugin code (e.g. GoatTracker gsound.c) that
+   doesn't include vice.h, where these printf-attribute macros are defined. Provide
+   no-op fallbacks so log.h is self-contained; vice.h's real definitions win when
+   it is included first (the normal VICE build path). */
+#ifndef VICE_ATTR_PRINTF
+#define VICE_ATTR_PRINTF
+#endif
+#ifndef VICE_ATTR_PRINTF2
+#define VICE_ATTR_PRINTF2
+#endif
+#ifndef VICE_ATTR_PRINTF3
+#define VICE_ATTR_PRINTF3
+#endif
+#ifndef VICE_ATTR_PRINTF4
+#define VICE_ATTR_PRINTF4
+#endif
+
 /* values passed into the log helper (log_out->log_helper) */
 #define LOG_LEVEL_NONE      0x00
 #define LOG_LEVEL_FATAL     0x20

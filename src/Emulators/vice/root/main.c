@@ -83,8 +83,8 @@
 #ifdef __OS2__
 const
 #endif
-int console_mode = 0;
-int video_disabled_mode = 0;
+bool console_mode = false;		/* VICE 3.10: bool (matches machine.h) */
+bool video_disabled_mode = false;
 static int init_done = 0;
 
 

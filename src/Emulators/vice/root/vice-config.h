@@ -427,7 +427,9 @@
 /* #undef HAVE_QUICKTIME */
 
 /* Support for block device disk image access. */
-#define HAVE_RAWDRIVE /**/
+/* VICE 3.10 removed the raw block-device drive (ATTACH_DEVICE_RAW dropped from
+   attach.h); disable to retire the leftover rawimage.c + menu remnants. */
+/* #undef HAVE_RAWDRIVE */
 
 /* Are we using the readline library replacement? */
 /* #undef HAVE_READLINE */

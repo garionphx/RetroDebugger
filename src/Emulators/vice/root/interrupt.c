@@ -348,7 +348,7 @@ void interrupt_maincpu_trigger_trap(void (*trap_func)(uint16_t, void *data),
     cs->trap_data[this_trap_index] = data;
 }
 
-void c64d_interrupt_drivecpu_trigger_trap(drive_context_t *drv,
+void c64d_interrupt_drivecpu_trigger_trap(diskunit_context_t *drv,	/* VICE 3.10: drive_context_t -> diskunit_context_t */
 										  void (*trap_func)(WORD, void *data),
 										  void *data)
 {

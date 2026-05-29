@@ -80,6 +80,13 @@
 #define DBG(x)
 #endif
 
+/* VICE 3.10: the SDL -help shutdown hack flag normally lives in arch/sdl/sdlmain.c,
+   which RD replaces with MTEngineSDL. RD has no reader, so define it here (its only
+   writer) to satisfy the USE_SDLUI path below. */
+#if defined(USE_SDLUI) || defined(USE_SDL2UI)
+int sdl_help_shutdown = 0;
+#endif
+
 #define NUM_STARTUP_DISK_IMAGES 8
 static char *autostart_string = NULL;
 static char *startup_disk_images[NUM_STARTUP_DISK_IMAGES];
