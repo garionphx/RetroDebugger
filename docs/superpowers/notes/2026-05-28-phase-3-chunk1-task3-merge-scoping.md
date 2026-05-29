@@ -26,10 +26,27 @@ risks subtle timing/model bugs.
 **Chunk 1 DONE (8 conflict files merged + 14 auto-merged + headers):** all of the
 above commits.
 
-**Chunk 1 REMAINING-TRACTABLE (still mergeable here; moderate, localized hooks):**
-c64/c64-snapshot.c, root/machine.c, joyport/mouse.c, iecbus/iecbus.c,
-root/vsync.c + viciisc/vicii.c (vsync-signature pair), sid/fastsid.c,
-sid/sid-resources.h, c64/cart/reu.c.
+**Chunk 1 TRACTABLE-MERGE PHASE COMPLETE (2026-05-28).** 24 hooked files merged
+total (commits 4e41816, f76ee03, bc40261, f432ce7, 0eee15c). The
+"remaining-tractable" candidates were re-triaged by conflict CONTENT (not count):
+only `root/machine.c` and `c64/cart/reu.c` (`0eee15c`) were genuinely tractable;
+the rest turned out heavy/coupled and moved to Chunk 2:
+- `joyport/mouse.c` — 3.10 rewrote joyport + calls the REMOVED `clk_guard_add_callback`
+- `c64/c64-snapshot.c` — 3.10 changed snapshot_create/drive_snapshot sigs; couples to reu.c
+- `iecbus/iecbus.c` — 3.10 multi-drive iecbus restructure
+- `root/vsync.c` + `viciisc/vicii.c` — 3.10 rewrote the vsync timing/metrics model; vicii.c calls it
+- `sid/fastsid.c`, `sid/sid-resources.h` — entangled with SID 2→8 + ReSID-FP + float-sound
+
+**Net: every remaining conflict file is now a Chunk 2 item** (see the deferral list
+above + these). Chunk 2 = the heavy subsystem rewrites + CPU cores + monitor +
+Tier C, reconciled WITH the infra (clkguard/diskunit/mainlock) using build feedback,
+to a building + suite-green state.
+
+**Remaining Chunk 1 tasks:** Task 5 (build-list reconciliation: drop GONE files —
+clkguard.c, patchrom.c, platform/* — add NEW 3.10 files), Task 6 (build attempt →
+categorized error-landscape doc = the Chunk 2 planning input). Task 4 infra
+(clkguard include removal, diskunit rename, mainlock stub) is largely entangled
+with the deferred subsystem files, so it folds into Chunk 2 rather than Chunk 1.
 
 **Chunk 2 — heavy subsystem rewrites (defer, need build feedback):**
 - CPU cores: c64/c64cpusc.c, drive/drivecpu.c (already deferred)
