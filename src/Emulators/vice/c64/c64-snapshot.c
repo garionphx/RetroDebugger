@@ -29,15 +29,15 @@
 
 #include <stdio.h>
 
+#include "archdep.h"
 #include "c64-memory-hacks.h"
-#include "c64-snapshot.h"
 #include "c64.h"
 #include "c64gluelogic.h"
 #include "c64memsnapshot.h"
 #include "cia.h"
 #include "drive-snapshot.h"
 #include "drive.h"
-#include "ioutil.h"
+#include "serial.h"
 #include "joyport.h"
 #include "joystick.h"
 #include "keyboard.h"
@@ -53,13 +53,15 @@
 #include "vice-event.h"
 #include "vicii.h"
 
+#include "c64-snapshot.h"
+
 #ifdef RETRODEBUGGER
 int c64d_snapshot_write_module(snapshot_t *s, int save_screen);
 int c64d_snapshot_read_module(snapshot_t *s);
 #endif
 
-#define SNAP_MAJOR 1
-#define SNAP_MINOR 1
+#define SNAP_MAJOR 2
+#define SNAP_MINOR 0
 
 int c64_snapshot_write(const char *name, int save_roms, int save_disks, int event_mode, int save_reu_data, int save_cart_roms, int save_screen)
 {
@@ -67,7 +69,7 @@ int c64_snapshot_write(const char *name, int save_roms, int save_disks, int even
 
 	LOGD("c64_snapshot_write: name=%s save_roms=%d save_disks=%d event_mode=%d save_reu_data=%d save_cart_roms=%d save_screen=%d", name, save_roms, save_disks, event_mode, save_reu_data, save_cart_roms, save_screen);
 
-    s = snapshot_create(name, ((BYTE)(SNAP_MAJOR)), ((BYTE)(SNAP_MINOR)), machine_get_name(), 0);
+    s = snapshot_create(name, ((uint8_t)(SNAP_MAJOR)), ((uint8_t)(SNAP_MINOR)), machine_get_name(), 0);
     if (s == NULL) {
         return -1;
     }
@@ -83,6 +85,7 @@ int c64_snapshot_write(const char *name, int save_roms, int save_disks, int even
         || ciacore_snapshot_write_module(machine_context.cia2, s) < 0
         || sid_snapshot_write_module(s) < 0
         || drive_snapshot_write_module(s, save_disks, save_roms) < 0
+        || fsdrive_snapshot_write_module(s) < 0
         || vicii_snapshot_write_module(s) < 0
         || c64_glue_snapshot_write_module(s) < 0
         || event_snapshot_write_module(s, event_mode) < 0
@@ -97,7 +100,7 @@ int c64_snapshot_write(const char *name, int save_roms, int save_disks, int even
 #endif
         ) {
         snapshot_close(s);
-        ioutil_remove(name);
+        archdep_remove(name);
         return -1;
     }
 
@@ -192,14 +195,14 @@ int c64_snapshot_write_in_memory(int save_chips, int save_roms, int save_disks, 
 int c64_snapshot_read(const char *name, int event_mode, int read_roms, int read_disks, int read_reu_data, int read_cart_roms)
 {
     snapshot_t *s;
-    BYTE minor, major;
+    uint8_t minor, major;
 
     s = snapshot_open(name, &major, &minor, machine_get_name());
     if (s == NULL) {
         return -1;
     }
 
-    if (major != SNAP_MAJOR || minor != SNAP_MINOR) {
+    if (!snapshot_version_is_equal(major, minor, SNAP_MAJOR, SNAP_MINOR)) {
         log_error(LOG_DEFAULT, "Snapshot version (%d.%d) not valid: expecting %d.%d.", major, minor, SNAP_MAJOR, SNAP_MINOR);
         snapshot_set_error(SNAPSHOT_MODULE_INCOMPATIBLE);
         goto fail;
@@ -215,6 +218,7 @@ int c64_snapshot_read(const char *name, int event_mode, int read_roms, int read_
         || ciacore_snapshot_read_module(machine_context.cia2, s) < 0
         || sid_snapshot_read_module(s) < 0
         || drive_snapshot_read_module(s, read_roms, read_disks) < 0
+        || fsdrive_snapshot_read_module(s) < 0
         || vicii_snapshot_read_module(s) < 0
         || c64_glue_snapshot_read_module(s) < 0
         || event_snapshot_read_module(s, event_mode) < 0
@@ -242,7 +246,7 @@ fail:
         snapshot_close(s);
     }
 
-    machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
+    machine_trigger_reset(MACHINE_RESET_MODE_RESET_CPU);
 
     return -1;
 }

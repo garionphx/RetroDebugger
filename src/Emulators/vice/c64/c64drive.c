@@ -38,6 +38,7 @@
 #include "vicetypes.h"
 #include "log.h"
 
+
 int machine_drive_resources_init(void)
 {
     int drive_8_type = (machine_class == VICE_MACHINE_VSID) ? DRIVE_TYPE_NONE : DRIVE_TYPE_1541II;
