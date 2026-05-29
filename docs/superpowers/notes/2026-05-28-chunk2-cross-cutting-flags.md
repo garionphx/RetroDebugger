@@ -287,3 +287,40 @@ only LOGs monitor_process's return (never branches) so int-vs-enum value is safe
    ROOT-IO). VERIFY when #6 lands that cartridge.h's sigs match. easyflash.c uses RD's
    pre-existing `save_cart_roms ? SMW_BA(...) : 1 < 0` idiom (functionally correct: SMW_BA
    nonzero=error in the `||` chain; false branch `1<0`=0); preserved verbatim from live.
+
+## monitor.c (task #10) — COMPLETE. 12 conflicts + 3 cross-cutting spots resolved.
+
+Final resolution (executed solo; gate: 0 markers, braces 569/569, >-gate=7 all intentional,
+<-gate=56 all RD additions; hook placement manually verified):
+- Wrapper-facing API kept non-static per CDebugInterfaceVice.cpp:3088-3091:
+  `void monitor_open(void)`, `void make_prompt(char*)`, `int monitor_process(char*)` (returns
+  exit_mon; wrapper only LOGs it), `void monitor_close(int check_exit)` (int param, 3.10 body
+  uses check_exit). monitor_process/open/close/make_prompt de-static = the 4 intentional >-sig lines.
+- exit_mon enum (montypes.h, committed) taken internally: mon_jump=exit_mon_change_flow,
+  mon_go/mon_exit/mon_instructions_*=exit_mon_continue, checks vs exit_mon_no/exit_mon_quit_vice.
+- **monitor_trap_triggered DROPPED** (correction to the original plan): it is vanilla-3.1 (NOT an
+  RD addition), removed by 3.10, with ZERO external consumers (grep: only monitor.c). 3.10 supersedes
+  it with `inside_monitor` guards in monitor_startup/_trap, which auto-merged cleanly (ours==base there).
+- **monitor_startup** = RD's proven GUI-driven structure: LOGD + DBG + console_mode FIXME guard +
+  memspace + `VICE_HOOK_LIFECYCLE_DEBUG_MODE(PAUSED)` then RETURN. 3.10's native blocking loop
+  (monitor_open + for(;;) + monitor_close + the inside_monitor recursion guard + ui_pause blocks)
+  kept VERBATIM under `#if 0` (not `/* */` — 3.10's loop contains nested comments). Did NOT add
+  3.10's `if(inside_monitor)return;` to the ACTIVE path: the wrapper calls monitor_open() (sets
+  inside_monitor=true) and rarely monitor_close(), so an active guard would suppress the PAUSED hook
+  on later breakpoints. Breakpoints call monitor_startup() directly (CPU cores), so the hook must
+  fire unconditionally — matches RD's shipping 3.1 behavior.
+- **RUNNING hooks** re-applied at end of mon_instructions_step/next/return (the resume-exec cmds).
+- **mon_jump**: kept RD's `execute_monitor_command_jump_trap` + `monitor_command_jump_addr` +
+  `interrupt_maincpu_trigger_trap` tail; took 3.10's (uint16_t) cast + exit_mon_change_flow.
+- **ui_pause_*/pause_on_exit_mon**: native-UI/vice-thread machinery; ui_pause_* declared only in
+  arch/{sdl,gtk3}/ui.h (NOT in RD). Left inert: commented the `|| ui_pause_active()` calls in
+  mon_go/mon_exit (2 intentional >-lines; should_pause_on_exit_mon stays false so the blocks are
+  dead-but-harmless); the monitor_startup ui_pause/pause_on_exit_mon blocks are inside the #if 0.
+- **monitor_close exit path**: took 3.10 `archdep_vice_exit(0)` (available tree-wide in RD) over RD's
+  `exit(0)`; kept RD's LOGTODO (message updated to match).
+- stpcpy block (RD/3.1 `#ifndef HAVE_STPCPY`) dropped — 3.10 removed it; RD's 2 includes kept.
+- Active 3.10 symbols verified present in RD before adopting: lib_strdup, lib_strdup_trimmed,
+  log_printf, archdep_vice_exit, uimon_window_open(bool) [root/uimon.h], 5-field console_t
+  [root/console.h byte-identical to 3.10]. (arch/uimon.c still no-arg impl = separate arch-layer
+  issue, out of scope per DECISION 6.)
+- mon_parse.c/mon_lex.c already merged in 597009e (DECISION 10). monitor.c is the last monitor file.
