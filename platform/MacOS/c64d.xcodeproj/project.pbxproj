@@ -1165,7 +1165,6 @@
 		41CE4AFE2BD18B86008A2147 /* CViewC64BreakpointsIrq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41CE4AFD2BD18B86008A2147 /* CViewC64BreakpointsIrq.cpp */; };
 		41CE4B012BD1932D008A2147 /* CViewDrive1541BreakpointsIrq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41CE4AFF2BD1932D008A2147 /* CViewDrive1541BreakpointsIrq.cpp */; };
 		41D4F7032AF5228D002CE68F /* CViewFileBrowser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41D4F7012AF5228C002CE68F /* CViewFileBrowser.cpp */; };
-		41D699732AFA6284008124F6 /* c1541.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D699722AFA5ACB008124F6 /* c1541.c */; };
 		41D9972E276D46CC00ECBF2C /* CDebugSymbolsSegmentDrive1541.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41D9972C276D46CC00ECBF2C /* CDebugSymbolsSegmentDrive1541.cpp */; };
 		41DF68B12BA9BAD000511704 /* CDataAdapterDrive1541Minimal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41DF68AF2BA9BAD000511704 /* CDataAdapterDrive1541Minimal.cpp */; };
 		41E5CE5A2436360A0018F049 /* altirra_5200_os.c in Sources */ = {isa = PBXBuildFile; fileRef = 41E5CE522436360A0018F049 /* altirra_5200_os.c */; };
@@ -7485,7 +7484,6 @@
 			files = (
 				411D2E402D71D4D3007714A9 /* CRenderShaderCRTMonitorOpenGL4.cpp in Sources */,
 				41805F602BC756CF00344BD9 /* CDataAddressEditBoxHex.cpp in Sources */,
-				41D699732AFA6284008124F6 /* c1541.c in Sources */,
 				410836D02AD15E6D0086B9BA /* C64SIDDump.cpp in Sources */,
 				419703EC28D36FD100DDD728 /* AtariAsap.cpp in Sources */,
 				419703ED28D36FD100DDD728 /* asap.c in Sources */,

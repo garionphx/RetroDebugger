@@ -126,7 +126,7 @@ char *uimon_get_in(char **ppchCommandLine, const char *prompt)
     sdl_ui_scroll_screen_up();
 
     if (input == NULL) {
-        input = lib_stralloc("x");
+        input = lib_strdup("x");
     }
 
     return input;

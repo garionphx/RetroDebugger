@@ -138,7 +138,7 @@ int vice_main_program(int argc, const char **argv, int c64model)
 #endif
         if ((!strcmp(argv[i], "-config")) || (!strcmp(argv[i], "--config"))) {
             if ((i + 1) < argc) {
-                vice_config_file = lib_stralloc(argv[++i]);
+                vice_config_file = lib_strdup(argv[++i]);
             }
         } else if ((!strcmp(argv[i], "-help")) ||
                    (!strcmp(argv[i], "--help")) ||

@@ -1088,7 +1088,7 @@ void CDebugInterfaceVice::ResetSoft()
 	
 	keyboard_clear_keymatrix();
 
-	machine_trigger_reset(MACHINE_RESET_MODE_SOFT);
+	machine_trigger_reset(MACHINE_RESET_MODE_RESET_CPU);
 	this->ResetEmulationFrameCounter();
 	c64d_maincpu_clk = 6;
 
@@ -1108,7 +1108,7 @@ void CDebugInterfaceVice::ResetHard()
 	
 	keyboard_clear_keymatrix();
 
-	machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+	machine_trigger_reset(MACHINE_RESET_MODE_POWER_CYCLE);
 	this->ResetEmulationFrameCounter();
 	this->ClearHistory();
 	
@@ -1127,7 +1127,7 @@ void CDebugInterfaceVice::DiskDriveReset()
 {
 	LOGM("CDebugInterfaceVice::DiskDriveReset()");
 	
-	drivecpu_reset(drive_context[0]);
+	drivecpu_reset(diskunit_context[0]);
 }
 
 extern "C" {
@@ -1376,7 +1376,7 @@ void CDebugInterfaceVice::GetVICState(C64StateVIC *state)
 
 void CDebugInterfaceVice::GetDrive1541State(C64StateDrive1541 *state)
 {
-	drive_t *drive = drive_context[0]->drive;
+	drive_t *drive = diskunit_context[0]->drives[0];
 	state->headTrackPosition = drive->current_half_track + drive->side * 70;
 
 }
@@ -1390,7 +1390,7 @@ void CDebugInterfaceVice::InsertD64(CSlrString *path)
 	
 	SYS_FixFileNameSlashes(asciiPath);
 
-	int rc = file_system_attach_disk(8, asciiPath);
+	int rc = file_system_attach_disk(8, 0, asciiPath);
 	
 	if (rc == -1)
 	{
@@ -1407,7 +1407,7 @@ void CDebugInterfaceVice::InsertD64(CSlrString *path)
 
 void CDebugInterfaceVice::DetachDriveDisk()
 {
-	file_system_detach_disk(8);
+	file_system_detach_disk(8, 0);
 	((CDataAdapterViceDrive1541DiskContents*)debugInterfaceVice->dataAdapterDrive1541DiskContents)->DiskDetached();
 }
 
@@ -2096,14 +2096,14 @@ u8 CDebugInterfaceVice::GetSidRegister(uint8 sidId, uint8 registerNum)
 }
 
 extern "C" {
-	void via1d1541_store(drive_context_t *ctxptr, WORD addr, BYTE data);
-	BYTE c64d_via1d1541_peek(drive_context_t *ctxptr, WORD addr);
-	void via2d_store(drive_context_t *ctxptr, WORD addr, BYTE data);
-	BYTE c64d_via2d_peek(drive_context_t *ctxptr, WORD addr);
+	void via1d1541_store(diskunit_context_t *ctxptr, WORD addr, BYTE data);
+	BYTE c64d_via1d1541_peek(diskunit_context_t *ctxptr, WORD addr);
+	void via2d_store(diskunit_context_t *ctxptr, WORD addr, BYTE data);
+	BYTE c64d_via2d_peek(diskunit_context_t *ctxptr, WORD addr);
 }
 void CDebugInterfaceVice::SetViaRegister(uint8 driveId, uint8 viaId, uint8 registerNum, uint8 value)
 {
-	drive_context_t *drivectx = drive_context[driveId];
+	diskunit_context_t *drivectx = diskunit_context[driveId];
 	
 	if (viaId == 1)
 	{
@@ -2118,7 +2118,7 @@ void CDebugInterfaceVice::SetViaRegister(uint8 driveId, uint8 viaId, uint8 regis
 
 u8 CDebugInterfaceVice::GetViaRegister(uint8 driveId, uint8 viaId, uint8 registerNum)
 {
-	drive_context_t *drivectx = drive_context[driveId];
+	diskunit_context_t *drivectx = diskunit_context[driveId];
 	
 	if (viaId == 1)
 	{
@@ -2550,7 +2550,7 @@ static void cartridge_detach_trap(WORD addr, void *v)
 {
 	// -1 means all slots
 	cartridge_detach_image(-1);
-	machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+	machine_trigger_reset(MACHINE_RESET_MODE_POWER_CYCLE);
 	debugInterfaceVice->ResetEmulationFrameCounter();
 	c64d_maincpu_clk = 6;
 }
@@ -2611,13 +2611,13 @@ static void trap_detach_everything(WORD addr, void *v)
 {
 	// -1 means all slots
 	cartridge_detach_image(-1);
-	machine_trigger_reset(MACHINE_RESET_MODE_HARD);
+	machine_trigger_reset(MACHINE_RESET_MODE_POWER_CYCLE);
 	debugInterfaceVice->ResetEmulationFrameCounter();
 	c64d_maincpu_clk = 6;
 
 	tape_image_detach(1);
 	
-	file_system_detach_disk(8);
+	file_system_detach_disk(8, 0);
 	
 	((CDataAdapterViceDrive1541DiskContents*)debugInterfaceVice->dataAdapterDrive1541DiskContents)->DiskDetached();
 }
@@ -3116,7 +3116,7 @@ CSlrString *CDebugInterfaceVice::GetCodeMonitorPrompt()
 }
 
 extern "C" {
-	char *lib_stralloc(const char *str);
+	char *lib_strdup(const char *str);
 }
 
 static void execute_monitor_command_trap(WORD addr, void *v)
@@ -3145,7 +3145,7 @@ bool CDebugInterfaceVice::ExecuteCodeMonitorCommand(CSlrString *commandStr)
 	commandStr->ConvertToLowerCase();
 
 	char *cmdStr = commandStr->GetStdASCII();
-	char *monitorCmdStr = lib_stralloc(cmdStr);
+	char *monitorCmdStr = lib_strdup(cmdStr);
 	delete [] cmdStr;
 
 //	// we need to move to next instruction on these commands

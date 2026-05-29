@@ -51,6 +51,14 @@ extern void archdep_set_current_drive(const char *drive);
 /* Virtual keyboard handling */
 extern int archdep_require_vkbd(void);
 
+/* VICE 3.10: archdep_access() replaced ioutil_access(). Mode constants match
+   POSIX R_OK/W_OK/X_OK/F_OK so the values pass straight through to access(). */
+#define ARCHDEP_ACCESS_R_OK 4
+#define ARCHDEP_ACCESS_W_OK 2
+#define ARCHDEP_ACCESS_X_OK 1
+#define ARCHDEP_ACCESS_F_OK 0
+int archdep_access(const char *pathname, int mode);
+
 /* Video chip scaling.  */
 #define ARCHDEP_VICII_DSIZE   1
 #define ARCHDEP_VICII_DSCAN   1

@@ -66,6 +66,14 @@
 /* FIXME: Ugly hack for preventing SDL crash using -help */
 extern int sdl_help_shutdown;
 
+/* VICE 3.10: archdep_access() replaced ioutil_access(). Mode constants match
+   POSIX R_OK/W_OK/X_OK/F_OK so the values pass straight through to access(). */
+#define ARCHDEP_ACCESS_R_OK 4
+#define ARCHDEP_ACCESS_W_OK 2
+#define ARCHDEP_ACCESS_X_OK 1
+#define ARCHDEP_ACCESS_F_OK 0
+int archdep_access(const char *pathname, int mode);
+
 /******************************************************************************/
 
 #ifdef BEOS_COMPILE

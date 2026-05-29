@@ -105,6 +105,12 @@ void archdep_network_shutdown(void)
 {
 }
 
+/* VICE 3.10: replaced ioutil_access(); ARCHDEP_ACCESS_* values match POSIX. */
+int archdep_access(const char *pathname, int mode)
+{
+	return access(pathname, mode);
+}
+
 static int archdep_init_extra(int *argc, char **argv)
 {
 #ifdef USE_PROC_SELF_EXE
@@ -123,7 +129,7 @@ static int archdep_init_extra(int *argc, char **argv)
 	archdep_pref_path = archdep_boot_path();
 	
 #else
-	argv0 = lib_stralloc(argv[0]);
+	argv0 = lib_strdup(argv[0]);
 #endif
 	return 0;
 }
@@ -137,9 +143,9 @@ char *archdep_program_name(void)
 		
 		p = strrchr(argv0, '/');
 		if (p == NULL) {
-			program_name = lib_stralloc(argv0);
+			program_name = lib_strdup(argv0);
 		} else {
-			program_name = lib_stralloc(p + 1);
+			program_name = lib_strdup(p + 1);
 		}
 	}
 	
@@ -151,9 +157,9 @@ const char *archdep_boot_path(void)
 	if (boot_path == NULL) {
 #ifdef USE_PROC_SELF_EXE
 		/* known from setup in archdep_init_extra() so just reuse it */
-		boot_path = lib_stralloc(argv0);
+		boot_path = lib_strdup(argv0);
 #else
-		boot_path = findpath(argv0, getenv("PATH"), IOUTIL_ACCESS_X_OK);
+		boot_path = findpath(argv0, getenv("PATH"), NULL, IOUTIL_ACCESS_X_OK);
 #endif
 		
 		/* Remove the program name.  */
@@ -450,7 +456,7 @@ int archdep_expand_path(char **return_path, const char *orig_name)
 {
 	/* Unix version.  */
 	if (*orig_name == '/') {
-		*return_path = lib_stralloc(orig_name);
+		*return_path = lib_strdup(orig_name);
 	} else {
 		static char *cwd;
 		
@@ -473,13 +479,13 @@ void archdep_startup_log_error(const char *format, ...)
 char *archdep_filename_parameter(const char *name)
 {
 	/* nothing special(?) */
-	return lib_stralloc(name);
+	return lib_strdup(name);
 }
 
 char *archdep_quote_parameter(const char *name)
 {
 	/*not needed(?) */
-	return lib_stralloc(name);
+	return lib_strdup(name);
 }
 
 char *archdep_tmpnam(void)
@@ -510,11 +516,11 @@ char *archdep_tmpnam(void)
 		close(fd);
 	}
 	
-	final_name = lib_stralloc(tmp_name);
+	final_name = lib_strdup(tmp_name);
 	lib_free(tmp_name);
 	return final_name;
 #else
-	return lib_stralloc(tmpnam(NULL));
+	return lib_strdup(tmpnam(NULL));
 #endif
 }
 
@@ -571,7 +577,7 @@ FILE *archdep_mkstemp_fd(char **filename, const char *mode)
 		return NULL;
 	}
 	
-	*filename = lib_stralloc(tmp);
+	*filename = lib_strdup(tmp);
 	
 	return fd;
 #endif

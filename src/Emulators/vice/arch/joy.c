@@ -373,7 +373,7 @@ int joy_arch_init(void)
 //    for (i = 0; i < num_joysticks; ++i) {
 //        joy = sdljoystick[i].joyptr = SDL_JoystickOpen(i);
 //        if (joy) {
-//            sdljoystick[i].name = lib_stralloc(SDL_JoystickName(i));
+//            sdljoystick[i].name = lib_strdup(SDL_JoystickName(i));
 //            axis = sdljoystick[i].input_max[AXIS] = SDL_JoystickNumAxes(joy);
 //            button = sdljoystick[i].input_max[BUTTON] = SDL_JoystickNumButtons(joy);
 //            hat = sdljoystick[i].input_max[HAT] = SDL_JoystickNumHats(joy);

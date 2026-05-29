@@ -317,7 +317,7 @@ static void ioutil_filldir(const char *path, ioutil_name_table_t *dirs, ioutil_n
 #ifdef _DIRENT_HAVE_D_TYPE
         if (dp->d_type != DT_UNKNOWN) {
             if (dp->d_type == DT_DIR) {
-                dirs[dir_count].name = lib_stralloc(dp->d_name);
+                dirs[dir_count].name = lib_strdup(dp->d_name);
                 dir_count++;
 #ifdef DT_LNK
             } else if (dp->d_type == DT_LNK) {
@@ -325,10 +325,10 @@ static void ioutil_filldir(const char *path, ioutil_name_table_t *dirs, ioutil_n
                 retval = ioutil_stat(filename, &len, &isdir);
                 if (retval == 0) {
                     if (isdir) {
-                        dirs[dir_count].name = lib_stralloc(dp->d_name);
+                        dirs[dir_count].name = lib_strdup(dp->d_name);
                         dir_count++;
                     } else {
-                        files[file_count].name = lib_stralloc(dp->d_name);
+                        files[file_count].name = lib_strdup(dp->d_name);
                         file_count++;
                     }
                 }
@@ -338,7 +338,7 @@ static void ioutil_filldir(const char *path, ioutil_name_table_t *dirs, ioutil_n
                 }
 #endif /* DT_LNK */
             } else {
-                files[file_count].name = lib_stralloc(dp->d_name);
+                files[file_count].name = lib_strdup(dp->d_name);
                 file_count++;
             }
             dp = readdir(dirp);
@@ -348,10 +348,10 @@ static void ioutil_filldir(const char *path, ioutil_name_table_t *dirs, ioutil_n
             retval = ioutil_stat(filename, &len, &isdir);
             if (retval == 0) {
                 if (isdir) {
-                    dirs[dir_count].name = lib_stralloc(dp->d_name);
+                    dirs[dir_count].name = lib_strdup(dp->d_name);
                     dir_count++;
                 } else {
-                    files[file_count].name = lib_stralloc(dp->d_name);
+                    files[file_count].name = lib_strdup(dp->d_name);
                     file_count++;
                 }
             }

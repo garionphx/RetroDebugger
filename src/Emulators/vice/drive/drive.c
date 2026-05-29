@@ -1206,7 +1206,7 @@ disk_image_t *c64d_read_disk_image(char *fileName)
 	
 	disk_image_media_create(diskImage);
 	
-	disk_image_fsimage_name_set(diskImage, lib_stralloc(fileName));
+	disk_image_fsimage_name_set(diskImage, lib_strdup(fileName));
 	
 	if (disk_image_open(diskImage) < 0)
 	{
