@@ -843,7 +843,15 @@ int archdep_init(int *argc, char **argv)
 //		fprintf(stderr, "SDL error: %s\n", SDL_GetError());
 //		return 1;
 //	}
-	
+
+	/* VICE 3.10 expects the host tick subsystem live before main_program starts.
+	   Without this, c64d_timebase_info stays zeroed, tick_now() does an integer
+	   divide-by-zero (returns 0 on arm64), the throttle loop sees "no wallclock
+	   advance" and lets the OS scheduler dribble cycles in -- C64 runs at ~3 kHz
+	   instead of ~1 MHz and the kernal cold-start never reaches the BASIC prompt
+	   (black screen). */
+	tick_init();
+
 	return archdep_init_extra(argc, argv);
 }
 
