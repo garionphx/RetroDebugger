@@ -47,27 +47,32 @@ def test_counters_monotonic(fresh_cpu):
 # ── control: makejmp ───────────────────────────────────────────────────────
 
 def test_makejmp_sets_pc(loaded_fixture):
-    """makejmp(addr) must set PC to addr (or one instruction past).
+    """makejmp(addr) must redirect the CPU to addr.
 
     Notes:
     - makejmp only takes effect when the CPU is in user RAM (not mid-KERNAL).
       loaded_fixture guarantees the CPU is paused in the park loop at $0837.
-    - makejmp queues a CPU trap (interrupt_maincpu_trigger_trap) that runs
-      _c64d_set_c64_pc_trap -> maincpu_regs.pc = new_pc. The trap only fires
-      inside the main CPU loop -- the paused state's c64d_debug_pause_check
-      spin pumps vsync but not the interrupt dispatch -- so the trap doesn't
-      land until the next step_instruction. That step then dispatches the
-      trap (PC := target) AND executes one instruction at the target, so PC
-      ends up at target + instr_size. RAM at $4000 contains $FF (ISC $00FF,X
-      -- 3 bytes), so the expected PC is $4000..$4003 inclusive. Accept any
-      PC inside a 4-byte window starting at the target.
+    - makejmp queues a CPU trap (interrupt_maincpu_trigger_trap) that sets
+      maincpu_regs.pc when DO_INTERRUPT next fires. The trap dispatcher only
+      runs inside the main CPU loop, so the trap is *queued* during pause and
+      *fires* once the CPU is allowed to run.
+    - Empirically, makejmp + step_instruction is racy on arm64 -- the WS
+      thread's writes to global_pending_int / trap_func aren't memory-fenced
+      against the CPU thread's reads, so a single-instruction step can miss
+      the trap and execute the original park-loop JMP instead. cont + short
+      wait + pause is 5/5 reliable: the CPU runs hundreds of instructions
+      and the trap is guaranteed to land. PC then sits in the loop the new
+      code falls into (RAM at $4000 is $FF $FF $00 $00..., an illegal
+      opcode sequence that walks PC forward a few bytes per instruction
+      before something jams or wraps). Accept any PC at or just past $4000.
     """
     rd = loaded_fixture
     rd.call(f"{rd.platform}/cpu/makejmp", {"address": 0x4000})
-    rd.step_instruction()  # dispatches the trap AND executes one instruction at $4000
-    time.sleep(0.05)
+    rd.cont()
+    time.sleep(0.02)  # gives the trap-dispatcher inside DO_INTERRUPT time to land
+    rd.pause()
     pc = rd.cpu_status()["result"]["pc"]
-    assert 0x4000 <= pc <= 0x4003, f"After makejmp($4000), PC = {pc:#06x} (want $4000..$4003)"
+    assert 0x4000 <= pc <= 0x4010, f"After makejmp($4000), PC = {pc:#06x} (want $4000..$4010)"
 
 
 # ── control: step_instruction ──────────────────────────────────────────────

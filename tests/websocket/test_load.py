@@ -32,17 +32,22 @@ def test_load_prg_then_makejmp_and_run(fresh_cpu, fixture_dir):
         f"E2E run produced wrong sentinels: {sentinels.hex()}"
 
 
-@pytest.mark.skip(
-    reason="Phase 4 bug: RD 3.1 closes the WebSocket with no close frame when "
-           "load is given a nonexistent path — the bridge crashes instead of "
-           "returning an error response. Baseline finding; fix needed before Phase 4."
-)
 def test_load_nonexistent_file_does_not_crash(fresh_cpu):
-    """Loading a missing file should return an error response, not crash the bridge."""
+    """Loading a missing file should return an error response, not crash the bridge.
+
+    The 3.1 baseline crashed the WS bridge with an EXC_BAD_ACCESS in glBindTexture
+    on the WSDebugServer thread: CMainMenuHelper::LoadFile dispatched into
+    CMainMenuHelper::LoadPRG which in turn called recentlyOpenedFiles->Add and
+    ShowMessageError -> guiMain->ShowNotification, ultimately ending up in the
+    render backend on the wrong thread. The 3.10 build gates the load endpoint
+    with a stat(2) up front (see CDebuggerServerWebSockets.cpp), returning
+    HTTP_NOT_FOUND before any UI-touching code runs.
+    """
     rd = fresh_cpu
     resp, _ = rd.call("load", {"path": "/nonexistent/file.prg"})
     # Should be a 4xx response, but the connection must survive.
     assert "status" in resp, f"load of nonexistent file returned no status: {resp}"
+    assert resp["status"] == 404, f"expected 404 for missing file, got {resp}"
     # Verify we can still talk to RD.
     status = rd.cpu_status()
     assert status["status"] == 200, "WebSocket dead after bad load"
