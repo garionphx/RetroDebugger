@@ -62,7 +62,7 @@
 
 //
 // TODO: the c64 debugger has hardcoded drive context 0 only (drive 8, no multiple drives supported yet).
-//       look at lines such drive_context[0]->via1d1541->c64d_irq_flagged ...
+//       look at lines such diskunit_context[0]->via1d1541->c64d_irq_flagged ...
 
 int _c64d_new_drive_pc = -1;
 int _c64d_new_drive_dnr = -1;
@@ -951,33 +951,33 @@ debug_text("*** BRK"); \
                     CLK_ADD(CLK, 1);                                                           \
                 }                                                                              \
                 LOCAL_SET_BREAK(0);                                                            \
-                /* c64d: detect drive IRQ source for stack annotation */         \\
-                c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_UNKNOWN;            \\
-                if (diskunit_context[0]->via1d1541->c64d_irq_flagged)              \\
-                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_VIA1;           \\
-                else if (diskunit_context[0]->via2->c64d_irq_flagged)              \\
-                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_VIA2;           \\
-                else if (ik & (IK_IRQ | IK_IRQPEND))                               \\
-                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_IEC;            \\
+                /* c64d: detect drive IRQ source for stack annotation */         \
+                c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_UNKNOWN;            \
+                if (diskunit_context[0]->via1d1541->c64d_irq_flagged)              \
+                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_VIA1;           \
+                else if (diskunit_context[0]->via2->c64d_irq_flagged)              \
+                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_VIA2;           \
+                else if (ik & (IK_IRQ | IK_IRQPEND))                               \
+                    c64d_drive_irqbrk_irq_source = C64D_IRQ_SOURCE_IEC;            \
                 PUSH(reg_pc >> 8);                                                             \
-                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_PCH, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \\
+                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_PCH, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \
                 PUSH(reg_pc & 0xff);                                                           \
-                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_PCL, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \\
+                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_PCL, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \
                 CLK_ADD(CLK, 2);                                                               \
                 PUSH(LOCAL_STATUS());                                                          \
-                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_STATUS, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \\
+                C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_IRQ_STATUS, c64d_drive_irqbrk_irq_source, LAST_OPCODE_ADDR); \
                 CLK_ADD(CLK, 1);                                                               \
                 LOCAL_SET_INTERRUPT(1);                                                        \
                 CPU_DELAY_CLK; /* process alarms for cartridge freeze */                       \
                 PROCESS_ALARMS;                                                                \
                 if ((CPU_INT_STATUS->global_pending_int & IK_NMI)                              \
                     && (CLK >= (CPU_INT_STATUS->nmi_clk + INTERRUPT_DELAY))) {                 \
-                    /* c64d: re-annotate stack entries as NMI */                   \\
-                    if (c64d_drive_cpu_stack_entry_types) {                        \\
-                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 3)] = C64D_STACK_ENTRY_NMI_PCH;    \\
-                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 2)] = C64D_STACK_ENTRY_NMI_PCL;    \\
-                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 1)] = C64D_STACK_ENTRY_NMI_STATUS; \\
-                    }                                                              \\
+                    /* c64d: re-annotate stack entries as NMI */                   \
+                    if (c64d_drive_cpu_stack_entry_types) {                        \
+                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 3)] = C64D_STACK_ENTRY_NMI_PCH;    \
+                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 2)] = C64D_STACK_ENTRY_NMI_PCL;    \
+                        c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 1)] = C64D_STACK_ENTRY_NMI_STATUS; \
+                    }                                                              \
                     TRACE_NMI(CLK - NMI_CYCLES + 2);                                           \
                     interrupt_ack_nmi(CPU_INT_STATUS);                                         \
                     handler_vector = 0xfffa;                                                   \
@@ -1516,23 +1516,23 @@ INC_PC(pc_inc);                      \
         INC_PC(2);                                                                                \
         LOCAL_SET_BREAK(1);                                                                       \
         PUSH(reg_pc >> 8);                                                                        \
-        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_PCH, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \\
+        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_PCH, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \
         PUSH(reg_pc & 0xff);                                                                      \
-        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_PCL, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \\
+        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_PCL, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \
         CLK_ADD(CLK, CLK_BRK - 3);                                                                \
         PUSH(LOCAL_STATUS());                                                                     \
-        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_STATUS, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \\
+        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_BRK_STATUS, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \
         CLK_ADD(CLK, 1);                                                                          \
         CPU_DELAY_CLK  /* process alarms for cartridge freeze */                                  \
         PROCESS_ALARMS                                                                            \
         if ((CPU_INT_STATUS->global_pending_int & IK_NMI)                                         \
             && (CLK >= (CPU_INT_STATUS->nmi_clk + INTERRUPT_DELAY))) {                            \
-            /* c64d: BRK transformed into NMI -- re-annotate */                   \\
-            if (c64d_drive_cpu_stack_entry_types) {                                \\
-                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 3)] = C64D_STACK_ENTRY_NMI_PCH;    \\
-                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 2)] = C64D_STACK_ENTRY_NMI_PCL;    \\
-                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 1)] = C64D_STACK_ENTRY_NMI_STATUS; \\
-            }                                                                      \\
+            /* c64d: BRK transformed into NMI -- re-annotate */                   \
+            if (c64d_drive_cpu_stack_entry_types) {                                \
+                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 3)] = C64D_STACK_ENTRY_NMI_PCH;    \
+                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 2)] = C64D_STACK_ENTRY_NMI_PCL;    \
+                c64d_drive_cpu_stack_entry_types[(uint8_t)(reg_sp + 1)] = C64D_STACK_ENTRY_NMI_STATUS; \
+            }                                                                      \
             LOCAL_SET_INTERRUPT(1);                                                               \
             TRACE_NMI(CLK - CLK_BRK);                                                             \
             if (monitor_mask[CALLER] & (MI_STEP)) {                                               \
@@ -1814,9 +1814,9 @@ JUMP(addr); \
         INC_PC(2);                                    \
         CLK_ADD(CLK, 2);                              \
         PUSH(((reg_pc) >> 8) & 0xff);                 \
-        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_JSR_PCH, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \\
+        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_JSR_PCH, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \
         PUSH((reg_pc) & 0xff);                        \
-        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_JSR_PCL, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \\
+        C64D_DRIVE_ANNOTATE_PUSH(C64D_STACK_ENTRY_JSR_PCL, C64D_IRQ_SOURCE_UNKNOWN, LAST_OPCODE_ADDR); \
         addr_msb = LOAD(reg_pc);                      \
         JSR_FIXUP_MSB(addr_msb);                      \
         tmp_addr = (p1 | (addr_msb << 8));            \
@@ -4131,7 +4131,7 @@ void _c64d_set_drive_pc_trap(WORD addr, void *data)
 {
 	WORD newpc = _c64d_new_drive_pc;
 	
-	drive_context[_c64d_new_drive_dnr]->cpu->cpu_regs.pc = newpc;
+	diskunit_context[_c64d_new_drive_dnr]->cpu->cpu_regs.pc = newpc;
 	
 	_c64d_new_drive_pc = -1;
 }
@@ -4161,7 +4161,7 @@ void c64d_set_drive_register_a(int driveNr, uint8 a)
 {
 	_c64d_new_drive_register_a = a;
 	
-	c64d_interrupt_drivecpu_trigger_trap(drive_context[driveNr], _c64d_set_drive_register_a_trap, (void*)(drive_context[driveNr]));
+	c64d_interrupt_drivecpu_trigger_trap(diskunit_context[driveNr], _c64d_set_drive_register_a_trap, (void*)(diskunit_context[driveNr]));
 }
 
 void _c64d_set_drive_register_x_trap(WORD addr, void *data)
@@ -4177,7 +4177,7 @@ void c64d_set_drive_register_x(int driveNr, uint8 x)
 {
 	_c64d_new_drive_register_x = x;
 	
-	c64d_interrupt_drivecpu_trigger_trap(drive_context[driveNr], _c64d_set_drive_register_x_trap, (void*)(drive_context[driveNr]));
+	c64d_interrupt_drivecpu_trigger_trap(diskunit_context[driveNr], _c64d_set_drive_register_x_trap, (void*)(diskunit_context[driveNr]));
 }
 
 void _c64d_set_drive_register_y_trap(WORD addr, void *data)
@@ -4193,7 +4193,7 @@ void c64d_set_drive_register_y(int driveNr, uint8 y)
 {
 	_c64d_new_drive_register_y = y;
 	
-	c64d_interrupt_drivecpu_trigger_trap(drive_context[driveNr], _c64d_set_drive_register_y_trap, (void*)(drive_context[driveNr]));
+	c64d_interrupt_drivecpu_trigger_trap(diskunit_context[driveNr], _c64d_set_drive_register_y_trap, (void*)(diskunit_context[driveNr]));
 }
 
 void _c64d_set_drive_register_p_trap(WORD addr, void *data)
@@ -4209,7 +4209,7 @@ void c64d_set_drive_register_p(int driveNr, uint8 p)
 {
 	_c64d_new_drive_register_p = p;
 	
-	c64d_interrupt_drivecpu_trigger_trap(drive_context[driveNr], _c64d_set_drive_register_p_trap, (void*)(drive_context[driveNr]));
+	c64d_interrupt_drivecpu_trigger_trap(diskunit_context[driveNr], _c64d_set_drive_register_p_trap, (void*)(diskunit_context[driveNr]));
 }
 
 void _c64d_set_drive_register_sp_trap(WORD addr, void *data)
@@ -4225,22 +4225,22 @@ void c64d_set_drive_register_sp(int driveNr, uint8 sp)
 {
 	_c64d_new_drive_register_sp = sp;
 	
-	c64d_interrupt_drivecpu_trigger_trap(drive_context[driveNr], _c64d_set_drive_register_sp_trap, (void*)(drive_context[driveNr]));
+	c64d_interrupt_drivecpu_trigger_trap(diskunit_context[driveNr], _c64d_set_drive_register_sp_trap, (void*)(diskunit_context[driveNr]));
 }
 
 
 void c64d_set_drivecpu_regs_no_trap(int driveNr, uint8 a, uint8 x, uint8 y, uint8 p, uint8 sp)
 {
-	drive_context[driveNr]->cpu->cpu_regs.a = a;
-	drive_context[driveNr]->cpu->cpu_regs.x = x;
-	drive_context[driveNr]->cpu->cpu_regs.y = y;
-	drive_context[driveNr]->cpu->cpu_regs.p = p;
-	drive_context[driveNr]->cpu->cpu_regs.sp = sp;
+	diskunit_context[driveNr]->cpu->cpu_regs.a = a;
+	diskunit_context[driveNr]->cpu->cpu_regs.x = x;
+	diskunit_context[driveNr]->cpu->cpu_regs.y = y;
+	diskunit_context[driveNr]->cpu->cpu_regs.p = p;
+	diskunit_context[driveNr]->cpu->cpu_regs.sp = sp;
 }
 
 void c64d_set_drivecpu_pc_no_trap(int driveNr, uint16 pc)
 {
-	drive_context[driveNr]->cpu->cpu_regs.pc = pc;
+	diskunit_context[driveNr]->cpu->cpu_regs.pc = pc;
 }
 
 static void drivecpu_set_bank_base(void *context)

@@ -231,7 +231,7 @@ static bool playback_exit_after_all_playback = false;
 
 static void playback_end_file(void);
 
-static void monitor_close(bool check_exit);
+void monitor_close(int check_exit);	/* RD: public (int) so the debugger glue can call it; 3.10 had it static(bool) */
 static int monitor_set_moncommands_file(const char *param, void *extra_param);
 
 /* Disassemble the current opcode on entry.  Used for single step.  */

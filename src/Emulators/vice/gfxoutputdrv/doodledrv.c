@@ -609,7 +609,7 @@ static int doodle_vic_save(screenshot_t *screenshot, const char *filename, int c
 
 static int doodle_crtc_save(screenshot_t *screenshot, const char *filename, int compress)
 {
-    native_data_t *data = native_crtc_render(screenshot, filename, crtc_fgcolor);
+    native_data_t *data = native_crtc_render(screenshot, filename);	/* VICE 3.10: dropped fgcolor arg */
 
     if (data == NULL) {
         return -1;
@@ -687,17 +687,18 @@ static int doodledrv_compressed_save(screenshot_t *screenshot, const char *filen
 
 static gfxoutputdrv_t doodle_drv =
 {
+    GFXOUTPUTDRV_TYPE_SCREENSHOT_NATIVE,	/* VICE 3.10: new leading type field */
     "DOODLE",
     "C64 doodle screenshot",
     "dd",
     NULL, /* formatlist */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    doodledrv_save,
-    NULL,
-    NULL,
+    NULL, /* open */
+    NULL, /* close */
+    NULL, /* write */
+    NULL, /* save */
+    doodledrv_save, /* save_native */
+    NULL, /* record */
+    NULL, /* shutdown */
     doodledrv_resources_init,
     doodledrv_cmdline_options_init
 #ifdef FEATURE_CPUMEMHISTORY
@@ -707,19 +708,20 @@ static gfxoutputdrv_t doodle_drv =
 
 static gfxoutputdrv_t doodle_compressed_drv =
 {
+    GFXOUTPUTDRV_TYPE_SCREENSHOT_NATIVE,	/* VICE 3.10: new leading type field */
     "DOODLE_COMPRESSED",
     "C64 compressed doodle screenshot",
     "jj",
     NULL, /* formatlist */
-    NULL,
-    NULL,
-    NULL,
-    NULL,
-    doodledrv_compressed_save,
-    NULL,
-    NULL,
-    NULL,
-    NULL
+    NULL, /* open */
+    NULL, /* close */
+    NULL, /* write */
+    NULL, /* save */
+    doodledrv_compressed_save, /* save_native */
+    NULL, /* record */
+    NULL, /* shutdown */
+    NULL, /* resources_init */
+    NULL  /* cmdline_options_init */
 #ifdef FEATURE_CPUMEMHISTORY
     , NULL
 #endif

@@ -2062,9 +2062,9 @@ opcode.op.op8[0] = ((o) >> 16) & 0xff; \
 				}
 #endif
 				if (p0 == 0x20) {
-					monitor_cpuhistory_store(reg_pc, p0, p1, LOAD(reg_pc + 2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+					monitor_cpuhistory_store(CLK, reg_pc, p0, p1, LOAD(reg_pc + 2), reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS(), ORIGIN_MEMSPACE);	/* VICE 3.10: + cycle (CLK) and origin (MEMSPACE) */
 				} else {
-					monitor_cpuhistory_store(reg_pc, p0, p1, p2 >> 8, reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS());
+					monitor_cpuhistory_store(CLK, reg_pc, p0, p1, p2 >> 8, reg_a, reg_x, reg_y, reg_sp, LOCAL_STATUS(), ORIGIN_MEMSPACE);
 				}
 				memmap_state &= ~(MEMMAP_STATE_INSTR | MEMMAP_STATE_OPCODE);
 #endif

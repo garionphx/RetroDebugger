@@ -283,7 +283,7 @@ static gfxoutputdrv_t gif_drv =
 #endif
 };
 
-void gfxoutput_init_gif(void)
+void gfxoutput_init_gif(int help)	/* VICE 3.10: + help arg (unused here, matches other drivers) */
 {
   gfxoutput_register(&gif_drv);
 }

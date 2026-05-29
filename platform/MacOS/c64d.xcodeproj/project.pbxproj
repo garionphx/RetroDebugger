@@ -813,7 +813,6 @@
 		41C84D0123C6183B007C0889 /* rawimage.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AAB323AA0F1000A54EB2 /* rawimage.c */; };
 		41C84D0223C6183B007C0889 /* drive-check.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AAB823AA0F1000A54EB2 /* drive-check.c */; };
 		41C84D0323C6183B007C0889 /* drive-cmdline-options.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AABA23AA0F1000A54EB2 /* drive-cmdline-options.c */; };
-		41C84D0423C6183B007C0889 /* drive-overflow.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AABC23AA0F1000A54EB2 /* drive-overflow.c */; };
 		41C84D0523C6183B007C0889 /* drive-resources.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AABE23AA0F1000A54EB2 /* drive-resources.c */; };
 		41C84D0623C6183B007C0889 /* drive-snapshot.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AAC023AA0F1000A54EB2 /* drive-snapshot.c */; };
 		41C84D0723C6183B007C0889 /* drive-sound.c in Sources */ = {isa = PBXBuildFile; fileRef = 41D4AAC223AA0F1000A54EB2 /* drive-sound.c */; };
@@ -2838,8 +2837,6 @@
 		41D4AAB923AA0F1000A54EB2 /* drive-check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "drive-check.h"; sourceTree = "<group>"; };
 		41D4AABA23AA0F1000A54EB2 /* drive-cmdline-options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "drive-cmdline-options.c"; sourceTree = "<group>"; };
 		41D4AABB23AA0F1000A54EB2 /* drive-cmdline-options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "drive-cmdline-options.h"; sourceTree = "<group>"; };
-		41D4AABC23AA0F1000A54EB2 /* drive-overflow.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "drive-overflow.c"; sourceTree = "<group>"; };
-		41D4AABD23AA0F1000A54EB2 /* drive-overflow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "drive-overflow.h"; sourceTree = "<group>"; };
 		41D4AABE23AA0F1000A54EB2 /* drive-resources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "drive-resources.c"; sourceTree = "<group>"; };
 		41D4AABF23AA0F1000A54EB2 /* drive-resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "drive-resources.h"; sourceTree = "<group>"; };
 		41D4AAC023AA0F1000A54EB2 /* drive-snapshot.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "drive-snapshot.c"; sourceTree = "<group>"; };
@@ -5994,8 +5991,6 @@
 				41D4AAB923AA0F1000A54EB2 /* drive-check.h */,
 				41D4AABA23AA0F1000A54EB2 /* drive-cmdline-options.c */,
 				41D4AABB23AA0F1000A54EB2 /* drive-cmdline-options.h */,
-				41D4AABC23AA0F1000A54EB2 /* drive-overflow.c */,
-				41D4AABD23AA0F1000A54EB2 /* drive-overflow.h */,
 				41D4AABE23AA0F1000A54EB2 /* drive-resources.c */,
 				41D4AABF23AA0F1000A54EB2 /* drive-resources.h */,
 				41D4AAC023AA0F1000A54EB2 /* drive-snapshot.c */,
@@ -7862,7 +7857,6 @@
 				41C84D0123C6183B007C0889 /* rawimage.c in Sources */,
 				41C84D0223C6183B007C0889 /* drive-check.c in Sources */,
 				41C84D0323C6183B007C0889 /* drive-cmdline-options.c in Sources */,
-				41C84D0423C6183B007C0889 /* drive-overflow.c in Sources */,
 				41C84D0523C6183B007C0889 /* drive-resources.c in Sources */,
 				41C84D0623C6183B007C0889 /* drive-snapshot.c in Sources */,
 				41C84D0723C6183B007C0889 /* drive-sound.c in Sources */,

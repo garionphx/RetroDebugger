@@ -456,7 +456,7 @@ int monitor_is_remote(void)
 
 ui_jam_action_t monitor_network_ui_jam_dialog(const char *format, ...)
 {
-    return UI_JAM_HARD_RESET;
+    return UI_JAM_POWER_CYCLE;	/* VICE 3.10 renamed UI_JAM_HARD_RESET -> UI_JAM_POWER_CYCLE (upstream stub missed it) */
 }
 
 #endif
