@@ -9,6 +9,41 @@
 |--------|---------|
 | `36683b3` | **Task 2** — vendor-dropped 695 unhooked files (3.10 content + `types.h`→`vicetypes.h`). Verified: each file == vanilla-3.10(col2)+rename, 0 failures; 0 hook tokens in the changed set. |
 | `4e41816` | **Task 3a** — 14 hooked files whose upstream delta did NOT overlap a hook → diff3 auto-merged with 0 conflicts. Verified: hook-token counts unchanged pre/post, no leaked markers, rename preserved. |
+| `f76ee03` | **Task 3b** — 4 hooked headers (via1d1541.h, viad.h, via.h, interrupt.h): 3.10 content + gated c64d_ decls/fields adapted to 3.10 types. |
+| `bc40261` | **Task 3c** — viacore.c (alarm_context+zero/uflow alarms; kept VICE_HOOK_VIA_IRQ_FLAG_CLEAR + c64d_viacore_peek) + c64cia1.c/c64cia2.c (uint sigs; kept VICE_HOOK_CIA* macros, externs, peek wrappers). |
+| `f432ce7` | **Task 3d** — vicii-draw-cycle.c (VICE_HOOK_VIC_DRAW_SPRITES guard around 3.10's s→as switch; c64d_set_color_register). |
+
+## REFINED Chunk 1 / Chunk 2 boundary (decided 2026-05-28 mid-Task-3)
+
+Triaging the 30 conflict files revealed a clean split. **Chunk 1 = vendor drop +
+tractable hook merges** (additive/localized hooks onto modestly-changed 3.10
+code, verifiable via the additions-only OFF check). **Chunk 2 = heavy subsystem
+rewrites** where 3.10 restructured the model AND slajerek's ungated c64d_
+accessors read that model directly → need build feedback to re-apply correctly
+(same character as the CPU cores). Forcing the heavy ones now, with no test net,
+risks subtle timing/model bugs.
+
+**Chunk 1 DONE (8 conflict files merged + 14 auto-merged + headers):** all of the
+above commits.
+
+**Chunk 1 REMAINING-TRACTABLE (still mergeable here; moderate, localized hooks):**
+c64/c64-snapshot.c, root/machine.c, joyport/mouse.c, iecbus/iecbus.c,
+root/vsync.c + viciisc/vicii.c (vsync-signature pair), sid/fastsid.c,
+sid/sid-resources.h, c64/cart/reu.c.
+
+**Chunk 2 — heavy subsystem rewrites (defer, need build feedback):**
+- CPU cores: c64/c64cpusc.c, drive/drivecpu.c (already deferred)
+- monitor: monitor/monitor.c (already deferred)
+- Tier C: resid/*, resid-fp/*, sounddrv/soundsdl.c (already deferred)
+- **CIA core:** core/ciacore.c (SDR delay-line rewrite; c64d_ciacore_peek/get_cia_context)
+- **drive/diskunit model** (3.10 dual-drive `diskunit_context[u]->drives[d]`):
+  drive/drive.c, drive/drivemem.c, drive/iec/via1d1541.c, drive/iecieee/via2d.c,
+  drive/iec/memiec.c — their c64d_ accessors read drive-VIA/drive internals
+- **SID 2→8 + ReSID-FP:** sid/sid.c, sid/sid-snapshot.c, sid/sid-resources.c
+- **mem model:** c64/c64memsc.c (mem_ram pointer; 33 hook-hunk-lines)
+- **signature ripple:** root/keyboard.c + root/keyboard.h (3.10 added `mod` param,
+  slajerek changed return void→int; ripples to ViceInterface callers)
+- root/sound.c (SID-run/pause/mutex gating; 23 conflict hunks, entangled w/ sound subsystem)
 
 Verification method (reusable, bash-3.2 safe — macOS has no `declare -A`):
 - Per-file gate for the vendor drop: `sed 's/#include "vicetypes.h"/#include "types.h"/' live | diff -q - vanilla31` → empty ⇒ file diverged from 3.1 by ONLY the rename ⇒ safe to overwrite with `sed 's/types.h/vicetypes.h/' vanilla310 > live`.
