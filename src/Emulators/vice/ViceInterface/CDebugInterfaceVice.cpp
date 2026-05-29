@@ -1209,15 +1209,22 @@ bool CDebugInterfaceVice::KeyboardDown(uint32 mtKeyCode)
 	{
 		CDebuggerEmulatorPlugin *plugin = *it;
 		mtKeyCode = plugin->KeyDown(mtKeyCode);
-		
+
 		if (mtKeyCode == 0)
 			return false;
 	}
-	
-	if (keyboard_key_pressed((unsigned long)mtKeyCode) == 1)
-		return true;
-	
-	return false;
+
+	/* keyboard_key_pressed() ends up calling alarm_set() on maincpu_alarm_context,
+	   which is NOT thread-safe vs. the emulation thread iterating the alarm list.
+	   The race left the KERNAL keyboard buffer at $00C6 empty even when the API
+	   returned 200 (Phase-4 known bug; captured by the test_input.py docstring).
+	   Take the emulator mutex around the VICE-internal call so the alarm list
+	   mutation is serialized against the CPU thread. */
+	this->LockMutex();
+	bool pressed = keyboard_key_pressed((unsigned long)mtKeyCode) == 1;
+	this->UnlockMutex();
+
+	return pressed;
 }
 
 bool CDebugInterfaceVice::KeyboardUp(uint32 mtKeyCode)
@@ -1226,15 +1233,17 @@ bool CDebugInterfaceVice::KeyboardUp(uint32 mtKeyCode)
 	{
 		CDebuggerEmulatorPlugin *plugin = *it;
 		mtKeyCode = plugin->KeyUp(mtKeyCode);
-		
+
 		if (mtKeyCode == 0)
 			return false;
 	}
-	
-	if (keyboard_key_released((unsigned long)mtKeyCode) == 1)
-		return true;
-	
-	return false;
+
+	/* Same alarm_set race as KeyboardDown above -- serialize against the CPU thread. */
+	this->LockMutex();
+	bool released = keyboard_key_released((unsigned long)mtKeyCode) == 1;
+	this->UnlockMutex();
+
+	return released;
 }
 
 void CDebugInterfaceVice::JoystickDown(int port, uint32 axis)
