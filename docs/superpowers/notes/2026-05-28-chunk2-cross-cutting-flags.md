@@ -324,3 +324,41 @@ Final resolution (executed solo; gate: 0 markers, braces 569/569, >-gate=7 all i
   [root/console.h byte-identical to 3.10]. (arch/uimon.c still no-arg impl = separate arch-layer
   issue, out of scope per DECISION 6.)
 - mon_parse.c/mon_lex.c already merged in 597009e (DECISION 10). monitor.c is the last monitor file.
+
+## DECISION 11: drive cluster + clkguard subsystem removal (SCOPE CORRECTION)
+
+Discovered while starting drivecpu.c (task #13): the "3 remaining files" model was incomplete.
+Audit of drive/ shows STILL-3.1 files: **drivecpu.c (43 old refs), drive.c (58), drive-overflow.c (4)**
+— everything else in drive/ is committed-migrated (diskunit_context_t). These three are INTERLOCKED:
+- `drive_context_t` no longer exists (committed drivetypes.h has only `diskunit_context_t`); drive.c
+  still passes the old `drive_context[]` array into drivecpu.c's functions.
+- 3.10 DELETED clkguard.c/.h AND drive-overflow.c/.h (64-bit CLOCK obviates them) and removed
+  `drivecpu_prevent_clk_overflow`. That fn is still CALLED at drive.c:514. drivecpu.h (committed)
+  already dropped its prototype, so drive.c is already in limbo.
+- clkguard still referenced by: drive.c, drive-overflow.c, datasette.c, c64acia1.c, c64cpusc.c.
+
+USER DECISION (asked 2026-05-28): **migrate the drive cluster together** — drivecpu.c + drive.c in one
+coherent pass + DELETE drive-overflow.c (+ .h), so drive/ converges to 3.10 (diskunit + clkguard-free)
+as one reviewable unit. (Tree already doesn't fully build per chunk1 error landscape, so this is
+sequencing, not regressing.)
+
+TRUE remaining Chunk 2 surface after this: [drive cluster: drivecpu.c + drive.c + delete drive-overflow.c],
+[clkguard stragglers: datasette.c, c64acia1.c, + delete clkguard.c/.h from tree & build-list],
+[c64cpusc.c — also has clkguard]. drivecpu65c02.c is the DONE sister = structural template.
+
+### drivecpu.c field-migration map (authoritative, from vanilla 3.1->3.10 delta + diskunit struct):
+drive_context_t->diskunit_context_t; struct drive_context_s->struct diskunit_context_s;
+drive_clk[DRIVE_NUM]->diskunit_clk[NUM_DISK_UNITS]; drivecpu_int_status_ptr[DRIVE_NUM]->[NUM_DISK_UNITS].
+Field flatten (now in diskunit): drv->drive->{type,drive_ram,log,trap,trapcont,idling_method,enable}
+-> drv->{...}. Stays per-drive: drv->drive->byte_ready_edge -> drv->drives[0]->byte_ready_edge;
+rotation_rotate_disk(drv->drive)->...(drv->drives[0]); rotation_reset(drv->drive)-> reset drives[0]+drives[1].
+Removed: clkguard.h include, clk_guard_new/destroy, whole drivecpu_prevent_clk_overflow fn, MSVC pragmas.
+Added (3.10): mainlock.h+uiapi.h includes (keep RD via.h), mi->mem_bank_poke/mem_bank_list_nos,
+LOAD_DUMMY/STORE_DUMMY macros, ORIGIN_MEMSPACE/CPU_LOG_ID/CPU_IS_JAMMED, ui_display_reset in cpu_reset,
+drivemem_init(drv) [no type], DRIVE_TYPE_9000 jam case. Renames: drive_jam->drivecpu_jam (static),
+machine_jam->drive_jam(drv->mynumber,...), JAM_RESET->JAM_RESET_CPU, JAM_HARD_RESET->JAM_POWER_CYCLE,
+MACHINE_RESET_MODE_SOFT->RESET_CPU, _HARD->POWER_CYCLE. Snapshot: SNAP_MINOR 1->3, SMW/SMR_DW(clock)->
+SMW/SMR_CLOCK, add cpu_last_data SMW_B/SMR_B, WORD/BYTE/DWORD->uint16_t/uint8_t/uint32_t. Execute loop:
+`while((int)(*clk_ptr-stop_clk)<0)` -> `while(*drv->clk_ptr < cpu->stop_clk)`; int tcycles->CLOCK tcycles.
+NOTE: diff3 is CORRUPTED for drivecpu.c (drivecpu_execute misaligns -> 3 spurious defs); build from RD
+live + apply this delta, NOT from the diff3 merge.
