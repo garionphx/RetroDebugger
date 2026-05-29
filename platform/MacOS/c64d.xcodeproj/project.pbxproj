@@ -8847,6 +8847,7 @@
 					"$(PROJECT_DIR)/../../src/Tests",
 					"$(PROJECT_DIR)/../../../MTEngineSDL/src/Engine/Tests",
 					"$(PROJECT_DIR)/../../src/Emulators/vice",
+					"$(PROJECT_DIR)/../../src/Emulators/vice/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src.MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Retro Debugger";
@@ -8900,6 +8901,7 @@
 					"$(PROJECT_DIR)/../../src/Tests",
 					"$(PROJECT_DIR)/../../../MTEngineSDL/src/Engine/Tests",
 					"$(PROJECT_DIR)/../../src/Emulators/vice",
+					"$(PROJECT_DIR)/../../src/Emulators/vice/**",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/src.MacOS/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Retro Debugger";

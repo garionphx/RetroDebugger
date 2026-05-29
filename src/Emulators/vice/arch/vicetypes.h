@@ -34,6 +34,13 @@
 
 #include "vice_sdl.h"
 
+/* VICE 3.10 reconciliation: 3.10 uses uint*_t and bool pervasively, and includes
+   <stdint.h>/<stdbool.h> unconditionally in its types.h. Provide them here so every
+   file that includes vicetypes.h (the renamed types.h) sees them. The BYTE/WORD/DWORD
+   shims below remain for slajerek's ungated c64d_ code. */
+#include <stdint.h>
+#include <stdbool.h>
+
 #ifndef BYTE
 //#ifdef WIN32_COMPILE
 typedef unsigned char BYTE;
@@ -68,7 +75,8 @@ typedef signed int SDWORD;
 #include "inttypes.h"
 #endif
 
-typedef DWORD CLOCK;
+typedef uint64_t CLOCK;   /* VICE 3.10: CLOCK is 64-bit (was DWORD/32-bit); 3.10's
+                             clock-overflow handling that replaced clkguard assumes this. */
 /* Maximum value of a CLOCK.  */
 #define CLOCK_MAX (~((CLOCK)0))
 
