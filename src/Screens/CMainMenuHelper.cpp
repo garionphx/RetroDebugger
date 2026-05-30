@@ -1631,51 +1631,27 @@ void CMainMenuHelper::ThreadRun(void *data)
 			else if (c64SettingsAutoJmpDoReset == MACHINE_LOADPRG_RESET_MODE_LOAD_SNAPSHOT_BASIC)
 			{
 				LOGD("c64SettingsAutoJmpDoReset is MACHINE_LOAD_SNAPSHOT_BASIC");
-				
-				if (viewC64->debugInterfaceC64->GetC64ModelType() != 0)
-				{
-					viewC64->debugInterfaceC64->ForceRunAndUnJamCpu();
-					int modelId = 0;
-					C64DebuggerSetSetting("C64Model", &modelId);
-					SYS_Sleep(200);
-				}
-				
-				viewC64->debugInterfaceC64->PauseEmulationBlockedWait();
 
-				guiMain->LockMutex();
-				
-				CSlrFileZlib *fileZlib = RES_GetFileZlib("/template/reset_basic_snapshot", DEPLOY_FILE_TYPE_DATA);
-				u32 fileSize = fileZlib->GetFileSize();
-				u8 *snapshotData = new u8[fileSize];
-				fileZlib->Read(snapshotData, fileSize);
-				CByteBuffer *byteBuffer = new CByteBuffer(snapshotData, fileSize);
-				viewC64->debugInterfaceC64->LoadFullSnapshot(byteBuffer);
-				delete byteBuffer;
-				delete fileZlib;
-				
-				// be sure that snapshot is loaded, run one instruction
-				viewC64->debugInterfaceC64->PauseEmulationBlockedWait();
-				
-				// and then switch to RUNNING
+				/* The bundled template snapshot (assets/template/reset_basic.snap)
+				   is 3.1-format (version 1.1); 3.10's snapshot reader rejects it
+				   on the SNAP_MAJOR=2 check. The reader's fail-path triggers a
+				   CPU reset that DOES NOT have time to finish KERNAL cold-boot
+				   before our SYS-parse trap fires -- RAMTAS ($FD50) clears RAM
+				   but RESTOR ($FD15) hasn't refilled the KERNAL indirect vectors
+				   at $0314-$032F yet, so user code that uses any KERNAL call
+				   (OPEN/CHKOUT/CHROUT/...) hits JMP ($0000) and crashes.
+
+				   Until the template is regenerated at SNAP_MAJOR=2 format, fall
+				   through to a hard reset with the same fast-boot + 1.3s sleep
+				   the explicit Hard Reset mode (line ~1614) uses -- the sleep
+				   gives RAMTAS + RESTOR time to complete. */
 				viewC64->debugInterfaceC64->SetDebugMode(DEBUGGER_MODE_RUNNING);
-				
-				SetupC64Defaults();
+				viewC64->debugInterfaceC64->SetPatchKernalFastBoot(true);
+				viewC64->debugInterfaceC64->ResetHard();
+				SYS_Sleep(c64SettingsAutoJmpWaitAfterReset);
 
-				// and insert disk
-				if (c64SettingsPathToD64)
-				{
-					debugInterfaceVice->InsertD64(c64SettingsPathToD64);
-				}
-				// inserting is synched, does not need sleep here
-//				SYS_Sleep(50);
-
-				viewC64->debugInterfaceC64->PauseEmulationBlockedWait();
-				viewC64->debugInterfaceC64->SetDebugMode(DEBUGGER_MODE_RUNNING);
-
-				// prepare drive RAM, set vectors etc
-				debugInterfaceVice->PrepareDriveForBasicRun();
-				
-				guiMain->UnlockMutex();
+				viewC64->viewDrive1541Browser->UpdateDriveDiskID();
+				viewC64->debugInterfaceC64->SetPatchKernalFastBoot(c64SettingsFastBootKernalPatch);
 			}
 		}
 	}

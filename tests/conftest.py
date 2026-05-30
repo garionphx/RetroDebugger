@@ -42,7 +42,7 @@ def _warp_off(rd):
 def fresh_cpu(rd):
     """Hard-reset before each test; settle KERNAL."""
     rd.reset(hard=True)
-    time.sleep(0.5)
+    time.sleep(2.0)  # hard reset + auto-RUN path involves a 1.3s SYS_Sleep
     return rd
 
 
@@ -63,7 +63,7 @@ def loaded_fixture(fresh_cpu):
     rd = fresh_cpu
     resp, _ = rd.call("load", {"path": str(FIXTURE_DIR / "known_state.prg")})
     assert resp.get("status") == 200, f"fixture load failed: {resp}"
-    time.sleep(0.2)  # let KERNAL settle post-load while CPU is running
+    time.sleep(2.0)  # let KERNAL settle + ThreadRun's 1.3s hard-reset wait complete
     rd.call(f"{rd.platform}/cpu/makejmp", {"address": 0x0810})
     rd.cont()
     time.sleep(0.15)  # fixture runs (screen clear ~6ms, park ~instant); IRQ can complete
