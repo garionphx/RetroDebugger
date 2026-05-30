@@ -40,46 +40,49 @@ import time
 
 @pytest.mark.slow
 def test_key_down_accepted_by_api(fresh_cpu):
-    """key/down with a valid keyCode (ASCII letter) should return status 200.
+    """key/down with a valid keyCode (ASCII letter) must reach the C64 screen.
 
     The API uses params: {"keyCode": <int>} where the value is the mtKeyCode.
     For letter keys this is the lowercase ASCII value (ord('a') = 97).
-    Status 200 means the key was found in the C64 key matrix map and the
-    latch was set. Status 406 means not in keymap.
 
-    NOTE: Due to a threading issue (alarm_set called without emulator mutex),
-    the key press may not reliably reach the KERNAL keyboard buffer. That
-    buffer-level assertion is skipped — see module docstring for details.
+    End-to-end check: we type 'a','b','c','d' into a fresh BASIC prompt and
+    verify the four screen-code bytes ($01 $02 $03 $04 = "ABCD" in C64
+    uppercase mode) appear at the cursor row of the screen RAM. Watching
+    the KERNAL keyboard buffer at $00C6 directly is unreliable because
+    BASIC's GETIN main loop drains that buffer faster than we can poll
+    over the WebSocket -- the buffer count is almost always 0 by the time
+    we ask. The screen is the durable observable.
     """
     rd = fresh_cpu
     rd.cont()
-    time.sleep(0.5)  # let KERNAL keyscan start
+    time.sleep(2.0)  # let the kernal cold-start finish + BASIC paint READY. + cursor
 
-    # keyCode = ord('a') = 97; C64 key matrix maps lowercase ASCII for letter keys
-    resp_down, _ = rd.call(f"{rd.platform}/input/key/down", {"keyCode": ord('a')})
-    time.sleep(0.05)
-    resp_up, _ = rd.call(f"{rd.platform}/input/key/up", {"keyCode": ord('a')})
-    time.sleep(0.1)
+    # The READY. prompt + cursor sit at row 6 of the splash (screen offset $0F0+).
+    # Snapshot that row only -- the rest of the screen has splash text and a
+    # blinking cursor we don't want to chase.
+    row_addr = 0x0400 + 6 * 40
+    row_before = rd.read_memory(row_addr, 40)
+
+    # Type a, b, c, d -- check API accepts each keycode.
+    for ch in "abcd":
+        resp_down, _ = rd.call(f"{rd.platform}/input/key/down", {"keyCode": ord(ch)})
+        assert resp_down.get("status", 200) == 200, \
+            f"key/down rejected valid keyCode {ord(ch)}: {resp_down}"
+        time.sleep(0.1)
+        resp_up, _ = rd.call(f"{rd.platform}/input/key/up", {"keyCode": ord(ch)})
+        assert resp_up.get("status", 200) == 200, \
+            f"key/up rejected valid keyCode {ord(ch)}: {resp_up}"
+        time.sleep(0.1)
+
+    time.sleep(0.5)  # let BASIC draw the chars
     rd.pause()
 
-    # API must accept the key (status 200)
-    assert resp_down.get("status", 200) == 200, \
-        f"key/down rejected valid keyCode {ord('a')}: {resp_down}"
-    assert resp_up.get("status", 200) == 200, \
-        f"key/up rejected valid keyCode {ord('a')}: {resp_up}"
-
-    # Buffer-level check: alarm_set is called without emulator mutex from the
-    # WebSocket handler thread, so the KERNAL keyboard buffer is unreliable.
-    buf_len = rd.read_memory(0x00C6, 1)[0]
-    if buf_len == 0:
-        pytest.xfail(
-            "3.1 keyboard mutex race — alarm_set without LockMutex; see baseline notes"
-        )
-
-    buf = rd.read_memory(0x0277, max(buf_len, 1))
-    # 'A' in PETSCII = $41 (uppercase), $01 (lowercase)
-    assert buf[0] in (0x41, 0x01), \
-        f"Buffer head = {buf[0]:#04x}, expected $41 (A) or $01 (lowercase a)"
+    row_after = rd.read_memory(row_addr, 40)
+    # The first 4 cells of row 6 should now contain screen codes $01..$04 (A B C D
+    # in C64 uppercase mode). Allow row_before to differ on cell[0] only (the
+    # blinking cursor flipped between space $20 and a filled cell).
+    assert row_after[:4] == b"\x01\x02\x03\x04", \
+        f"Row 6 head = {row_after[:4].hex()}, expected 01020304 (ABCD).  Before: {row_before[:4].hex()}"
 
 
 def test_joystick_down_does_not_error(fresh_cpu):
