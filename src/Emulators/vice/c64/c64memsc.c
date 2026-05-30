@@ -1519,9 +1519,18 @@ BYTE c64d_peek_c64(WORD addr)
 			}
 		case 0x0d:
 			{
-				if (mem_cartridge_type != CARTRIDGE_NONE)
+				/* I/O 1 ($DE00) and I/O 2 ($DF00) are dispatched via io_source_register.
+				   The 3.1 path here guarded the dispatch on mem_cartridge_type != NONE,
+				   but several devices -- REU notably -- register an io_source without
+				   touching mem_cartridge_type. That meant `c64/cpu/memory/readBlock`
+				   read REU registers via the c64d_peek_c64 path and saw $FF or RAM
+				   instead of the rec.status values the CPU (via the normal mem_read
+				   table) gets correctly. Always go through c64io_de00_peek /
+				   c64io_df00_peek when io_in is on -- if no io_source is registered
+				   for the given address they return the floating-bus value just like
+				   reading through the CPU's load path. */
+				if (io_in)
 				{
-					// TODO: check if peek does not create triggers/alarms...
 					uint8 addrHi2 = (addr >> 8);
 					if (addrHi2 == 0xDE)
 					{
@@ -1531,10 +1540,6 @@ BYTE c64d_peek_c64(WORD addr)
 					{
 						return c64io_df00_peek(addr);
 					}
-				}
-				
-				if (io_in)
-				{
 					return c64d_peek_io(addr);
 				}
 				else if (char_in)
