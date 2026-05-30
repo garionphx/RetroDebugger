@@ -22,7 +22,7 @@ def test_load_prg_then_makejmp_and_run(fresh_cpu, fixture_dir):
     rd = fresh_cpu
     resp, _ = rd.call("load", {"path": str(fixture_dir / "known_state.prg")})
     assert resp.get("status") == 200, f"load failed: {resp}"
-    time.sleep(2.0)  # wait for ThreadRun's hard-reset + 1.3s SYS_Sleep to finish
+    time.sleep(0.2)
     rd.call(f"{rd.platform}/cpu/makejmp", {"address": 0x0810})
     rd.cont()
     time.sleep(0.05)
